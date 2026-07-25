@@ -37,6 +37,11 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
+/* Enable Native Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Light Theme Overrides */
 body.light {
   --bg-primary: #f8fafc;

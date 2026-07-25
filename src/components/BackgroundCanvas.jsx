@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const TOTAL_FRAMES = 82;
+const START_FRAME = 2;
+const END_FRAME = 325;
+const TOTAL_FRAMES = END_FRAME - START_FRAME + 1; // 324 frames
 
 export function BackgroundCanvas() {
   const canvasRef = useRef(null);
@@ -9,14 +11,13 @@ export function BackgroundCanvas() {
 
   const targetFrameRef = useRef(0);
   const currentFrameRef = useRef(0);
-  const animFrameIdRef = useRef(null);
 
-  // Preload all 82 image frames into memory
+  // Preload all 324 high-definition 4K image frames into memory
   useEffect(() => {
     let loadedCount = 0;
     const imgs = [];
 
-    for (let i = 1; i <= TOTAL_FRAMES; i++) {
+    for (let i = START_FRAME; i <= END_FRAME; i++) {
       const img = new Image();
       const frameNum = String(i).padStart(6, '0');
       img.src = `/thor-frames/frame_${frameNum}.png`;
@@ -38,7 +39,6 @@ export function BackgroundCanvas() {
     const ctx = canvas.getContext('2d');
 
     const handleResize = () => {
-      // HiDPI Device Pixel Ratio Scaling (Eliminates Pixelation & Blurriness)
       const dpr = Math.max(1, window.devicePixelRatio || 1);
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
@@ -50,16 +50,12 @@ export function BackgroundCanvas() {
       const scrollTop = window.scrollY;
       const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       const scrollFraction = Math.min(1, Math.max(0, scrollTop / maxScroll));
-      
-      // Target frame based on scroll
       targetFrameRef.current = scrollFraction * (TOTAL_FRAMES - 1);
     };
 
-    // Continuous 60fps Animation Loop with Spring Lerp Frame Smoothing
     const renderLoop = () => {
-      // Linear interpolation (lerp) for liquid-smooth frame transitions (0.15 smoothing rate)
       const diff = targetFrameRef.current - currentFrameRef.current;
-      currentFrameRef.current += diff * 0.15;
+      currentFrameRef.current += diff * 0.15; // Smooth 60fps lerp interpolation
 
       const frameIdx = Math.min(
         TOTAL_FRAMES - 1,
@@ -70,11 +66,9 @@ export function BackgroundCanvas() {
 
       if (img && img.complete && img.naturalWidth !== 0) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
 
-        // Cover aspect ratio calculation for high-res canvas
         const imgRatio = img.width / img.height;
         const canvasRatio = canvas.width / canvas.height;
         let renderW, renderH, offsetX, offsetY;
@@ -94,52 +88,40 @@ export function BackgroundCanvas() {
         ctx.drawImage(img, offsetX, offsetY, renderW, renderH);
       }
 
-      animFrameIdRef.current = requestAnimationFrame(renderLoop);
+      requestAnimationFrame(renderLoop);
     };
 
     handleResize();
     window.addEventListener('resize', handleResize);
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Start 60fps rendering loop
-    animFrameIdRef.current = requestAnimationFrame(renderLoop);
+    const animId = requestAnimationFrame(renderLoop);
 
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleScroll);
-      if (animFrameIdRef.current) {
-        cancelAnimationFrame(animFrameIdRef.current);
-      }
+      cancelAnimationFrame(animId);
     };
   }, [isPreloaded]);
 
   return (
     <>
-      {/* HiDPI 60FPS Smooth 3D Canvas */}
       <canvas
         ref={canvasRef}
         style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          zIndex: -2,
-          pointerEvents: 'none',
+          top: 0, left: 0,
+          width: '100vw', height: '100vh',
+          zIndex: -2, pointerEvents: 'none',
           objectFit: 'cover'
         }}
       />
-
-      {/* Sheer Ultra-Thin Ambient Mask */}
       <div
         style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          zIndex: -1,
-          pointerEvents: 'none',
+          top: 0, left: 0,
+          width: '100vw', height: '100vh',
+          zIndex: -1, pointerEvents: 'none',
           background: 'rgba(0, 0, 0, 0.08)'
         }}
       />

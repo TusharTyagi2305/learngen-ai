@@ -14,7 +14,6 @@ export function BackgroundCanvas() {
 
     for (let i = 1; i <= TOTAL_FRAMES; i++) {
       const img = new Image();
-      // Pad frame number with 6 digits: frame_000001.png to frame_000082.png
       const frameNum = String(i).padStart(6, '0');
       img.src = `/thor-frames/frame_${frameNum}.png`;
       img.onload = () => {
@@ -81,7 +80,6 @@ export function BackgroundCanvas() {
     window.addEventListener('resize', handleResize);
     window.addEventListener('scroll', renderFrame, { passive: true });
 
-    // Initial sizing & render
     handleResize();
 
     return () => {
@@ -92,7 +90,7 @@ export function BackgroundCanvas() {
 
   return (
     <>
-      {/* 3D Scrollytelling Video Frame Canvas */}
+      {/* 3D Scrollytelling Video Frame Canvas - Crystal Clear 100% Vivid */}
       <canvas
         ref={canvasRef}
         style={{
@@ -103,12 +101,11 @@ export function BackgroundCanvas() {
           height: '100vh',
           zIndex: -2,
           pointerEvents: 'none',
-          objectFit: 'cover',
-          transition: 'filter 0.3s ease'
+          objectFit: 'cover'
         }}
       />
 
-      {/* Cinematic Dark Translucent Glass Mask to guarantee 100% text legibility */}
+      {/* Sheer Minimal Mask for Subtle Text Contrast */}
       <div
         style={{
           position: 'fixed',
@@ -118,9 +115,7 @@ export function BackgroundCanvas() {
           height: '100vh',
           zIndex: -1,
           pointerEvents: 'none',
-          background: 'linear-gradient(180deg, rgba(11, 15, 23, 0.65) 0%, rgba(11, 15, 23, 0.82) 100%)',
-          backdropFilter: 'blur(3px)',
-          WebkitBackdropFilter: 'blur(3px)'
+          background: 'rgba(0, 0, 0, 0.12)'
         }}
       />
     </>

@@ -10,17 +10,12 @@ export function LandingPage() {
   const [contactSubmitted, setContactSubmitted] = useState(false);
 
   return (
-    <div style={{ position: 'relative', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', overflow: 'hidden', background: 'transparent' }}>
       
-      {/* Refined Sapphire & Teal Ambient Background Orbs */}
-      <div className="glow-background" style={{ top: '-100px', left: '20%', width: '500px', height: '500px', background: 'var(--accent-blue)' }} />
-      <div className="glow-background" style={{ top: '600px', right: '10%', width: '450px', height: '450px', background: 'var(--accent-teal)' }} />
-      <div className="glow-background" style={{ top: '1400px', left: '15%', width: '400px', height: '400px', background: 'var(--accent-cyan)' }} />
-
       {/* ==================== 1. HERO / HOME SECTION ==================== */}
       <section id="home" style={{ padding: '140px 24px 70px', textAlign: 'center', maxWidth: '1020px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
         <div className="badge badge-teal animate-float" style={{ marginBottom: '22px', padding: '6px 16px', fontSize: '0.82rem' }}>
-          <Sparkles size={14} /> Handcrafted RAG Studio for Students & Researchers
+          <Sparkles size={14} /> Handcrafted 3D RAG Studio for Students & Researchers
         </div>
         
         <h1 style={{ fontSize: '3.8rem', fontWeight: 800, lineHeight: 1.15, marginBottom: '24px' }}>
@@ -28,7 +23,7 @@ export function LandingPage() {
           <span className="gradient-text">Your Own Notes & Research Papers</span>
         </h1>
         
-        <p style={{ fontSize: '1.22rem', color: 'var(--text-muted)', maxWidth: '780px', margin: '0 auto 38px', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '1.22rem', color: 'var(--text-muted)', maxWidth: '780px', margin: '0 auto 38px', lineHeight: 1.6, textShadow: '0 2px 6px rgba(0,0,0,0.6)' }}>
           LearnGen AI transforms PDFs, DOCX, and PPTX lectures into grounded AI study tutors, interactive 3D flashcards, dynamic MCQ quizzes, and adaptive learning roadmaps.
         </p>
 
@@ -46,7 +41,7 @@ export function LandingPage() {
         </div>
 
         {/* Hero Demo Glass Mockup */}
-        <div className="glass-panel animate-fade-in" style={{ marginTop: '54px', padding: '18px', borderRadius: 'var(--radius-xl)', overflow: 'hidden', textAlign: 'left', borderColor: 'rgba(37, 99, 235, 0.25)' }}>
+        <div className="glass-panel animate-fade-in" style={{ marginTop: '54px', padding: '18px', borderRadius: 'var(--radius-xl)', overflow: 'hidden', textAlign: 'left', borderColor: 'rgba(59, 130, 246, 0.35)', background: 'rgba(15, 23, 42, 0.45)' }}>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', alignItems: 'center' }}>
             <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ef4444' }} />
             <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#eab308' }} />
@@ -54,11 +49,11 @@ export function LandingPage() {
             <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', marginLeft: '12px' }}>LearnGen AI RAG Studio — Document Grounded Context</span>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '16px', background: 'var(--bg-primary)', padding: '20px', borderRadius: 'var(--radius-md)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '16px', background: 'rgba(11, 15, 23, 0.55)', padding: '20px', borderRadius: 'var(--radius-md)' }}>
             {/* Left Doc Sidebar */}
-            <div style={{ background: 'var(--bg-secondary)', padding: '14px', borderRadius: 'var(--radius-sm)' }}>
+            <div style={{ background: 'rgba(15, 23, 42, 0.6)', padding: '14px', borderRadius: 'var(--radius-sm)' }}>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginBottom: '8px', textTransform: 'uppercase' }}>Indexed Document Vault</div>
-              <div style={{ padding: '8px 10px', background: 'var(--glass-hover)', borderRadius: '6px', fontSize: '0.85rem', color: 'var(--accent-cyan)', fontWeight: 600, marginBottom: '6px', borderLeft: '3px solid var(--accent-cyan)' }}>
+              <div style={{ padding: '8px 10px', background: 'rgba(6, 182, 212, 0.15)', borderRadius: '6px', fontSize: '0.85rem', color: 'var(--accent-cyan)', fontWeight: 600, marginBottom: '6px', borderLeft: '3px solid var(--accent-cyan)' }}>
                 📄 Quantum_Computing_Ch3.pdf
               </div>
               <div style={{ padding: '8px 10px', background: 'transparent', borderRadius: '6px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
@@ -68,11 +63,11 @@ export function LandingPage() {
 
             {/* Right Chat Demo */}
             <div>
-              <div style={{ background: 'var(--bg-secondary)', padding: '14px', borderRadius: 'var(--radius-sm)', marginBottom: '12px' }}>
+              <div style={{ background: 'rgba(15, 23, 42, 0.6)', padding: '14px', borderRadius: 'var(--radius-sm)', marginBottom: '12px' }}>
                 <span style={{ fontSize: '0.75rem', color: 'var(--accent-cyan)', fontWeight: 600 }}>USER:</span>
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-main)' }}>What is the mathematical formulation of quantum superposition in qubits?</p>
               </div>
-              <div style={{ background: 'var(--bg-tertiary)', padding: '14px', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid var(--accent-blue)' }}>
+              <div style={{ background: 'rgba(30, 41, 59, 0.7)', padding: '14px', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid var(--accent-blue)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                   <span style={{ fontSize: '0.75rem', color: 'var(--accent-blue)', fontWeight: 700 }}>AI TUTOR (GROUNDED):</span>
                   <span className="badge badge-emerald" style={{ fontSize: '0.65rem' }}>✓ 99.8% Grounded</span>
@@ -87,22 +82,22 @@ export function LandingPage() {
       </section>
 
       {/* STATS BANNER */}
-      <section style={{ padding: '40px 24px', background: 'var(--bg-secondary)', borderTop: '1px solid var(--glass-border)', borderBottom: '1px solid var(--glass-border)', textAlign: 'center' }}>
+      <section style={{ padding: '40px 24px', background: 'rgba(15, 23, 42, 0.35)', backdropFilter: 'blur(10px)', borderTop: '1px solid var(--glass-border)', borderBottom: '1px solid var(--glass-border)', textAlign: 'center' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
           <div>
-            <div style={{ fontSize: '2.6rem', fontWeight: 800, color: 'var(--accent-cyan)' }}>100K+</div>
+            <div style={{ fontSize: '2.6rem', fontWeight: 800, color: 'var(--accent-cyan)', textShadow: '0 2px 10px rgba(0,0,0,0.6)' }}>100K+</div>
             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Target Architecture Capacity</div>
           </div>
           <div>
-            <div style={{ fontSize: '2.6rem', fontWeight: 800, color: 'var(--accent-blue)' }}>&lt;40ms</div>
+            <div style={{ fontSize: '2.6rem', fontWeight: 800, color: 'var(--accent-blue)', textShadow: '0 2px 10px rgba(0,0,0,0.6)' }}>&lt;40ms</div>
             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Vector Search Latency</div>
           </div>
           <div>
-            <div style={{ fontSize: '2.6rem', fontWeight: 800, color: 'var(--accent-emerald)' }}>99.8%</div>
+            <div style={{ fontSize: '2.6rem', fontWeight: 800, color: 'var(--accent-emerald)', textShadow: '0 2px 10px rgba(0,0,0,0.6)' }}>99.8%</div>
             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Context Citation Accuracy</div>
           </div>
           <div>
-            <div style={{ fontSize: '2.6rem', fontWeight: 800, color: 'var(--accent-amber)' }}>20+</div>
+            <div style={{ fontSize: '2.6rem', fontWeight: 800, color: 'var(--accent-amber)', textShadow: '0 2px 10px rgba(0,0,0,0.6)' }}>20+</div>
             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Production SaaS Modules</div>
           </div>
         </div>
@@ -110,7 +105,7 @@ export function LandingPage() {
 
 
       {/* ==================== 2. FEATURES SECTION ==================== */}
-      <section id="features" style={{ padding: '110px 24px 90px', maxWidth: '1200px', margin: '0 auto' }}>
+      <section id="features" style={{ padding: '110px 24px 90px', maxWidth: '1200px', margin: '0 auto', background: 'transparent' }}>
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
           <span className="badge badge-cyan" style={{ marginBottom: '12px' }}>Comprehensive Modules</span>
           <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Complete RAG Platform Capabilities</h2>
@@ -119,7 +114,7 @@ export function LandingPage() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
           <div className="glass-card" style={{ padding: '30px' }}>
-            <div style={{ background: 'rgba(6, 182, 212, 0.15)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-cyan)', marginBottom: '18px' }}>
+            <div style={{ background: 'rgba(6, 182, 212, 0.2)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-cyan)', marginBottom: '18px' }}>
               <Database size={24} />
             </div>
             <h3 style={{ fontSize: '1.3rem', marginBottom: '8px' }}>1. Multi-Format Text Extraction</h3>
@@ -129,7 +124,7 @@ export function LandingPage() {
           </div>
 
           <div className="glass-card" style={{ padding: '30px' }}>
-            <div style={{ background: 'rgba(13, 148, 136, 0.15)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-teal)', marginBottom: '18px' }}>
+            <div style={{ background: 'rgba(20, 184, 166, 0.2)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-teal)', marginBottom: '18px' }}>
               <Layers size={24} />
             </div>
             <h3 style={{ fontSize: '1.3rem', marginBottom: '8px' }}>2. Token Chunking & Overlap</h3>
@@ -139,7 +134,7 @@ export function LandingPage() {
           </div>
 
           <div className="glass-card" style={{ padding: '30px' }}>
-            <div style={{ background: 'rgba(37, 99, 235, 0.15)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-blue)', marginBottom: '18px' }}>
+            <div style={{ background: 'rgba(59, 130, 246, 0.2)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-blue)', marginBottom: '18px' }}>
               <HelpCircle size={24} />
             </div>
             <h3 style={{ fontSize: '1.3rem', marginBottom: '8px' }}>3. Vector DB Indexing</h3>
@@ -149,7 +144,7 @@ export function LandingPage() {
           </div>
 
           <div className="glass-card" style={{ padding: '30px' }}>
-            <div style={{ background: 'rgba(16, 185, 129, 0.15)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-emerald)', marginBottom: '18px' }}>
+            <div style={{ background: 'rgba(16, 185, 129, 0.2)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-emerald)', marginBottom: '18px' }}>
               <ShieldCheck size={24} />
             </div>
             <h3 style={{ fontSize: '1.3rem', marginBottom: '8px' }}>4. Anti-Hallucination Guard</h3>
@@ -162,7 +157,7 @@ export function LandingPage() {
 
 
       {/* ==================== 3. ARCHITECTURE SECTION ==================== */}
-      <section id="architecture" style={{ padding: '110px 24px 90px', background: 'var(--bg-secondary)', borderTop: '1px solid var(--glass-border)', borderBottom: '1px solid var(--glass-border)' }}>
+      <section id="architecture" style={{ padding: '110px 24px 90px', background: 'transparent' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '44px' }}>
             <span className="badge badge-teal" style={{ marginBottom: '12px' }}>Software Engineering Blueprint</span>
@@ -170,29 +165,29 @@ export function LandingPage() {
             <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Designed according to Senior Software Architect specifications for enterprise scaling.</p>
           </div>
 
-          <div className="glass-panel" style={{ padding: '36px', background: 'var(--bg-primary)' }}>
+          <div className="glass-panel" style={{ padding: '36px', background: 'rgba(15, 23, 42, 0.45)' }}>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '16px', color: 'var(--text-main)' }}>Production Technology Blueprint</h3>
             
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginTop: '20px' }}>
-              <div style={{ padding: '16px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
+              <div style={{ padding: '16px', background: 'rgba(30, 41, 59, 0.5)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
                 <div style={{ fontSize: '0.75rem', color: 'var(--accent-cyan)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>Frontend Layer</div>
                 <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>React 19 + Next.js</div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>Tailwind CSS, Framer Motion, TypeScript</div>
               </div>
 
-              <div style={{ padding: '16px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
+              <div style={{ padding: '16px', background: 'rgba(30, 41, 59, 0.5)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
                 <div style={{ fontSize: '0.75rem', color: 'var(--accent-blue)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>Backend Microservice</div>
                 <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>FastAPI Python 3.11</div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>SQLAlchemy, Pydantic v2, JWT Auth</div>
               </div>
 
-              <div style={{ padding: '16px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
+              <div style={{ padding: '16px', background: 'rgba(30, 41, 59, 0.5)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
                 <div style={{ fontSize: '0.75rem', color: 'var(--accent-teal)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>Vector DB Engine</div>
                 <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>ChromaDB Persistent Store</div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>HNSW index, Cosine distance matching</div>
               </div>
 
-              <div style={{ padding: '16px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
+              <div style={{ padding: '16px', background: 'rgba(30, 41, 59, 0.5)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
                 <div style={{ fontSize: '0.75rem', color: 'var(--accent-emerald)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>AI Orchestrator</div>
                 <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>LangChain + Gemini API</div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>Text-embedding-3-small (1536d)</div>
@@ -204,7 +199,7 @@ export function LandingPage() {
 
 
       {/* ==================== 4. PRICING SECTION ==================== */}
-      <section id="pricing" style={{ padding: '110px 24px 90px', maxWidth: '1200px', margin: '0 auto' }}>
+      <section id="pricing" style={{ padding: '110px 24px 90px', maxWidth: '1200px', margin: '0 auto', background: 'transparent' }}>
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
           <span className="badge badge-amber" style={{ marginBottom: '12px' }}>Transparent Plans</span>
           <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Simple Academic Pricing</h2>
@@ -228,7 +223,7 @@ export function LandingPage() {
           </div>
 
           {/* Pro Scholar Plan */}
-          <div className="glass-card" style={{ padding: '32px', borderColor: 'var(--accent-blue)', background: 'rgba(37, 99, 235, 0.08)' }}>
+          <div className="glass-card" style={{ padding: '32px', borderColor: 'var(--accent-blue)', background: 'rgba(37, 99, 235, 0.12)' }}>
             <span className="badge badge-teal" style={{ marginBottom: '8px' }}>Most Popular</span>
             <h3 style={{ fontSize: '1.4rem' }}>Pro Scholar</h3>
             <div style={{ fontSize: '2.5rem', fontWeight: 800, margin: '16px 0', color: 'var(--accent-blue)' }}>$12 <span style={{ fontSize: '1rem', color: 'var(--text-dim)' }}>/ mo</span></div>
@@ -266,10 +261,10 @@ export function LandingPage() {
       </section>
 
 
-      {/* ==================== 5. CONTACT SECTION ==================== */}
-      <section id="contact" style={{ padding: '110px 24px 90px', background: 'var(--bg-secondary)', borderTop: '1px solid var(--glass-border)' }}>
+      {/* ==================== 5. CONTACT SECTION WITH CRYSTAL CLEAR BACKGROUND ==================== */}
+      <section id="contact" style={{ padding: '110px 24px 120px', background: 'transparent' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-          <div className="glass-panel" style={{ padding: '36px', background: 'var(--bg-primary)' }}>
+          <div className="glass-panel" style={{ padding: '36px', background: 'rgba(15, 23, 42, 0.45)', backdropFilter: 'blur(16px)', borderColor: 'rgba(255, 255, 255, 0.15)' }}>
             <h2 style={{ fontSize: '2.2rem', fontWeight: 800, marginBottom: '8px' }}>Get in Touch</h2>
             <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>Have questions about LearnGen AI's RAG pipeline or enterprise deployment?</p>
 

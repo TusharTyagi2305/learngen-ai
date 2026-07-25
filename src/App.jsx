@@ -5,6 +5,7 @@ import { Sidebar } from './components/Sidebar';
 import { TopBar } from './components/TopBar';
 import { FileUploadModal } from './components/FileUploadModal';
 import { CitationInspector } from './components/CitationInspector';
+import { BackgroundCanvas } from './components/BackgroundCanvas';
 
 import { LandingPage } from './pages/LandingPage';
 import { FeaturesPage, AboutPage, PricingPage, ContactPage } from './pages/PublicPages';
@@ -51,8 +52,11 @@ function AppContent() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', width: '100vw', overflowX: 'hidden' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', width: '100vw', overflowX: 'hidden', position: 'relative' }}>
       
+      {/* 3D Thor Animated Scroll Video Background */}
+      <BackgroundCanvas />
+
       {/* Sidebar Navigation for Dashboard area */}
       {!isPublicPage && <Sidebar />}
 

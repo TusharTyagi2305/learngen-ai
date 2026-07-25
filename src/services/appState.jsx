@@ -7,9 +7,20 @@ export function AppProvider({ children }) {
   const [currentPage, setCurrentPage] = useState('landing');
   const [theme, setTheme] = useState('dark');
   const [userRole, setUserRole] = useState('student'); // 'student', 'teacher', 'admin'
+  const [documents, setDocuments] = useState(mockRAG.documents);
+  const [quizzes, setQuizzes] = useState(mockRAG.quizzes);
+  const [flashcards, setFlashcards] = useState(mockRAG.flashcards);
+
+  // RAG Hyperparameters
+  const [ragConfig, setRagConfig] = useState({
+    chunkSize: 512,
+    overlap: 50,
+    topK: 3,
+    temperature: 0.2
+  });
 
   // Active RAG Session State
-  const [activeDocId, setActiveDocId] = useState(mockRAG.documents[0].id);
+  const [activeDocId, setActiveDocId] = useState(mockRAG.documents[0]?.id || 'doc-1');
   const [activeCitation, setActiveCitation] = useState(null);
   
   // Modals & Popovers
@@ -43,7 +54,11 @@ export function AppProvider({ children }) {
     <AppContext.Provider value={{
       currentPage, setCurrentPage,
       theme, toggleTheme,
-      userRole, setUserRole,
+      userRole, setUserRole, currentRole: userRole,
+      documents, setDocuments,
+      quizzes, setQuizzes,
+      flashcards, setFlashcards,
+      ragConfig, setRagConfig,
       activeDocId, setActiveDocId,
       activeCitation, openCitation,
       isUploadModalOpen, setIsUploadModalOpen,

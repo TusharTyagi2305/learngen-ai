@@ -3,14 +3,14 @@ import { useApp } from '../services/appState';
 import { 
   Sparkles, ArrowRight, Brain, ShieldCheck, Database, Layers, 
   BookOpen, HelpCircle, CheckCircle2, Zap, Star, Lock, Send, Mail,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight, Book
 } from 'lucide-react';
 
 export function LandingPage() {
   const { setCurrentPage } = useApp();
   const [contactSubmitted, setContactSubmitted] = useState(false);
 
-  // Features Interactive 3D CoverFlow Carousel State
+  // Features Interactive 3D Book Page Flip Carousel State
   const [currentFeatureIdx, setCurrentFeatureIdx] = useState(0);
 
   const featureSlides = [
@@ -20,7 +20,7 @@ export function LandingPage() {
       badge: "Ingestion Engine",
       icon: Database,
       color: "var(--accent-cyan)",
-      bgIcon: "rgba(6, 182, 212, 0.2)",
+      bgIcon: "rgba(6, 182, 212, 0.25)",
       description: "PyPDF2, python-docx, and python-pptx extract raw text, preserving tabular data and chapter page boundaries automatically.",
       detail: "Supports PDF, DOCX, PPTX, TXT, research papers, and handwritten notes up to 50MB per file with automatic metadata tagging."
     },
@@ -30,7 +30,7 @@ export function LandingPage() {
       badge: "Semantic Splitter",
       icon: Layers,
       color: "var(--accent-teal)",
-      bgIcon: "rgba(20, 184, 166, 0.2)",
+      bgIcon: "rgba(20, 184, 166, 0.25)",
       description: "RecursiveCharacterTextSplitter with 512 token chunk size and 50 token overlap maintains context continuity across boundaries.",
       detail: "Ensures sentence integrity and semantic completeness before sending text blocks to dense embedding vector models."
     },
@@ -40,7 +40,7 @@ export function LandingPage() {
       badge: "ChromaDB Store",
       icon: HelpCircle,
       color: "var(--accent-blue)",
-      bgIcon: "rgba(59, 130, 246, 0.2)",
+      bgIcon: "rgba(59, 130, 246, 0.25)",
       description: "Persistent ChromaDB collection with HNSW index for ultra-low latency cosine similarity top-K retrieval.",
       detail: "Indexes 1536-dimensional vector embeddings with sub-40ms search response time for rapid AI query grounding."
     },
@@ -50,7 +50,7 @@ export function LandingPage() {
       badge: "Strict Context Injection",
       icon: ShieldCheck,
       color: "var(--accent-emerald)",
-      bgIcon: "rgba(16, 185, 129, 0.2)",
+      bgIcon: "rgba(16, 185, 129, 0.25)",
       description: "Prompt template strictly constrains LLM generation to provided document context snippets with page-level citations.",
       detail: "Maintains >99.8% citation accuracy, eliminating ungrounded LLM hallucinations with temperature T=0.2 enforcement."
     }
@@ -172,121 +172,136 @@ export function LandingPage() {
       </section>
 
 
-      {/* ==================== 2. FEATURES SECTION (MODERN 3D COVER FLOW CAROUSEL) ==================== */}
+      {/* ==================== 2. FEATURES SECTION (3D BOOK PAGE FLIP ATTACHED CAROUSEL) ==================== */}
       <section id="features" style={{ padding: '110px 24px 90px', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
-          <span className="badge badge-cyan" style={{ marginBottom: '12px' }}>Modern 3D Module Showcase</span>
+          <span className="badge badge-teal" style={{ marginBottom: '12px' }}>3D Page Flip Module Deck</span>
           <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Complete RAG Platform Capabilities</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Click side preview cards or scroll to explore modules.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Click side pages to flip through features like a 3D book.</p>
         </div>
 
-        {/* 3D COVER FLOW TRACK WITH BLURRED PREVIOUS & NEXT CARDS */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px', position: 'relative' }}>
+        {/* 3D BOOK PAGE FLIP ATTACHED CAROUSEL STAGE */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justify: 'center',
+          perspective: '1200px',
+          position: 'relative',
+          padding: '20px 0'
+        }}>
           
-          {/* PREVIOUS SLIDE (BLURRED PREVIEW ON LEFT) */}
+          {/* LEFT ATTACHED SIDE PAGE (PREVIOUS SLIDE - VISIBLE WITH 3D PAGE ROTATION) */}
           <div 
             onClick={handlePrevFeature}
             className="glass-card" 
             style={{
-              flex: '0 0 280px',
-              padding: '24px',
-              background: 'rgba(15, 23, 42, 0.35)',
-              backdropFilter: 'blur(8px)',
-              filter: 'blur(3px)',
-              opacity: 0.45,
-              transform: 'scale(0.88) translateX(20px)',
+              flex: '0 0 320px',
+              padding: '28px 24px',
+              background: 'rgba(15, 23, 42, 0.55)',
+              backdropFilter: 'blur(12px)',
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+              opacity: 0.78,
+              transform: 'perspective(1000px) rotateY(22deg) scale(0.92)',
+              transformOrigin: 'right center',
+              marginRight: '-45px',
+              zIndex: 5,
               cursor: 'pointer',
-              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              boxShadow: '-15px 15px 35px rgba(0, 0, 0, 0.6)',
+              transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
               userSelect: 'none'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
               <div style={{ background: prevSlide.bgIcon, padding: '10px', borderRadius: '10px', color: prevSlide.color }}>
-                <PrevIcon size={20} />
+                <PrevIcon size={22} />
               </div>
-              <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>PREVIOUS</span>
+              <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>◄ PREV PAGE</span>
             </div>
-            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
+            <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '8px' }}>
               {prevSlide.title}
             </h4>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>
               {prevSlide.description}
             </p>
           </div>
 
-          {/* ACTIVE CENTER SLIDE (SPOTLIGHT FOCUS IN CENTER) */}
+          {/* CENTER ATTACHED PAGE (MAIN ACTIVE SPOTLIGHT) */}
           <div className="glass-card animate-fade-in" style={{
-            flex: '1 1 650px',
-            maxWidth: '680px',
-            padding: '40px',
-            background: 'rgba(15, 23, 42, 0.65)',
-            backdropFilter: 'blur(20px)',
+            flex: '1 1 640px',
+            maxWidth: '660px',
+            padding: '42px',
+            background: 'rgba(15, 23, 42, 0.85)',
+            backdropFilter: 'blur(24px)',
             borderColor: currSlide.color,
-            boxShadow: `0 20px 50px -10px ${currSlide.bgIcon}`,
-            transform: 'scale(1.03)',
-            zIndex: 10,
-            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
+            boxShadow: `0 25px 60px -10px ${currSlide.bgIcon}`,
+            transform: 'perspective(1000px) rotateY(0deg) scale(1.04)',
+            zIndex: 20,
+            transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <div style={{ background: currSlide.bgIcon, padding: '14px', borderRadius: '14px', color: currSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <CurrIcon size={30} />
+                <CurrIcon size={32} />
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span className="badge badge-teal" style={{ padding: '5px 12px', fontSize: '0.78rem' }}>{currSlide.badge}</span>
-                <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 600 }}>{currIdx + 1} / {featureSlides.length}</span>
+                <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 600 }}>Page {currIdx + 1} of {featureSlides.length}</span>
               </div>
             </div>
 
-            <h3 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '12px', color: '#ffffff' }}>
+            <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '14px', color: '#ffffff' }}>
               {currSlide.title}
             </h3>
 
-            <p style={{ color: 'var(--text-main)', fontSize: '1.08rem', lineHeight: 1.6, marginBottom: '20px' }}>
+            <p style={{ color: 'var(--text-main)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '20px' }}>
               {currSlide.description}
             </p>
 
-            <div style={{ padding: '14px 18px', background: 'rgba(30, 41, 59, 0.65)', borderRadius: 'var(--radius-sm)', borderLeft: `4px solid ${currSlide.color}`, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+            <div style={{ padding: '14px 18px', background: 'rgba(30, 41, 59, 0.75)', borderRadius: 'var(--radius-sm)', borderLeft: `4px solid ${currSlide.color}`, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
               ⚡ <strong>Architect Spec:</strong> {currSlide.detail}
             </div>
           </div>
 
-          {/* NEXT SLIDE (BLURRED PREVIEW ON RIGHT) */}
+          {/* RIGHT ATTACHED SIDE PAGE (NEXT SLIDE - VISIBLE WITH 3D PAGE ROTATION) */}
           <div 
             onClick={handleNextFeature}
             className="glass-card" 
             style={{
-              flex: '0 0 280px',
-              padding: '24px',
-              background: 'rgba(15, 23, 42, 0.35)',
-              backdropFilter: 'blur(8px)',
-              filter: 'blur(3px)',
-              opacity: 0.45,
-              transform: 'scale(0.88) translateX(-20px)',
+              flex: '0 0 320px',
+              padding: '28px 24px',
+              background: 'rgba(15, 23, 42, 0.55)',
+              backdropFilter: 'blur(12px)',
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+              opacity: 0.78,
+              transform: 'perspective(1000px) rotateY(-22deg) scale(0.92)',
+              transformOrigin: 'left center',
+              marginLeft: '-45px',
+              zIndex: 5,
               cursor: 'pointer',
-              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              boxShadow: '15px 15px 35px rgba(0, 0, 0, 0.6)',
+              transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
               userSelect: 'none'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+              <span className="badge badge-cyan" style={{ fontSize: '0.7rem' }}>NEXT PAGE ►</span>
               <div style={{ background: nextSlide.bgIcon, padding: '10px', borderRadius: '10px', color: nextSlide.color }}>
-                <NextIcon size={20} />
+                <NextIcon size={22} />
               </div>
-              <span className="badge badge-cyan" style={{ fontSize: '0.7rem' }}>NEXT</span>
             </div>
-            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
+            <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '8px' }}>
               {nextSlide.title}
             </h4>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>
               {nextSlide.description}
             </p>
           </div>
 
         </div>
 
-        {/* SLIDE INDICATOR DOTS & NAVIGATION */}
+        {/* SLIDE INDICATOR DOTS & FLIP CONTROLS */}
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginTop: '36px' }}>
-          <button onClick={handlePrevFeature} className="btn-secondary" style={{ padding: '8px 14px', fontSize: '0.85rem' }}>
-            <ChevronLeft size={16} /> Prev Slide
+          <button onClick={handlePrevFeature} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
+            <ChevronLeft size={16} /> Flip Left Page
           </button>
 
           <div style={{ display: 'flex', gap: '8px' }}>
@@ -303,13 +318,13 @@ export function LandingPage() {
                   cursor: 'pointer',
                   transition: 'all 0.3s ease'
                 }}
-                title={`Go to slide ${idx + 1}`}
+                title={`Go to page ${idx + 1}`}
               />
             ))}
           </div>
 
-          <button onClick={handleNextFeature} className="btn-secondary" style={{ padding: '8px 14px', fontSize: '0.85rem' }}>
-            Next Slide <ChevronRight size={16} />
+          <button onClick={handleNextFeature} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
+            Flip Right Page <ChevronRight size={16} />
           </button>
         </div>
       </section>

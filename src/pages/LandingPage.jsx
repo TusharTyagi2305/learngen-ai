@@ -10,8 +10,9 @@ export function LandingPage() {
   const { setCurrentPage } = useApp();
   const [contactSubmitted, setContactSubmitted] = useState(false);
 
-  // Features Interactive 3D Book Page Flip Carousel State
+  // Features Interactive 3D Book Page Flip Carousel State & Directional Anim Tracker
   const [currentFeatureIdx, setCurrentFeatureIdx] = useState(0);
+  const [slideDirection, setSlideDirection] = useState('next'); // 'next' or 'prev'
 
   const featureSlides = [
     {
@@ -57,10 +58,12 @@ export function LandingPage() {
   ];
 
   const handleNextFeature = () => {
+    setSlideDirection('next');
     setCurrentFeatureIdx((prev) => (prev + 1) % featureSlides.length);
   };
 
   const handlePrevFeature = () => {
+    setSlideDirection('prev');
     setCurrentFeatureIdx((prev) => (prev - 1 + featureSlides.length) % featureSlides.length);
   };
 
@@ -172,7 +175,7 @@ export function LandingPage() {
       </section>
 
 
-      {/* ==================== 2. FEATURES SECTION (3D BOOK PAGE FLIP ATTACHED CAROUSEL) ==================== */}
+      {/* ==================== 2. FEATURES SECTION (SMOOTH TIMED DIRECTIONAL SLIDE CAROUSEL) ==================== */}
       <section id="features" style={{ padding: '110px 24px 90px', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
           <span className="badge badge-teal" style={{ marginBottom: '12px' }}>3D Page Flip Module Deck</span>
@@ -180,7 +183,7 @@ export function LandingPage() {
           <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Click side pages to flip through features like a 3D book.</p>
         </div>
 
-        {/* 3D BOOK PAGE FLIP ATTACHED CAROUSEL STAGE */}
+        {/* 3D BOOK PAGE FLIP ATTACHED CAROUSEL STAGE WITH DIRECTIONAL TIMED SLIDE ANIMATION */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -190,7 +193,7 @@ export function LandingPage() {
           padding: '20px 0'
         }}>
           
-          {/* LEFT ATTACHED SIDE PAGE (PREVIOUS SLIDE - VISIBLE WITH 3D PAGE ROTATION) */}
+          {/* LEFT ATTACHED SIDE PAGE (PREVIOUS SLIDE) */}
           <div 
             onClick={handlePrevFeature}
             className="glass-card" 
@@ -207,7 +210,7 @@ export function LandingPage() {
               zIndex: 5,
               cursor: 'pointer',
               boxShadow: '-15px 15px 35px rgba(0, 0, 0, 0.6)',
-              transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)',
               userSelect: 'none'
             }}
           >
@@ -225,19 +228,22 @@ export function LandingPage() {
             </p>
           </div>
 
-          {/* CENTER ATTACHED PAGE (MAIN ACTIVE SPOTLIGHT) */}
-          <div className="glass-card animate-fade-in" style={{
-            flex: '1 1 640px',
-            maxWidth: '660px',
-            padding: '42px',
-            background: 'rgba(15, 23, 42, 0.85)',
-            backdropFilter: 'blur(24px)',
-            borderColor: currSlide.color,
-            boxShadow: `0 25px 60px -10px ${currSlide.bgIcon}`,
-            transform: 'perspective(1000px) rotateY(0deg) scale(1.04)',
-            zIndex: 20,
-            transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
-          }}>
+          {/* CENTER ATTACHED PAGE (MAIN ACTIVE SPOTLIGHT WITH DIRECTIONAL TIMED SLIDE ANIMATION) */}
+          <div 
+            key={`${currSlide.id}-${slideDirection}`}
+            className={`glass-card ${slideDirection === 'next' ? 'animate-slide-next' : 'animate-slide-prev'}`}
+            style={{
+              flex: '1 1 640px',
+              maxWidth: '660px',
+              padding: '42px',
+              background: 'rgba(15, 23, 42, 0.85)',
+              backdropFilter: 'blur(24px)',
+              borderColor: currSlide.color,
+              boxShadow: `0 25px 60px -10px ${currSlide.bgIcon}`,
+              transform: 'perspective(1000px) rotateY(0deg) scale(1.04)',
+              zIndex: 20
+            }}
+          >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <div style={{ background: currSlide.bgIcon, padding: '14px', borderRadius: '14px', color: currSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <CurrIcon size={32} />
@@ -261,7 +267,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* RIGHT ATTACHED SIDE PAGE (NEXT SLIDE - VISIBLE WITH 3D PAGE ROTATION) */}
+          {/* RIGHT ATTACHED SIDE PAGE (NEXT SLIDE) */}
           <div 
             onClick={handleNextFeature}
             className="glass-card" 
@@ -278,7 +284,7 @@ export function LandingPage() {
               zIndex: 5,
               cursor: 'pointer',
               boxShadow: '15px 15px 35px rgba(0, 0, 0, 0.6)',
-              transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)',
               userSelect: 'none'
             }}
           >
@@ -308,7 +314,10 @@ export function LandingPage() {
             {featureSlides.map((_, idx) => (
               <button
                 key={idx}
-                onClick={() => setCurrentFeatureIdx(idx)}
+                onClick={() => {
+                  setSlideDirection(idx > currentFeatureIdx ? 'next' : 'prev');
+                  setCurrentFeatureIdx(idx);
+                }}
                 style={{
                   width: currentFeatureIdx === idx ? '32px' : '10px',
                   height: '10px',

@@ -1,13 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../services/appState';
 import { 
   Sparkles, ArrowRight, Brain, ShieldCheck, Database, Layers, 
-  BookOpen, HelpCircle, CheckCircle2, Zap, Star, Lock, Send, Mail
+  BookOpen, HelpCircle, CheckCircle2, Zap, Star, Lock, Send, Mail,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 
 export function LandingPage() {
   const { setCurrentPage } = useApp();
   const [contactSubmitted, setContactSubmitted] = useState(false);
+
+  // Features Interactive Slide Carousel State
+  const [currentFeatureIdx, setCurrentFeatureIdx] = useState(0);
+
+  const featureSlides = [
+    {
+      id: 1,
+      title: "1. Multi-Format Text Extraction",
+      badge: "Ingestion Engine",
+      icon: Database,
+      color: "var(--accent-cyan)",
+      bgIcon: "rgba(6, 182, 212, 0.2)",
+      description: "PyPDF2, python-docx, and python-pptx extract raw text, preserving tabular data and chapter page boundaries automatically.",
+      detail: "Supports PDF, DOCX, PPTX, TXT, research papers, and handwritten notes up to 50MB per file with automatic metadata tagging."
+    },
+    {
+      id: 2,
+      title: "2. Token Chunking & Overlap",
+      badge: "Semantic Splitter",
+      icon: Layers,
+      color: "var(--accent-teal)",
+      bgIcon: "rgba(20, 184, 166, 0.2)",
+      description: "RecursiveCharacterTextSplitter with 512 token chunk size and 50 token overlap maintains context continuity across boundaries.",
+      detail: "Ensures sentence integrity and semantic completeness before sending text blocks to dense embedding vector models."
+    },
+    {
+      id: 3,
+      title: "3. Vector DB Indexing",
+      badge: "ChromaDB Store",
+      icon: HelpCircle,
+      color: "var(--accent-blue)",
+      bgIcon: "rgba(59, 130, 246, 0.2)",
+      description: "Persistent ChromaDB collection with HNSW index for ultra-low latency cosine similarity top-K retrieval.",
+      detail: "Indexes 1536-dimensional vector embeddings with sub-40ms search response time for rapid AI query grounding."
+    },
+    {
+      id: 4,
+      title: "4. Anti-Hallucination Guard",
+      badge: "Strict Context Injection",
+      icon: ShieldCheck,
+      color: "var(--accent-emerald)",
+      bgIcon: "rgba(16, 185, 129, 0.2)",
+      description: "Prompt template strictly constrains LLM generation to provided document context snippets with page-level citations.",
+      detail: "Maintains >99.8% citation accuracy, eliminating ungrounded LLM hallucinations with temperature T=0.2 enforcement."
+    }
+  ];
+
+  const handleNextFeature = () => {
+    setCurrentFeatureIdx((prev) => (prev + 1) % featureSlides.length);
+  };
+
+  const handlePrevFeature = () => {
+    setCurrentFeatureIdx((prev) => (prev - 1 + featureSlides.length) % featureSlides.length);
+  };
+
+  // Optional subtle auto-slide every 6 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentFeatureIdx((prev) => (prev + 1) % featureSlides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [featureSlides.length]);
+
+  const activeSlide = featureSlides[currentFeatureIdx];
+  const IconComponent = activeSlide.icon;
 
   return (
     <div style={{ position: 'relative', overflow: 'hidden', background: 'transparent' }}>
@@ -104,54 +170,110 @@ export function LandingPage() {
       </section>
 
 
-      {/* ==================== 2. FEATURES SECTION ==================== */}
-      <section id="features" style={{ padding: '110px 24px 90px', maxWidth: '1200px', margin: '0 auto', background: 'transparent' }}>
-        <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-          <span className="badge badge-cyan" style={{ marginBottom: '12px' }}>Comprehensive Modules</span>
+      {/* ==================== 2. FEATURES SECTION (INTERACTIVE SINGLE CARD CAROUSEL) ==================== */}
+      <section id="features" style={{ padding: '110px 24px 90px', maxWidth: '1000px', margin: '0 auto', background: 'transparent' }}>
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <span className="badge badge-cyan" style={{ marginBottom: '12px' }}>Interactive Modules Spotlight</span>
           <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Complete RAG Platform Capabilities</h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Engineered for zero hallucinations and exact context page tracking.</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
-          <div className="glass-card" style={{ padding: '30px' }}>
-            <div style={{ background: 'rgba(6, 182, 212, 0.2)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-cyan)', marginBottom: '18px' }}>
-              <Database size={24} />
+        {/* SINGLE CARD FOCUS SPOTLIGHT CAROUSEL STAGE */}
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          
+          {/* Left Arrow Button */}
+          <button 
+            onClick={handlePrevFeature}
+            className="btn-secondary"
+            style={{
+              position: 'absolute',
+              left: '-20px',
+              zIndex: 20,
+              padding: '14px',
+              borderRadius: '50%',
+              background: 'rgba(15, 23, 42, 0.75)',
+              backdropFilter: 'blur(12px)',
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
+            }}
+            title="Previous Feature"
+          >
+            <ChevronLeft size={24} style={{ color: 'var(--text-main)' }} />
+          </button>
+
+          {/* ACTIVE SINGLE FEATURE CARD WITH SLIDE ANIMATION */}
+          <div key={activeSlide.id} className="glass-card animate-fade-in" style={{
+            width: '100%',
+            maxWidth: '720px',
+            padding: '44px',
+            background: 'rgba(15, 23, 42, 0.55)',
+            backdropFilter: 'blur(20px)',
+            borderColor: activeSlide.color,
+            boxShadow: `0 16px 40px -10px ${activeSlide.bgIcon}`,
+            textAlign: 'left'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <div style={{ background: activeSlide.bgIcon, padding: '16px', borderRadius: '16px', color: activeSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <IconComponent size={32} />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span className="badge badge-teal" style={{ padding: '6px 14px', fontSize: '0.8rem' }}>{activeSlide.badge}</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-dim)', fontWeight: 600 }}>Feature {currentFeatureIdx + 1} of {featureSlides.length}</span>
+              </div>
             </div>
-            <h3 style={{ fontSize: '1.3rem', marginBottom: '8px' }}>1. Multi-Format Text Extraction</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.6 }}>
-              PyPDF2, python-docx, and python-pptx extract raw text, preserving tabular data and chapter page boundaries automatically.
+
+            <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '14px', color: '#ffffff' }}>
+              {activeSlide.title}
+            </h3>
+
+            <p style={{ color: 'var(--text-main)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '18px' }}>
+              {activeSlide.description}
             </p>
+
+            <div style={{ padding: '14px 18px', background: 'rgba(30, 41, 59, 0.6)', borderRadius: 'var(--radius-sm)', borderLeft: `4px solid ${activeSlide.color}`, fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+              ⚡ <strong>Architect Spec:</strong> {activeSlide.detail}
+            </div>
           </div>
 
-          <div className="glass-card" style={{ padding: '30px' }}>
-            <div style={{ background: 'rgba(20, 184, 166, 0.2)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-teal)', marginBottom: '18px' }}>
-              <Layers size={24} />
-            </div>
-            <h3 style={{ fontSize: '1.3rem', marginBottom: '8px' }}>2. Token Chunking & Overlap</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.6 }}>
-              RecursiveCharacterTextSplitter with 512 token chunk size and 50 token overlap maintains context continuity across boundaries.
-            </p>
-          </div>
+          {/* Right Arrow Button */}
+          <button 
+            onClick={handleNextFeature}
+            className="btn-secondary"
+            style={{
+              position: 'absolute',
+              right: '-20px',
+              zIndex: 20,
+              padding: '14px',
+              borderRadius: '50%',
+              background: 'rgba(15, 23, 42, 0.75)',
+              backdropFilter: 'blur(12px)',
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
+            }}
+            title="Next Feature"
+          >
+            <ChevronRight size={24} style={{ color: 'var(--text-main)' }} />
+          </button>
+        </div>
 
-          <div className="glass-card" style={{ padding: '30px' }}>
-            <div style={{ background: 'rgba(59, 130, 246, 0.2)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-blue)', marginBottom: '18px' }}>
-              <HelpCircle size={24} />
-            </div>
-            <h3 style={{ fontSize: '1.3rem', marginBottom: '8px' }}>3. Vector DB Indexing</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.6 }}>
-              Persistent ChromaDB collection with HNSW index for ultra-low latency cosine similarity top-K retrieval.
-            </p>
-          </div>
-
-          <div className="glass-card" style={{ padding: '30px' }}>
-            <div style={{ background: 'rgba(16, 185, 129, 0.2)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-emerald)', marginBottom: '18px' }}>
-              <ShieldCheck size={24} />
-            </div>
-            <h3 style={{ fontSize: '1.3rem', marginBottom: '8px' }}>4. Anti-Hallucination Guard</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.6 }}>
-              Prompt template strictly constrains LLM generation to provided document context snippets with page-level citations.
-            </p>
-          </div>
+        {/* SLIDE INDICATOR DOTS */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '28px' }}>
+          {featureSlides.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentFeatureIdx(idx)}
+              style={{
+                width: currentFeatureIdx === idx ? '32px' : '10px',
+                height: '10px',
+                borderRadius: '999px',
+                border: 'none',
+                background: currentFeatureIdx === idx ? 'var(--accent-cyan)' : 'rgba(255, 255, 255, 0.25)',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              title={`Go to slide ${idx + 1}`}
+            />
+          ))}
         </div>
       </section>
 

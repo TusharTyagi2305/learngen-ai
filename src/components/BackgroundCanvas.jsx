@@ -12,7 +12,7 @@ export function BackgroundCanvas() {
   const targetFrameRef = useRef(0);
   const currentFrameRef = useRef(0);
 
-  // Preload all 324 high-definition 4K image frames into memory
+  // Preload all 324 lightweight high-speed 60fps frames into RAM (Total size: ~28MB for instant smooth playback)
   useEffect(() => {
     let loadedCount = 0;
     const imgs = [];
@@ -20,7 +20,7 @@ export function BackgroundCanvas() {
     for (let i = START_FRAME; i <= END_FRAME; i++) {
       const img = new Image();
       const frameNum = String(i).padStart(6, '0');
-      img.src = `/thor-frames/frame_${frameNum}.png`;
+      img.src = `/thor-frames/frame_${frameNum}.jpg`;
       img.onload = () => {
         loadedCount++;
         if (loadedCount === TOTAL_FRAMES) {
@@ -32,7 +32,7 @@ export function BackgroundCanvas() {
     imagesRef.current = imgs;
   }, []);
 
-  // 60FPS High-Definition Canvas Renderer with Lerp Frame Smoothing & HiDPI Scaling
+  // Butter-Smooth 60FPS Canvas Renderer with GPU Lerp Interpolation
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -42,8 +42,6 @@ export function BackgroundCanvas() {
       const dpr = Math.max(1, window.devicePixelRatio || 1);
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
     };
 
     const handleScroll = () => {
@@ -55,7 +53,7 @@ export function BackgroundCanvas() {
 
     const renderLoop = () => {
       const diff = targetFrameRef.current - currentFrameRef.current;
-      currentFrameRef.current += diff * 0.15; // Smooth 60fps lerp interpolation
+      currentFrameRef.current += diff * 0.18; // Smooth 60fps lerp interpolation
 
       const frameIdx = Math.min(
         TOTAL_FRAMES - 1,

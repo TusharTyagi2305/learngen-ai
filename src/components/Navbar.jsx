@@ -59,14 +59,14 @@ export function Navbar() {
       right: 0,
       zIndex: 1000,
       width: '100%',
-      padding: isScrolled ? '10px 28px' : '16px 28px',
+      padding: isScrolled ? '12px 28px' : '18px 28px',
+      /* Crystal-Clear Sheer Glass Transparency */
       background: theme === 'dark' 
-        ? (isScrolled ? 'rgba(11, 15, 23, 0.75)' : 'rgba(11, 15, 23, 0.45)') 
-        : (isScrolled ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.55)'),
-      backdropFilter: 'blur(20px) saturate(180%)',
-      WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-      boxShadow: isScrolled ? '0 10px 30px rgba(0, 0, 0, 0.25)' : 'none',
+        ? (isScrolled ? 'rgba(11, 15, 23, 0.35)' : 'rgba(11, 15, 23, 0.15)') 
+        : (isScrolled ? 'rgba(255, 255, 255, 0.45)' : 'rgba(255, 255, 255, 0.2)'),
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
     }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -87,7 +87,7 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Transparent Nav Options with Scrollspy Active State */}
+        {/* Sheer Navigation Options with Active State */}
         <nav style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
           {[
             { id: 'home', label: 'Home' },
@@ -122,7 +122,7 @@ export function Navbar() {
             onClick={toggleTheme} 
             className="btn-secondary" 
             title="Toggle Light/Dark Theme"
-            style={{ padding: '8px 12px' }}
+            style={{ padding: '8px 12px', background: 'rgba(255, 255, 255, 0.08)' }}
           >
             {theme === 'dark' ? <Sun size={18} style={{ color: 'var(--accent-amber)' }} /> : <Moon size={18} style={{ color: 'var(--accent-blue)' }} />}
           </button>
@@ -130,6 +130,7 @@ export function Navbar() {
           <button 
             onClick={() => setCurrentPage('login')} 
             className="btn-secondary"
+            style={{ background: 'rgba(255, 255, 255, 0.08)' }}
           >
             Sign In
           </button>

@@ -54,8 +54,8 @@ function AppContent() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh', width: '100vw', overflowX: 'hidden', position: 'relative' }}>
       
-      {/* 3D Thor Animated Scroll Video Background */}
-      <BackgroundCanvas />
+      {/* 3D Thor Animated Scroll Background - ONLY active on Public Landing pages */}
+      {isPublicPage && <BackgroundCanvas />}
 
       {/* Sidebar Navigation for Dashboard area */}
       {!isPublicPage && <Sidebar />}

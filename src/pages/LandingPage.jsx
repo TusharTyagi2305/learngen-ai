@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../services/appState';
 import { 
   Sparkles, ArrowRight, Brain, ShieldCheck, Database, Layers, 
   BookOpen, HelpCircle, CheckCircle2, Zap, Star, Lock, Send, Mail,
-  ChevronLeft, ChevronRight, Book
+  ChevronLeft, ChevronRight, Server, Cpu, Code2, Users, DollarSign, Award
 } from 'lucide-react';
 
 export function LandingPage() {
   const { setCurrentPage } = useApp();
   const [contactSubmitted, setContactSubmitted] = useState(false);
 
-  // Features Interactive 3D Book Page Flip Carousel State & Directional Anim Tracker
-  const [currentFeatureIdx, setCurrentFeatureIdx] = useState(0);
-  const [slideDirection, setSlideDirection] = useState('next'); // 'next' or 'prev'
+  // ==================== 1. FEATURES CAROUSEL STATE ====================
+  const [featureIdx, setFeatureIdx] = useState(0);
+  const [featureDir, setFeatureDir] = useState('next');
 
   const featureSlides = [
     {
@@ -57,28 +57,122 @@ export function LandingPage() {
     }
   ];
 
-  const handleNextFeature = () => {
-    setSlideDirection('next');
-    setCurrentFeatureIdx((prev) => (prev + 1) % featureSlides.length);
-  };
+  // ==================== 2. ARCHITECTURE CAROUSEL STATE ====================
+  const [archIdx, setArchIdx] = useState(0);
+  const [archDir, setArchDir] = useState('next');
 
-  const handlePrevFeature = () => {
-    setSlideDirection('prev');
-    setCurrentFeatureIdx((prev) => (prev - 1 + featureSlides.length) % featureSlides.length);
-  };
+  const archSlides = [
+    {
+      id: 1,
+      title: "Frontend Application Layer",
+      badge: "UI / UX Infrastructure",
+      icon: Code2,
+      color: "var(--accent-cyan)",
+      bgIcon: "rgba(6, 182, 212, 0.25)",
+      subtitle: "React 19 + Next.js App Router",
+      tech: ["React 19", "Next.js", "Tailwind CSS", "Framer Motion", "TypeScript"],
+      description: "Responsive SPA web application with server-side rendering, smooth glassmorphism design, interactive 3D canvas backgrounds, and sub-second page transitions."
+    },
+    {
+      id: 2,
+      title: "Backend Microservices API",
+      badge: "RESTful Async Backend",
+      icon: Server,
+      color: "var(--accent-blue)",
+      bgIcon: "rgba(59, 130, 246, 0.25)",
+      subtitle: "FastAPI Python 3.11 API",
+      tech: ["FastAPI", "Python 3.11", "SQLAlchemy", "Pydantic v2", "PyJWT"],
+      description: "Asynchronous high-concurrency API server handling file parsing, user document vault management, JWT authentication, and background worker queues."
+    },
+    {
+      id: 3,
+      title: "Vector Database Storage Engine",
+      badge: "Dense Vector Vault",
+      icon: Database,
+      color: "var(--accent-teal)",
+      bgIcon: "rgba(20, 184, 166, 0.25)",
+      subtitle: "ChromaDB Persistent Store",
+      tech: ["ChromaDB", "HNSW Index", "Cosine Distance", "1536 Dimensions"],
+      description: "Scalable vector index running Hierarchical Navigable Small World graphs for ultra-fast top-K nearest neighbor search with sub-40ms response times."
+    },
+    {
+      id: 4,
+      title: "AI Orchestration & LLM Engine",
+      badge: "RAG Pipeline Core",
+      icon: Cpu,
+      color: "var(--accent-emerald)",
+      bgIcon: "rgba(16, 185, 129, 0.25)",
+      subtitle: "LangChain + Gemini API",
+      tech: ["LangChain", "Gemini 1.5 Pro", "text-embedding-3", "Citation Extractor"],
+      description: "Context injection engine enforcing temperature control T=0.2, citation bounding, flashcard synthesis, and dynamic MCQ quiz generation."
+    }
+  ];
 
-  // Pre-calculate Previous, Current, Next Slide Indices
-  const prevIdx = (currentFeatureIdx - 1 + featureSlides.length) % featureSlides.length;
-  const currIdx = currentFeatureIdx;
-  const nextIdx = (currentFeatureIdx + 1) % featureSlides.length;
+  // ==================== 3. PRICING CAROUSEL STATE ====================
+  const [pricingIdx, setPricingIdx] = useState(0);
+  const [pricingDir, setPricingDir] = useState('next');
 
-  const prevSlide = featureSlides[prevIdx];
-  const currSlide = featureSlides[currIdx];
-  const nextSlide = featureSlides[nextIdx];
-
-  const CurrIcon = currSlide.icon;
-  const PrevIcon = prevSlide.icon;
-  const NextIcon = nextSlide.icon;
+  const pricingSlides = [
+    {
+      id: 1,
+      title: "Student Free",
+      price: "$0",
+      period: "/ month",
+      badge: "Starter Academic",
+      icon: Zap,
+      color: "var(--accent-cyan)",
+      bgIcon: "rgba(6, 182, 212, 0.25)",
+      features: [
+        "Up to 10 Document Uploads",
+        "Basic RAG AI Grounded Chat",
+        "30 Interactive 3D Flashcards per deck",
+        "Standard Vector Search Speed",
+        "Community Support Access"
+      ],
+      btnText: "Get Started Free",
+      isPopular: false
+    },
+    {
+      id: 2,
+      title: "Pro Scholar",
+      price: "$12",
+      period: "/ month",
+      badge: "★ Most Popular",
+      icon: Star,
+      color: "var(--accent-blue)",
+      bgIcon: "rgba(59, 130, 246, 0.3)",
+      features: [
+        "Unlimited Document Uploads (PDF/DOCX/PPTX)",
+        "High-Density Token Chunking & RAG",
+        "Unlimited MCQ Quizzes & 3D Flashcards",
+        "Deep Research Paper Synthesis",
+        "Priority Vector Search Latency (<40ms)",
+        "Export Notes & Quiz Analytics"
+      ],
+      btnText: "Start Pro Free Trial",
+      isPopular: true
+    },
+    {
+      id: 3,
+      title: "Campus / Admin",
+      price: "Custom",
+      period: "institutional rate",
+      badge: "Enterprise & Campus",
+      icon: Users,
+      color: "var(--accent-amber)",
+      bgIcon: "rgba(245, 158, 11, 0.25)",
+      features: [
+        "Dedicated Multi-Tenant ChromaDB Cluster",
+        "Role-Based Access Control (RBAC)",
+        "Teacher & Admin Analytics Workbench",
+        "Custom LLM API Key Integration",
+        "SLA 99.9% Uptime Guarantee",
+        "Dedicated Technical Architect Support"
+      ],
+      btnText: "Contact Enterprise Sales",
+      isPopular: false
+    }
+  ];
 
   return (
     <div style={{ position: 'relative', overflow: 'hidden', background: 'transparent' }}>
@@ -175,7 +269,7 @@ export function LandingPage() {
       </section>
 
 
-      {/* ==================== 2. FEATURES SECTION (SMOOTH TIMED DIRECTIONAL SLIDE CAROUSEL) ==================== */}
+      {/* ==================== 2. FEATURES SECTION (3D BOOK PAGE FLIP CAROUSEL) ==================== */}
       <section id="features" style={{ padding: '110px 24px 90px', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
           <span className="badge badge-teal" style={{ marginBottom: '12px' }}>3D Page Flip Module Deck</span>
@@ -183,264 +277,376 @@ export function LandingPage() {
           <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Click side pages to flip through features like a 3D book.</p>
         </div>
 
-        {/* 3D BOOK PAGE FLIP ATTACHED CAROUSEL STAGE WITH DIRECTIONAL TIMED SLIDE ANIMATION */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justify: 'center',
-          perspective: '1200px',
-          position: 'relative',
-          padding: '20px 0'
-        }}>
-          
-          {/* LEFT ATTACHED SIDE PAGE (PREVIOUS SLIDE) */}
-          <div 
-            onClick={handlePrevFeature}
-            className="glass-card" 
-            style={{
-              flex: '0 0 320px',
-              padding: '28px 24px',
-              background: 'rgba(15, 23, 42, 0.55)',
-              backdropFilter: 'blur(12px)',
-              borderColor: 'rgba(255, 255, 255, 0.2)',
-              opacity: 0.78,
-              transform: 'perspective(1000px) rotateY(22deg) scale(0.92)',
-              transformOrigin: 'right center',
-              marginRight: '-45px',
-              zIndex: 5,
-              cursor: 'pointer',
-              boxShadow: '-15px 15px 35px rgba(0, 0, 0, 0.6)',
-              transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)',
-              userSelect: 'none'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-              <div style={{ background: prevSlide.bgIcon, padding: '10px', borderRadius: '10px', color: prevSlide.color }}>
-                <PrevIcon size={22} />
+        {/* 3D BOOK PAGE FLIP STAGE */}
+        {(() => {
+          const pIdx = (featureIdx - 1 + featureSlides.length) % featureSlides.length;
+          const cIdx = featureIdx;
+          const nIdx = (featureIdx + 1) % featureSlides.length;
+
+          const pSlide = featureSlides[pIdx];
+          const cSlide = featureSlides[cIdx];
+          const nSlide = featureSlides[nIdx];
+
+          const PIcon = pSlide.icon;
+          const CIcon = cSlide.icon;
+          const NIcon = nSlide.icon;
+
+          return (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', perspective: '1200px', position: 'relative', padding: '20px 0' }}>
+                
+                {/* PREV ATTACHED PAGE */}
+                <div 
+                  onClick={() => { setFeatureDir('prev'); setFeatureIdx(pIdx); }}
+                  className="glass-card" 
+                  style={{
+                    flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
+                    transform: 'perspective(1000px) rotateY(22deg) scale(0.92)', transformOrigin: 'right center',
+                    marginRight: '-45px', zIndex: 5, cursor: 'pointer', boxShadow: '-15px 15px 35px rgba(0, 0, 0, 0.6)',
+                    transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)', userSelect: 'none'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                    <div style={{ background: pSlide.bgIcon, padding: '10px', borderRadius: '10px', color: pSlide.color }}>
+                      <PIcon size={22} />
+                    </div>
+                    <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>◄ PREV PAGE</span>
+                  </div>
+                  <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '8px' }}>{pSlide.title}</h4>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>{pSlide.description}</p>
+                </div>
+
+                {/* CURRENT SPOTLIGHT PAGE */}
+                <div 
+                  key={`feat-${cSlide.id}-${featureDir}`}
+                  className={`glass-card ${featureDir === 'next' ? 'animate-slide-next' : 'animate-slide-prev'}`}
+                  style={{
+                    flex: '1 1 640px', maxWidth: '660px', padding: '42px', background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(24px)',
+                    borderColor: cSlide.color, boxShadow: `0 25px 60px -10px ${cSlide.bgIcon}`,
+                    transform: 'perspective(1000px) rotateY(0deg) scale(1.04)', zIndex: 20
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <div style={{ background: cSlide.bgIcon, padding: '14px', borderRadius: '14px', color: cSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <CIcon size={32} />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span className="badge badge-teal" style={{ padding: '5px 12px', fontSize: '0.78rem' }}>{cSlide.badge}</span>
+                      <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 600 }}>Page {cIdx + 1} of {featureSlides.length}</span>
+                    </div>
+                  </div>
+                  <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '14px', color: '#ffffff' }}>{cSlide.title}</h3>
+                  <p style={{ color: 'var(--text-main)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '20px' }}>{cSlide.description}</p>
+                  <div style={{ padding: '14px 18px', background: 'rgba(30, 41, 59, 0.75)', borderRadius: 'var(--radius-sm)', borderLeft: `4px solid ${cSlide.color}`, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+                    ⚡ <strong>Architect Spec:</strong> {cSlide.detail}
+                  </div>
+                </div>
+
+                {/* NEXT ATTACHED PAGE */}
+                <div 
+                  onClick={() => { setFeatureDir('next'); setFeatureIdx(nIdx); }}
+                  className="glass-card" 
+                  style={{
+                    flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
+                    transform: 'perspective(1000px) rotateY(-22deg) scale(0.92)', transformOrigin: 'left center',
+                    marginLeft: '-45px', zIndex: 5, cursor: 'pointer', boxShadow: '15px 15px 35px rgba(0, 0, 0, 0.6)',
+                    transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)', userSelect: 'none'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                    <span className="badge badge-cyan" style={{ fontSize: '0.7rem' }}>NEXT PAGE ►</span>
+                    <div style={{ background: nSlide.bgIcon, padding: '10px', borderRadius: '10px', color: nSlide.color }}>
+                      <NIcon size={22} />
+                    </div>
+                  </div>
+                  <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '8px' }}>{nSlide.title}</h4>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>{nSlide.description}</p>
+                </div>
+
               </div>
-              <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>◄ PREV PAGE</span>
-            </div>
-            <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '8px' }}>
-              {prevSlide.title}
-            </h4>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>
-              {prevSlide.description}
-            </p>
-          </div>
 
-          {/* CENTER ATTACHED PAGE (MAIN ACTIVE SPOTLIGHT WITH DIRECTIONAL TIMED SLIDE ANIMATION) */}
-          <div 
-            key={`${currSlide.id}-${slideDirection}`}
-            className={`glass-card ${slideDirection === 'next' ? 'animate-slide-next' : 'animate-slide-prev'}`}
-            style={{
-              flex: '1 1 640px',
-              maxWidth: '660px',
-              padding: '42px',
-              background: 'rgba(15, 23, 42, 0.85)',
-              backdropFilter: 'blur(24px)',
-              borderColor: currSlide.color,
-              boxShadow: `0 25px 60px -10px ${currSlide.bgIcon}`,
-              transform: 'perspective(1000px) rotateY(0deg) scale(1.04)',
-              zIndex: 20
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <div style={{ background: currSlide.bgIcon, padding: '14px', borderRadius: '14px', color: currSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <CurrIcon size={32} />
+              {/* CONTROLS */}
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginTop: '36px' }}>
+                <button onClick={() => { setFeatureDir('prev'); setFeatureIdx(pIdx); }} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
+                  <ChevronLeft size={16} /> Flip Left Page
+                </button>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {featureSlides.map((_, idx) => (
+                    <button key={idx} onClick={() => { setFeatureDir(idx > featureIdx ? 'next' : 'prev'); setFeatureIdx(idx); }} style={{ width: featureIdx === idx ? '32px' : '10px', height: '10px', borderRadius: '999px', border: 'none', background: featureIdx === idx ? 'var(--accent-cyan)' : 'rgba(255, 255, 255, 0.25)', cursor: 'pointer', transition: 'all 0.3s ease' }} />
+                  ))}
+                </div>
+                <button onClick={() => { setFeatureDir('next'); setFeatureIdx(nIdx); }} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
+                  Flip Right Page <ChevronRight size={16} />
+                </button>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span className="badge badge-teal" style={{ padding: '5px 12px', fontSize: '0.78rem' }}>{currSlide.badge}</span>
-                <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 600 }}>Page {currIdx + 1} of {featureSlides.length}</span>
-              </div>
-            </div>
-
-            <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '14px', color: '#ffffff' }}>
-              {currSlide.title}
-            </h3>
-
-            <p style={{ color: 'var(--text-main)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '20px' }}>
-              {currSlide.description}
-            </p>
-
-            <div style={{ padding: '14px 18px', background: 'rgba(30, 41, 59, 0.75)', borderRadius: 'var(--radius-sm)', borderLeft: `4px solid ${currSlide.color}`, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-              ⚡ <strong>Architect Spec:</strong> {currSlide.detail}
-            </div>
-          </div>
-
-          {/* RIGHT ATTACHED SIDE PAGE (NEXT SLIDE) */}
-          <div 
-            onClick={handleNextFeature}
-            className="glass-card" 
-            style={{
-              flex: '0 0 320px',
-              padding: '28px 24px',
-              background: 'rgba(15, 23, 42, 0.55)',
-              backdropFilter: 'blur(12px)',
-              borderColor: 'rgba(255, 255, 255, 0.2)',
-              opacity: 0.78,
-              transform: 'perspective(1000px) rotateY(-22deg) scale(0.92)',
-              transformOrigin: 'left center',
-              marginLeft: '-45px',
-              zIndex: 5,
-              cursor: 'pointer',
-              boxShadow: '15px 15px 35px rgba(0, 0, 0, 0.6)',
-              transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)',
-              userSelect: 'none'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-              <span className="badge badge-cyan" style={{ fontSize: '0.7rem' }}>NEXT PAGE ►</span>
-              <div style={{ background: nextSlide.bgIcon, padding: '10px', borderRadius: '10px', color: nextSlide.color }}>
-                <NextIcon size={22} />
-              </div>
-            </div>
-            <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '8px' }}>
-              {nextSlide.title}
-            </h4>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>
-              {nextSlide.description}
-            </p>
-          </div>
-
-        </div>
-
-        {/* SLIDE INDICATOR DOTS & FLIP CONTROLS */}
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginTop: '36px' }}>
-          <button onClick={handlePrevFeature} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
-            <ChevronLeft size={16} /> Flip Left Page
-          </button>
-
-          <div style={{ display: 'flex', gap: '8px' }}>
-            {featureSlides.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => {
-                  setSlideDirection(idx > currentFeatureIdx ? 'next' : 'prev');
-                  setCurrentFeatureIdx(idx);
-                }}
-                style={{
-                  width: currentFeatureIdx === idx ? '32px' : '10px',
-                  height: '10px',
-                  borderRadius: '999px',
-                  border: 'none',
-                  background: currentFeatureIdx === idx ? 'var(--accent-cyan)' : 'rgba(255, 255, 255, 0.25)',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}
-                title={`Go to page ${idx + 1}`}
-              />
-            ))}
-          </div>
-
-          <button onClick={handleNextFeature} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
-            Flip Right Page <ChevronRight size={16} />
-          </button>
-        </div>
+            </>
+          );
+        })()}
       </section>
 
 
-      {/* ==================== 3. ARCHITECTURE SECTION ==================== */}
-      <section id="architecture" style={{ padding: '110px 24px 90px', background: 'transparent' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '44px' }}>
-            <span className="badge badge-teal" style={{ marginBottom: '12px' }}>Software Engineering Blueprint</span>
-            <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '12px' }}>System Architecture & Tech Stack</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Designed according to Senior Software Architect specifications for enterprise scaling.</p>
-          </div>
-
-          <div className="glass-panel" style={{ padding: '36px', background: 'rgba(15, 23, 42, 0.45)' }}>
-            <h3 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '16px', color: 'var(--text-main)' }}>Production Technology Blueprint</h3>
-            
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginTop: '20px' }}>
-              <div style={{ padding: '16px', background: 'rgba(30, 41, 59, 0.5)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--accent-cyan)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>Frontend Layer</div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>React 19 + Next.js</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>Tailwind CSS, Framer Motion, TypeScript</div>
-              </div>
-
-              <div style={{ padding: '16px', background: 'rgba(30, 41, 59, 0.5)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--accent-blue)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>Backend Microservice</div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>FastAPI Python 3.11</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>SQLAlchemy, Pydantic v2, JWT Auth</div>
-              </div>
-
-              <div style={{ padding: '16px', background: 'rgba(30, 41, 59, 0.5)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--accent-teal)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>Vector DB Engine</div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>ChromaDB Persistent Store</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>HNSW index, Cosine distance matching</div>
-              </div>
-
-              <div style={{ padding: '16px', background: 'rgba(30, 41, 59, 0.5)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--accent-emerald)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>AI Orchestrator</div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>LangChain + Gemini API</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>Text-embedding-3-small (1536d)</div>
-              </div>
-            </div>
-          </div>
+      {/* ==================== 3. ARCHITECTURE SECTION (3D BOOK PAGE FLIP CAROUSEL) ==================== */}
+      <section id="architecture" style={{ padding: '110px 24px 90px', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
+        <div style={{ textAlign: 'center', marginBottom: '44px' }}>
+          <span className="badge badge-teal" style={{ marginBottom: '12px' }}>Software Engineering Blueprint Deck</span>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '12px' }}>System Architecture & Tech Stack</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Designed according to Senior Software Architect specifications for enterprise scaling.</p>
         </div>
+
+        {/* 3D ARCHITECTURE PAGE FLIP STAGE */}
+        {(() => {
+          const pIdx = (archIdx - 1 + archSlides.length) % archSlides.length;
+          const cIdx = archIdx;
+          const nIdx = (archIdx + 1) % archSlides.length;
+
+          const pSlide = archSlides[pIdx];
+          const cSlide = archSlides[cIdx];
+          const nSlide = archSlides[nIdx];
+
+          const PIcon = pSlide.icon;
+          const CIcon = cSlide.icon;
+          const NIcon = nSlide.icon;
+
+          return (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', perspective: '1200px', position: 'relative', padding: '20px 0' }}>
+                
+                {/* PREV ATTACHED PAGE */}
+                <div 
+                  onClick={() => { setArchDir('prev'); setArchIdx(pIdx); }}
+                  className="glass-card" 
+                  style={{
+                    flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
+                    transform: 'perspective(1000px) rotateY(22deg) scale(0.92)', transformOrigin: 'right center',
+                    marginRight: '-45px', zIndex: 5, cursor: 'pointer', boxShadow: '-15px 15px 35px rgba(0, 0, 0, 0.6)',
+                    transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)', userSelect: 'none'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                    <div style={{ background: pSlide.bgIcon, padding: '10px', borderRadius: '10px', color: pSlide.color }}>
+                      <PIcon size={22} />
+                    </div>
+                    <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>◄ PREV ARCH</span>
+                  </div>
+                  <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '4px' }}>{pSlide.title}</h4>
+                  <div style={{ fontSize: '0.78rem', color: pSlide.color, fontWeight: 600, marginBottom: '8px' }}>{pSlide.subtitle}</div>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>{pSlide.description}</p>
+                </div>
+
+                {/* CURRENT SPOTLIGHT ARCH PAGE */}
+                <div 
+                  key={`arch-${cSlide.id}-${archDir}`}
+                  className={`glass-card ${archDir === 'next' ? 'animate-slide-next' : 'animate-slide-prev'}`}
+                  style={{
+                    flex: '1 1 640px', maxWidth: '660px', padding: '42px', background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(24px)',
+                    borderColor: cSlide.color, boxShadow: `0 25px 60px -10px ${cSlide.bgIcon}`,
+                    transform: 'perspective(1000px) rotateY(0deg) scale(1.04)', zIndex: 20
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <div style={{ background: cSlide.bgIcon, padding: '14px', borderRadius: '14px', color: cSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <CIcon size={32} />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span className="badge badge-teal" style={{ padding: '5px 12px', fontSize: '0.78rem' }}>{cSlide.badge}</span>
+                      <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 600 }}>Layer {cIdx + 1} of {archSlides.length}</span>
+                    </div>
+                  </div>
+                  <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '4px', color: '#ffffff' }}>{cSlide.title}</h3>
+                  <div style={{ fontSize: '0.95rem', color: cSlide.color, fontWeight: 700, marginBottom: '14px' }}>{cSlide.subtitle}</div>
+                  
+                  <p style={{ color: 'var(--text-main)', fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '20px' }}>{cSlide.description}</p>
+
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    {cSlide.tech.map((t, idx) => (
+                      <span key={idx} style={{ padding: '6px 12px', background: 'rgba(30, 41, 59, 0.75)', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-main)', border: '1px solid var(--glass-border)' }}>
+                        ⚡ {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* NEXT ATTACHED PAGE */}
+                <div 
+                  onClick={() => { setArchDir('next'); setArchIdx(nIdx); }}
+                  className="glass-card" 
+                  style={{
+                    flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
+                    transform: 'perspective(1000px) rotateY(-22deg) scale(0.92)', transformOrigin: 'left center',
+                    marginLeft: '-45px', zIndex: 5, cursor: 'pointer', boxShadow: '15px 15px 35px rgba(0, 0, 0, 0.6)',
+                    transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)', userSelect: 'none'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                    <span className="badge badge-cyan" style={{ fontSize: '0.7rem' }}>NEXT ARCH ►</span>
+                    <div style={{ background: nSlide.bgIcon, padding: '10px', borderRadius: '10px', color: nSlide.color }}>
+                      <NIcon size={22} />
+                    </div>
+                  </div>
+                  <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '4px' }}>{nSlide.title}</h4>
+                  <div style={{ fontSize: '0.78rem', color: nSlide.color, fontWeight: 600, marginBottom: '8px' }}>{nSlide.subtitle}</div>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>{nSlide.description}</p>
+                </div>
+
+              </div>
+
+              {/* ARCH CONTROLS */}
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginTop: '36px' }}>
+                <button onClick={() => { setArchDir('prev'); setArchIdx(pIdx); }} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
+                  <ChevronLeft size={16} /> Flip Left Layer
+                </button>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {archSlides.map((_, idx) => (
+                    <button key={idx} onClick={() => { setArchDir(idx > archIdx ? 'next' : 'prev'); setArchIdx(idx); }} style={{ width: archIdx === idx ? '32px' : '10px', height: '10px', borderRadius: '999px', border: 'none', background: archIdx === idx ? 'var(--accent-cyan)' : 'rgba(255, 255, 255, 0.25)', cursor: 'pointer', transition: 'all 0.3s ease' }} />
+                  ))}
+                </div>
+                <button onClick={() => { setArchDir('next'); setArchIdx(nIdx); }} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
+                  Flip Right Layer <ChevronRight size={16} />
+                </button>
+              </div>
+            </>
+          );
+        })()}
       </section>
 
 
-      {/* ==================== 4. PRICING SECTION ==================== */}
-      <section id="pricing" style={{ padding: '110px 24px 90px', maxWidth: '1200px', margin: '0 auto', background: 'transparent' }}>
-        <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-          <span className="badge badge-amber" style={{ marginBottom: '12px' }}>Transparent Plans</span>
+      {/* ==================== 4. PRICING SECTION (3D BOOK PAGE FLIP CAROUSEL) ==================== */}
+      <section id="pricing" style={{ padding: '110px 24px 90px', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
+        <div style={{ textAlign: 'center', marginBottom: '44px' }}>
+          <span className="badge badge-amber" style={{ marginBottom: '12px' }}>3D Academic Plans Deck</span>
           <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Simple Academic Pricing</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Choose the plan that fits your study velocity.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Flip through plans to choose the right fit for your study velocity.</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
-          {/* Student Plan */}
-          <div className="glass-card" style={{ padding: '32px' }}>
-            <h3 style={{ fontSize: '1.4rem' }}>Student Free</h3>
-            <div style={{ fontSize: '2.5rem', fontWeight: 800, margin: '16px 0' }}>$0 <span style={{ fontSize: '1rem', color: 'var(--text-dim)' }}>/ mo</span></div>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-              <li>✓ Up to 10 Document Uploads</li>
-              <li>✓ Basic RAG AI Chat</li>
-              <li>✓ 30 Flashcards per deck</li>
-              <li>✓ Standard Vector Search Speed</li>
-            </ul>
-            <button onClick={() => setCurrentPage('dashboard')} className="btn-secondary" style={{ width: '100%', justifyContent: 'center' }}>
-              Get Started Free
-            </button>
-          </div>
+        {/* 3D PRICING PAGE FLIP STAGE */}
+        {(() => {
+          const pIdx = (pricingIdx - 1 + pricingSlides.length) % pricingSlides.length;
+          const cIdx = pricingIdx;
+          const nIdx = (pricingIdx + 1) % pricingSlides.length;
 
-          {/* Pro Scholar Plan */}
-          <div className="glass-card" style={{ padding: '32px', borderColor: 'var(--accent-blue)', background: 'rgba(37, 99, 235, 0.12)' }}>
-            <span className="badge badge-teal" style={{ marginBottom: '8px' }}>Most Popular</span>
-            <h3 style={{ fontSize: '1.4rem' }}>Pro Scholar</h3>
-            <div style={{ fontSize: '2.5rem', fontWeight: 800, margin: '16px 0', color: 'var(--accent-blue)' }}>$12 <span style={{ fontSize: '1rem', color: 'var(--text-dim)' }}>/ mo</span></div>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px', fontSize: '0.9rem', color: 'var(--text-main)' }}>
-              <li>✓ Unlimited Document Uploads</li>
-              <li>✓ High-Density Chunking & RAG</li>
-              <li>✓ Unlimited Quizzes & Flashcards</li>
-              <li>✓ Research Paper Synthesis</li>
-              <li>✓ Priority Vector Latency (&lt;40ms)</li>
-            </ul>
-            <button onClick={() => setCurrentPage('dashboard')} className="gradient-btn" style={{ width: '100%', justifyContent: 'center' }}>
-              Start Pro Free Trial
-            </button>
-          </div>
+          const pSlide = pricingSlides[pIdx];
+          const cSlide = pricingSlides[cIdx];
+          const nSlide = pricingSlides[nIdx];
 
-          {/* Institution Plan */}
-          <div className="glass-card" style={{ padding: '32px' }}>
-            <h3 style={{ fontSize: '1.4rem' }}>Campus / Admin</h3>
-            <div style={{ fontSize: '2.5rem', fontWeight: 800, margin: '16px 0' }}>Custom</div>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-              <li>✓ Dedicated ChromaDB Cluster</li>
-              <li>✓ Role Based Access Control (RBAC)</li>
-              <li>✓ Teacher & Admin Dashboards</li>
-              <li>✓ Custom LLM API Integration</li>
-            </ul>
-            <button 
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} 
-              className="btn-secondary" 
-              style={{ width: '100%', justifyContent: 'center' }}
-            >
-              Contact Enterprise Sales
-            </button>
-          </div>
-        </div>
+          const PIcon = pSlide.icon;
+          const CIcon = cSlide.icon;
+          const NIcon = nSlide.icon;
+
+          return (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', perspective: '1200px', position: 'relative', padding: '20px 0' }}>
+                
+                {/* PREV ATTACHED PLAN */}
+                <div 
+                  onClick={() => { setPricingDir('prev'); setPricingIdx(pIdx); }}
+                  className="glass-card" 
+                  style={{
+                    flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
+                    transform: 'perspective(1000px) rotateY(22deg) scale(0.92)', transformOrigin: 'right center',
+                    marginRight: '-45px', zIndex: 5, cursor: 'pointer', boxShadow: '-15px 15px 35px rgba(0, 0, 0, 0.6)',
+                    transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)', userSelect: 'none'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                    <div style={{ background: pSlide.bgIcon, padding: '10px', borderRadius: '10px', color: pSlide.color }}>
+                      <PIcon size={22} />
+                    </div>
+                    <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>◄ PREV PLAN</span>
+                  </div>
+                  <h4 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '4px' }}>{pSlide.title}</h4>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 800, color: pSlide.color, marginBottom: '8px' }}>{pSlide.price}</div>
+                  <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>{pSlide.features[0]}</div>
+                </div>
+
+                {/* CURRENT SPOTLIGHT PRICING PLAN */}
+                <div 
+                  key={`price-${cSlide.id}-${pricingDir}`}
+                  className={`glass-card ${pricingDir === 'next' ? 'animate-slide-next' : 'animate-slide-prev'}`}
+                  style={{
+                    flex: '1 1 640px', maxWidth: '660px', padding: '42px', background: 'rgba(15, 23, 42, 0.88)', backdropFilter: 'blur(24px)',
+                    borderColor: cSlide.color, boxShadow: `0 25px 60px -10px ${cSlide.bgIcon}`,
+                    transform: 'perspective(1000px) rotateY(0deg) scale(1.04)', zIndex: 20
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+                    <div style={{ background: cSlide.bgIcon, padding: '14px', borderRadius: '14px', color: cSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <CIcon size={32} />
+                    </div>
+                    <span className="badge badge-teal" style={{ padding: '6px 14px', fontSize: '0.8rem' }}>{cSlide.badge}</span>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#ffffff' }}>{cSlide.title}</h3>
+                  
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '14px 0 22px' }}>
+                    <span style={{ fontSize: '3rem', fontWeight: 800, color: cSlide.color }}>{cSlide.price}</span>
+                    <span style={{ fontSize: '1.05rem', color: 'var(--text-dim)' }}>{cSlide.period}</span>
+                  </div>
+
+                  <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '28px', fontSize: '0.92rem', color: 'var(--text-main)' }}>
+                    {cSlide.features.map((feat, idx) => (
+                      <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <CheckCircle2 size={18} style={{ color: cSlide.color, flexShrink: 0 }} />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button 
+                    onClick={() => setCurrentPage('dashboard')} 
+                    className={cSlide.isPopular ? "gradient-btn" : "btn-secondary"} 
+                    style={{ width: '100%', justifyContent: 'center', padding: '13px', fontSize: '1rem', borderRadius: 'var(--radius-sm)' }}
+                  >
+                    {cSlide.btnText}
+                  </button>
+                </div>
+
+                {/* NEXT ATTACHED PLAN */}
+                <div 
+                  onClick={() => { setPricingDir('next'); setPricingIdx(nIdx); }}
+                  className="glass-card" 
+                  style={{
+                    flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
+                    transform: 'perspective(1000px) rotateY(-22deg) scale(0.92)', transformOrigin: 'left center',
+                    marginLeft: '-45px', zIndex: 5, cursor: 'pointer', boxShadow: '15px 15px 35px rgba(0, 0, 0, 0.6)',
+                    transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)', userSelect: 'none'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                    <span className="badge badge-cyan" style={{ fontSize: '0.7rem' }}>NEXT PLAN ►</span>
+                    <div style={{ background: nSlide.bgIcon, padding: '10px', borderRadius: '10px', color: nSlide.color }}>
+                      <NIcon size={22} />
+                    </div>
+                  </div>
+                  <h4 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '4px' }}>{nSlide.title}</h4>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 800, color: nSlide.color, marginBottom: '8px' }}>{nSlide.price}</div>
+                  <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>{nSlide.features[0]}</div>
+                </div>
+
+              </div>
+
+              {/* PRICING CONTROLS */}
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginTop: '36px' }}>
+                <button onClick={() => { setPricingDir('prev'); setPricingIdx(pIdx); }} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
+                  <ChevronLeft size={16} /> Flip Left Plan
+                </button>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {pricingSlides.map((_, idx) => (
+                    <button key={idx} onClick={() => { setPricingDir(idx > pricingIdx ? 'next' : 'prev'); setPricingIdx(idx); }} style={{ width: pricingIdx === idx ? '32px' : '10px', height: '10px', borderRadius: '999px', border: 'none', background: pricingIdx === idx ? 'var(--accent-amber)' : 'rgba(255, 255, 255, 0.25)', cursor: 'pointer', transition: 'all 0.3s ease' }} />
+                  ))}
+                </div>
+                <button onClick={() => { setPricingDir('next'); setPricingIdx(nIdx); }} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
+                  Flip Right Plan <ChevronRight size={16} />
+                </button>
+              </div>
+            </>
+          );
+        })()}
       </section>
 
 

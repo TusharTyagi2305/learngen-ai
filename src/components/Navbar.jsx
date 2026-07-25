@@ -5,9 +5,37 @@ import { Brain, Moon, Sun, ArrowRight, Sparkles } from 'lucide-react';
 export function Navbar() {
   const { currentPage, setCurrentPage, theme, toggleTheme } = useApp();
   const [activeSection, setActiveSection] = useState('home');
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const isPublicPage = ['landing', 'features', 'about', 'pricing', 'contact', 'login', 'register', 'forgot-password'].includes(currentPage);
   if (!isPublicPage) return null;
+
+  // Active Section ScrollSpy Listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+
+      const sections = ['home', 'features', 'architecture', 'pricing', 'contact'];
+      const scrollPosition = window.scrollY + 200;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section) {
+          if (scrollPosition >= section.offsetTop) {
+            setActiveSection(sections[i]);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
@@ -24,7 +52,23 @@ export function Navbar() {
   };
 
   return (
-    <header className="glass-panel" style={{ position: 'sticky', top: 0, zIndex: 100, borderRadius: 0, borderTop: 'none', borderLeft: 'none', borderRight: 'none', padding: '14px 28px' }}>
+    <header style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1000,
+      width: '100%',
+      padding: isScrolled ? '10px 28px' : '16px 28px',
+      background: theme === 'dark' 
+        ? (isScrolled ? 'rgba(11, 15, 23, 0.75)' : 'rgba(11, 15, 23, 0.45)') 
+        : (isScrolled ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.55)'),
+      backdropFilter: 'blur(20px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+      boxShadow: isScrolled ? '0 10px 30px rgba(0, 0, 0, 0.25)' : 'none',
+      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
+    }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         
         {/* Brand Logo */}
@@ -43,7 +87,7 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Smooth Scroll Navigation Links */}
+        {/* Transparent Nav Options with Scrollspy Active State */}
         <nav style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
           {[
             { id: 'home', label: 'Home' },
@@ -63,7 +107,7 @@ export function Navbar() {
                 cursor: 'pointer',
                 fontSize: '0.95rem',
                 borderBottom: activeSection === nav.id ? '2px solid var(--accent-cyan)' : '2px solid transparent',
-                paddingBottom: '2px',
+                paddingBottom: '4px',
                 transition: 'all 0.2s ease'
               }}
             >
@@ -97,6 +141,7 @@ export function Navbar() {
             <Sparkles size={16} /> Open Workspace <ArrowRight size={16} />
           </button>
         </div>
+
       </div>
     </header>
   );

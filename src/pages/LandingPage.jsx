@@ -18,7 +18,7 @@ export function LandingPage() {
       <div className="glow-background" style={{ top: '1400px', left: '15%', width: '400px', height: '400px', background: 'var(--accent-cyan)' }} />
 
       {/* ==================== 1. HERO / HOME SECTION ==================== */}
-      <section id="home" style={{ padding: '90px 24px 70px', textAlign: 'center', maxWidth: '1020px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
+      <section id="home" style={{ padding: '140px 24px 70px', textAlign: 'center', maxWidth: '1020px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
         <div className="badge badge-teal animate-float" style={{ marginBottom: '22px', padding: '6px 16px', fontSize: '0.82rem' }}>
           <Sparkles size={14} /> Handcrafted RAG Studio for Students & Researchers
         </div>
@@ -110,7 +110,7 @@ export function LandingPage() {
 
 
       {/* ==================== 2. FEATURES SECTION ==================== */}
-      <section id="features" style={{ padding: '90px 24px', maxWidth: '1200px', margin: '0 auto' }}>
+      <section id="features" style={{ padding: '110px 24px 90px', maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
           <span className="badge badge-cyan" style={{ marginBottom: '12px' }}>Comprehensive Modules</span>
           <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Complete RAG Platform Capabilities</h2>
@@ -162,7 +162,7 @@ export function LandingPage() {
 
 
       {/* ==================== 3. ARCHITECTURE SECTION ==================== */}
-      <section id="architecture" style={{ padding: '90px 24px', background: 'var(--bg-secondary)', borderTop: '1px solid var(--glass-border)', borderBottom: '1px solid var(--glass-border)' }}>
+      <section id="architecture" style={{ padding: '110px 24px 90px', background: 'var(--bg-secondary)', borderTop: '1px solid var(--glass-border)', borderBottom: '1px solid var(--glass-border)' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '44px' }}>
             <span className="badge badge-teal" style={{ marginBottom: '12px' }}>Software Engineering Blueprint</span>
@@ -204,7 +204,7 @@ export function LandingPage() {
 
 
       {/* ==================== 4. PRICING SECTION ==================== */}
-      <section id="pricing" style={{ padding: '90px 24px', maxWidth: '1200px', margin: '0 auto' }}>
+      <section id="pricing" style={{ padding: '110px 24px 90px', maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
           <span className="badge badge-amber" style={{ marginBottom: '12px' }}>Transparent Plans</span>
           <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Simple Academic Pricing</h2>
@@ -267,7 +267,7 @@ export function LandingPage() {
 
 
       {/* ==================== 5. CONTACT SECTION ==================== */}
-      <section id="contact" style={{ padding: '90px 24px', background: 'var(--bg-secondary)', borderTop: '1px solid var(--glass-border)' }}>
+      <section id="contact" style={{ padding: '110px 24px 90px', background: 'var(--bg-secondary)', borderTop: '1px solid var(--glass-border)' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           <div className="glass-panel" style={{ padding: '36px', background: 'var(--bg-primary)' }}>
             <h2 style={{ fontSize: '2.2rem', fontWeight: 800, marginBottom: '8px' }}>Get in Touch</h2>

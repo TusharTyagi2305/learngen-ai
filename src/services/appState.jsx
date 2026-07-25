@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
 import { mockRAG } from './mockRAG';
-import { soundFX } from './soundFx';
 
 const AppContext = createContext();
 
@@ -8,7 +7,6 @@ export function AppProvider({ children }) {
   const [currentPage, setCurrentPage] = useState('landing');
   const [theme, setTheme] = useState('dark');
   const [userRole, setUserRole] = useState('student'); // 'student', 'teacher', 'admin'
-  const [soundEnabled, setSoundEnabled] = useState(true);
 
   // Active RAG Session State
   const [activeDocId, setActiveDocId] = useState(mockRAG.documents[0].id);
@@ -17,7 +15,6 @@ export function AppProvider({ children }) {
   // Modals & Popovers
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isCitationDrawerOpen, setIsCitationDrawerOpen] = useState(false);
-  const [isKnowledgeGraphOpen, setIsKnowledgeGraphOpen] = useState(false);
 
   // Global Toast Alert
   const [toastMessage, setToastMessage] = useState(null);
@@ -32,20 +29,6 @@ export function AppProvider({ children }) {
     }
   };
 
-  const toggleSound = () => {
-    setSoundEnabled(!soundEnabled);
-    if (!soundEnabled) {
-      soundFX.playClick();
-    }
-  };
-
-  const playSFX = (type) => {
-    if (!soundEnabled) return;
-    if (type === 'flip') soundFX.playPageFlip();
-    else if (type === 'success') soundFX.playSuccess();
-    else if (type === 'click') soundFX.playClick();
-  };
-
   const showToast = (msg, type = 'info') => {
     setToastMessage({ msg, type });
     setTimeout(() => setToastMessage(null), 3500);
@@ -54,7 +37,6 @@ export function AppProvider({ children }) {
   const openCitation = (citation) => {
     setActiveCitation(citation);
     setIsCitationDrawerOpen(true);
-    playSFX('click');
   };
 
   return (
@@ -62,12 +44,10 @@ export function AppProvider({ children }) {
       currentPage, setCurrentPage,
       theme, toggleTheme,
       userRole, setUserRole,
-      soundEnabled, toggleSound, playSFX,
       activeDocId, setActiveDocId,
       activeCitation, openCitation,
       isUploadModalOpen, setIsUploadModalOpen,
       isCitationDrawerOpen, setIsCitationDrawerOpen,
-      isKnowledgeGraphOpen, setIsKnowledgeGraphOpen,
       toastMessage, showToast
     }}>
       {children}

@@ -1,16 +1,14 @@
 import React from 'react';
 import { useApp } from '../services/appState';
 import { 
-  Search, UploadCloud, Bell, Sun, Moon, Volume2, VolumeX, Network, UserCheck, Shield 
+  Search, UploadCloud, Bell, Sun, Moon 
 } from 'lucide-react';
 
 export function TopBar() {
   const { 
     theme, toggleTheme, 
     userRole, setUserRole, 
-    soundEnabled, toggleSound, playSFX,
     setIsUploadModalOpen, 
-    setIsKnowledgeGraphOpen,
     showToast 
   } = useApp();
 
@@ -41,7 +39,7 @@ export function TopBar() {
         {/* Persona Switcher Pill */}
         <div style={{ display: 'flex', background: 'var(--bg-tertiary)', padding: '3px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
           <button 
-            onClick={() => { playSFX('click'); setUserRole('student'); showToast('Switched to Student Persona'); }}
+            onClick={() => { setUserRole('student'); showToast('Switched to Student Persona'); }}
             style={{
               padding: '5px 12px',
               borderRadius: '6px',
@@ -57,7 +55,7 @@ export function TopBar() {
           </button>
 
           <button 
-            onClick={() => { playSFX('click'); setUserRole('teacher'); showToast('Switched to Teacher Persona'); }}
+            onClick={() => { setUserRole('teacher'); showToast('Switched to Teacher Persona'); }}
             style={{
               padding: '5px 12px',
               borderRadius: '6px',
@@ -73,7 +71,7 @@ export function TopBar() {
           </button>
 
           <button 
-            onClick={() => { playSFX('click'); setUserRole('admin'); showToast('Switched to Admin Persona'); }}
+            onClick={() => { setUserRole('admin'); showToast('Switched to Admin Persona'); }}
             style={{
               padding: '5px 12px',
               borderRadius: '6px',
@@ -89,38 +87,18 @@ export function TopBar() {
           </button>
         </div>
 
-        {/* Mind Map Knowledge Graph Modal Trigger */}
-        <button 
-          onClick={() => { playSFX('click'); setIsKnowledgeGraphOpen(true); }}
-          className="btn-secondary"
-          style={{ padding: '8px 14px', fontSize: '0.85rem' }}
-          title="Open Document Mind Map"
-        >
-          <Network size={16} style={{ color: 'var(--accent-cyan)' }} /> Mind Map
-        </button>
-
         {/* Upload Modal Trigger */}
         <button 
-          onClick={() => { playSFX('click'); setIsUploadModalOpen(true); }}
+          onClick={() => setIsUploadModalOpen(true)}
           className="gradient-btn"
           style={{ padding: '8px 16px', fontSize: '0.85rem' }}
         >
           <UploadCloud size={16} /> Upload Document
         </button>
 
-        {/* Sound FX Toggle */}
-        <button 
-          onClick={toggleSound}
-          className="btn-secondary"
-          title={soundEnabled ? "Mute Sound Effects" : "Enable Sound Effects"}
-          style={{ padding: '8px' }}
-        >
-          {soundEnabled ? <Volume2 size={18} style={{ color: 'var(--accent-teal)' }} /> : <VolumeX size={18} style={{ color: 'var(--text-dim)' }} />}
-        </button>
-
         {/* Theme Switcher */}
         <button 
-          onClick={() => { playSFX('click'); toggleTheme(); }}
+          onClick={toggleTheme}
           className="btn-secondary"
           title="Toggle Light/Dark Theme"
           style={{ padding: '8px' }}

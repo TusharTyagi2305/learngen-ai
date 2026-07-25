@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useApp } from '../services/appState';
 import { mockRAG } from '../services/mockRAG';
 import { 
-  RotateCw, Layers, CheckCircle, ThumbsUp, ThumbsDown, Flame, Download, Sparkles 
+  RotateCw, Layers, CheckCircle, ThumbsUp, ThumbsDown, Flame, Sparkles 
 } from 'lucide-react';
 
 export function FlashcardsPage() {
-  const { playSFX, showToast } = useApp();
+  const { showToast } = useApp();
   const [deck, setDeck] = useState(mockRAG.flashcards);
   const [currentCardIdx, setCurrentCardIdx] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -15,12 +15,10 @@ export function FlashcardsPage() {
   const activeCard = deck[currentCardIdx];
 
   const handleFlip = () => {
-    playSFX('flip');
     setIsFlipped(!isFlipped);
   };
 
   const handleRating = (rating) => {
-    playSFX('success');
     setIsFlipped(false);
     if (currentCardIdx < deck.length - 1) {
       setCurrentCardIdx(currentCardIdx + 1);
@@ -29,35 +27,6 @@ export function FlashcardsPage() {
       setStreak(streak + 1);
       showToast('Deck completed! Mastery level increased! 🔥', 'success');
     }
-  };
-
-  const handleExportStudyPack = () => {
-    playSFX('success');
-    
-    // Generate Markdown formatted Study Pack content
-    let md = `# LearnGen AI — Flashcards Study Kit\n`;
-    md += `*Generated from Indexed Document Vault — ${new Date().toLocaleDateString()}*\n\n`;
-    md += `---\n\n`;
-
-    deck.forEach((card, i) => {
-      md += `### Card ${i + 1}: ${card.question}\n`;
-      md += `**Answer**: ${card.answer}\n\n`;
-      md += `* **Source Document**: ${card.doc}\n`;
-      md += `* **Difficulty Rating**: ${card.difficulty}\n\n`;
-      md += `---\n\n`;
-    });
-
-    // Create Download Blob
-    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `LearnGen_Flashcards_StudyKit.md`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    showToast('Downloaded LearnGen_Flashcards_StudyKit.md 📄', 'success');
   };
 
   return (
@@ -73,15 +42,6 @@ export function FlashcardsPage() {
           <h1 style={{ fontSize: '2.2rem', fontWeight: 800 }}>3D Interactive Flashcards</h1>
           <p style={{ color: 'var(--text-muted)' }}>Grounded Q&A cards synthesized directly from your document vault.</p>
         </div>
-
-        {/* 1-Click Export Study Pack Button */}
-        <button 
-          onClick={handleExportStudyPack}
-          className="gradient-btn"
-          style={{ padding: '10px 20px', fontSize: '0.9rem' }}
-        >
-          <Download size={16} /> Export Study Pack (.MD)
-        </button>
       </div>
 
       {/* 3D Animated Flip Card Stage */}

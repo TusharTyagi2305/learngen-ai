@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useApp } from '../services/appState';
 import { mockRAG } from '../services/mockRAG';
 import { 
-  HelpCircle, CheckCircle2, XCircle, Award, RotateCcw, Download, Sparkles 
+  HelpCircle, CheckCircle2, XCircle, Award, RotateCcw, Sparkles 
 } from 'lucide-react';
 
 export function QuizGeneratorPage() {
-  const { playSFX, showToast } = useApp();
+  const { showToast } = useApp();
   const [quizzes, setQuizzes] = useState(mockRAG.quizzes);
   const [currentQuizIdx, setCurrentQuizIdx] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -21,52 +21,19 @@ export function QuizGeneratorPage() {
     setIsAnswered(true);
 
     if (idx === activeQuiz.correctOption) {
-      playSFX('success');
       setScore(score + 1);
       showToast('Correct Answer! +10 XP 🔥', 'success');
     } else {
-      playSFX('click');
       showToast('Incorrect option selected', 'error');
     }
   };
 
   const handleNextQuestion = () => {
-    playSFX('click');
     setSelectedOption(null);
     setIsAnswered(false);
     if (currentQuizIdx < quizzes.length - 1) {
       setCurrentQuizIdx(currentQuizIdx + 1);
     }
-  };
-
-  const handleExportQuizWorksheet = () => {
-    playSFX('success');
-
-    let md = `# LearnGen AI — MCQ Quiz Question Bank\n`;
-    md += `*Synthesized from Document Vault — ${new Date().toLocaleDateString()}*\n\n`;
-    md += `---\n\n`;
-
-    quizzes.forEach((q, i) => {
-      md += `### Question ${i + 1}: ${q.question}\n\n`;
-      q.options.forEach((opt, oIdx) => {
-        const isCorrect = oIdx === q.correctOption;
-        md += `* [${isCorrect ? 'X' : ' '}] ${String.fromCharCode(65 + oIdx)}) ${opt}\n`;
-      });
-      md += `\n**Answer Explanation**: ${q.explanation}\n`;
-      md += `**Document Citation**: ${q.doc}\n\n`;
-      md += `---\n\n`;
-    });
-
-    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `LearnGen_MCQ_Quiz_Worksheet.md`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    showToast('Downloaded LearnGen_MCQ_Quiz_Worksheet.md 📄', 'success');
   };
 
   return (
@@ -82,15 +49,6 @@ export function QuizGeneratorPage() {
           <h1 style={{ fontSize: '2.2rem', fontWeight: 800 }}>Dynamic MCQ Quiz Generator</h1>
           <p style={{ color: 'var(--text-muted)' }}>Auto-generated multiple choice question bank from indexed document vault.</p>
         </div>
-
-        {/* 1-Click Export Quiz Button */}
-        <button 
-          onClick={handleExportQuizWorksheet}
-          className="gradient-btn"
-          style={{ padding: '10px 20px', fontSize: '0.9rem' }}
-        >
-          <Download size={16} /> Export Quiz Bank (.MD)
-        </button>
       </div>
 
       {/* Main Question Card */}

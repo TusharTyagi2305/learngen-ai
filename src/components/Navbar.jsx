@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../services/appState';
-import { Brain, Moon, Sun, ArrowRight, Sparkles, Volume2, VolumeX } from 'lucide-react';
+import { Brain, Moon, Sun, ArrowRight, Sparkles } from 'lucide-react';
 
 export function Navbar() {
-  const { currentPage, setCurrentPage, theme, toggleTheme, soundEnabled, toggleSound, playSFX } = useApp();
+  const { currentPage, setCurrentPage, theme, toggleTheme } = useApp();
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -38,7 +38,6 @@ export function Navbar() {
   }, []);
 
   const scrollToSection = (sectionId) => {
-    playSFX('click');
     setActiveSection(sectionId);
     if (currentPage !== 'landing') {
       setCurrentPage('landing');
@@ -117,21 +116,9 @@ export function Navbar() {
         </nav>
 
         {/* Right Action Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          
-          {/* Sound FX Toggle Button */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <button 
-            onClick={toggleSound} 
-            className="btn-secondary" 
-            title={soundEnabled ? "Mute 3D Sound Effects" : "Enable 3D Sound Effects"}
-            style={{ padding: '8px 12px', background: 'rgba(255, 255, 255, 0.08)' }}
-          >
-            {soundEnabled ? <Volume2 size={18} style={{ color: 'var(--accent-teal)' }} /> : <VolumeX size={18} style={{ color: 'var(--text-dim)' }} />}
-          </button>
-
-          {/* Theme Toggle Button */}
-          <button 
-            onClick={() => { playSFX('click'); toggleTheme(); }} 
+            onClick={toggleTheme} 
             className="btn-secondary" 
             title="Toggle Light/Dark Theme"
             style={{ padding: '8px 12px', background: 'rgba(255, 255, 255, 0.08)' }}
@@ -140,7 +127,7 @@ export function Navbar() {
           </button>
 
           <button 
-            onClick={() => { playSFX('click'); setCurrentPage('login'); }} 
+            onClick={() => setCurrentPage('login')} 
             className="btn-secondary"
             style={{ background: 'rgba(255, 255, 255, 0.08)' }}
           >
@@ -148,7 +135,7 @@ export function Navbar() {
           </button>
 
           <button 
-            onClick={() => { playSFX('click'); setCurrentPage('dashboard'); }} 
+            onClick={() => setCurrentPage('dashboard')} 
             className="gradient-btn"
           >
             <Sparkles size={16} /> Open Workspace <ArrowRight size={16} />

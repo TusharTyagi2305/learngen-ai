@@ -88,7 +88,7 @@ export const INITIAL_FLASHCARDS = [
     answer: "The ability of a quantum system (qubit) to exist in multiple states (|0⟩ and |1⟩) simultaneously until measured.",
     difficulty: "Medium",
     mastered: false,
-    sourceDoc: "Quantum_Computing_Principles_Ch3.pdf"
+    doc: "Quantum_Computing_Principles_Ch3.pdf"
   },
   {
     id: "fc-2",
@@ -97,7 +97,7 @@ export const INITIAL_FLASHCARDS = [
     answer: "It prevents large dot-product values from pushing softmax into extremely small gradient regions, avoiding vanishing gradients.",
     difficulty: "Hard",
     mastered: true,
-    sourceDoc: "Deep_Learning_Architectures_Summary.docx"
+    doc: "Deep_Learning_Architectures_Summary.docx"
   },
   {
     id: "fc-3",
@@ -106,7 +106,7 @@ export const INITIAL_FLASHCARDS = [
     answer: "In the event of a network partition (P), a distributed system must choose between Consistency (C) or Availability (A).",
     difficulty: "Easy",
     mastered: true,
-    sourceDoc: "Distributed_Systems_Cap_Theorem.pptx"
+    doc: "Distributed_Systems_Cap_Theorem.pptx"
   }
 ];
 
@@ -114,35 +114,30 @@ export const INITIAL_QUIZZES = [
   {
     id: "quiz-1",
     title: "Transformer Architectures & Attention",
-    document: "Deep_Learning_Architectures_Summary.docx",
-    questionCount: 3,
-    timeLimitMin: 5,
-    questions: [
-      {
-        id: "q-1",
-        question: "Which operation computes the scaled dot-product attention weights?",
-        options: [
-          "softmax( (Q K^T) / sqrt(d_k) )",
-          "sigmoid( Q * K ) / d_k",
-          "tanh( Q + K ) * V",
-          "relu( Q K^T ) / sqrt(V)"
-        ],
-        correctIndex: 0,
-        explanation: "As stated on page 8 of Deep_Learning_Architectures_Summary.docx, dot-product attention scales by 1/sqrt(d_k) before applying Softmax."
-      },
-      {
-        id: "q-2",
-        question: "What is the primary benefit of Layer Normalization in Transformers?",
-        options: [
-          "Speeds up hard drive I/O operations",
-          "Stabilizes hidden state dynamics across features per sample",
-          "Replaces positional encoding entirely",
-          "Eliminates the need for linear projections"
-        ],
-        correctIndex: 1,
-        explanation: "Layer Normalization normalizes activations across feature dimensions per sample, stabilizing gradient flows."
-      }
-    ]
+    doc: "Deep_Learning_Architectures_Summary.docx",
+    question: "Which operation computes the scaled dot-product attention weights in Transformer models?",
+    options: [
+      "softmax( (Q K^T) / sqrt(d_k) ) V",
+      "sigmoid( Q * K ) / d_k",
+      "tanh( Q + K ) * V",
+      "relu( Q K^T ) / sqrt(V)"
+    ],
+    correctOption: 0,
+    explanation: "As stated on page 8 of Deep_Learning_Architectures_Summary.docx, dot-product attention scales by 1/sqrt(d_k) before applying Softmax."
+  },
+  {
+    id: "quiz-2",
+    title: "Quantum Superposition & Qubits",
+    doc: "Quantum_Computing_Principles_Ch3.pdf",
+    question: "What is the normalization constraint for qubit state vector |Ψ⟩ = α|0⟩ + β|1⟩?",
+    options: [
+      "|α|² + |β|² = 1",
+      "α + β = 0",
+      "α * β = 1",
+      "|α| + |β| = 2"
+    ],
+    correctOption: 0,
+    explanation: "According to Quantum_Computing_Principles_Ch3.pdf (Pg 12), total probability density must equal 1, enforcing |α|² + |β|² = 1."
   }
 ];
 
@@ -173,12 +168,9 @@ export function queryRagEngine(userPrompt, documents, ragConfig) {
     });
   });
 
-  // Sort by similarity score top-K
   matchingChunks.sort((a, b) => b.score - a.score);
-  const topK = matchingChunks.slice(0, ragConfig.topK || 3);
+  const topK = matchingChunks.slice(0, ragConfig?.topK || 3);
 
-  const contextText = topK.map(c => `[Source: ${c.documentTitle}, Pg ${c.page}] ${c.text}`).join("\n\n");
-  
   let answer = "";
   if (promptLower.includes("quantum") || promptLower.includes("qubit")) {
     answer = `Based on **${topK[0]?.documentTitle || 'Quantum Computing Principles'}**, quantum qubits utilize superposition to exist as linear combinations of |0⟩ and |1⟩ states simultaneously. This allows quantum algorithms to process exponentially large state spaces before collapse upon measurement.`;
@@ -197,3 +189,12 @@ export function queryRagEngine(userPrompt, documents, ragConfig) {
     groundedRatio: "99.8%"
   };
 }
+
+export const mockRAG = {
+  documents: INITIAL_DOCUMENTS,
+  flashcards: INITIAL_FLASHCARDS,
+  quizzes: INITIAL_QUIZZES,
+  queryRagEngine
+};
+
+export default mockRAG;

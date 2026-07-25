@@ -5,7 +5,6 @@ import { Sidebar } from './components/Sidebar';
 import { TopBar } from './components/TopBar';
 import { FileUploadModal } from './components/FileUploadModal';
 import { CitationInspector } from './components/CitationInspector';
-import { KnowledgeGraphModal } from './components/KnowledgeGraphModal';
 import { BackgroundCanvas } from './components/BackgroundCanvas';
 
 import { LandingPage } from './pages/LandingPage';
@@ -78,7 +77,6 @@ function AppContent() {
       {/* Global Modals & Drawers */}
       <FileUploadModal />
       <CitationInspector />
-      <KnowledgeGraphModal />
 
       {/* Toast Alert Popups */}
       {toastMessage && (

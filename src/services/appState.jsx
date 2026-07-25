@@ -1,95 +1,75 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { INITIAL_DOCUMENTS, INITIAL_FLASHCARDS, INITIAL_QUIZZES } from './mockRAG';
+import React, { createContext, useContext, useState } from 'react';
+import { mockRAG } from './mockRAG';
+import { soundFX } from './soundFx';
 
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  // Navigation & Role State
-  const [currentPage, setCurrentPage] = useState('landing'); // landing, features, about, pricing, contact, login, register, forgot-password, dashboard, documents, ai-chat, quiz-generator, flashcards, study-planner, research-assistant, progress-dashboard, profile, settings, admin-dashboard, not-found
-  const [currentRole, setCurrentRole] = useState('Student'); // Student, Teacher, Admin
+  const [currentPage, setCurrentPage] = useState('landing');
   const [theme, setTheme] = useState('dark');
+  const [userRole, setUserRole] = useState('student'); // 'student', 'teacher', 'admin'
+  const [soundEnabled, setSoundEnabled] = useState(true);
 
-  // Search & Global State
-  const [searchQuery, setSearchQuery] = useState('');
-  const [notifications, setNotifications] = useState([
-    { id: 1, text: "Quantum_Computing.pdf indexed successfully into ChromaDB.", time: "10m ago", read: false },
-    { id: 2, text: "New AI Quiz 'Transformer Models' generated.", time: "1h ago", read: false },
-    { id: 3, text: "Weekly study goal 80% completed!", time: "3h ago", read: true }
-  ]);
-
-  // Documents & RAG Datasets
-  const [documents, setDocuments] = useState(INITIAL_DOCUMENTS);
-  const [flashcards, setFlashcards] = useState(INITIAL_FLASHCARDS);
-  const [quizzes, setQuizzes] = useState(INITIAL_QUIZZES);
-
-  // RAG Hyperparameters (Admin Config)
-  const [ragConfig, setRagConfig] = useState({
-    chunkSize: 512,
-    chunkOverlap: 50,
-    topK: 3,
-    embeddingModel: "text-embedding-3-small (1536d)",
-    llmModel: "Gemini 1.5 Pro / Flash RAG",
-    temperature: 0.2,
-    strictDocOnly: true
-  });
-
-  // Modal Dialog & Citation Inspector State
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  // Active RAG Session State
+  const [activeDocId, setActiveDocId] = useState(mockRAG.documents[0].id);
   const [activeCitation, setActiveCitation] = useState(null);
+  
+  // Modals & Popovers
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isCitationDrawerOpen, setIsCitationDrawerOpen] = useState(false);
+  const [isKnowledgeGraphOpen, setIsKnowledgeGraphOpen] = useState(false);
+
+  // Global Toast Alert
   const [toastMessage, setToastMessage] = useState(null);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    if (nextTheme === 'light') {
+      document.body.classList.add('light');
+    } else {
+      document.body.classList.remove('light');
+    }
+  };
+
+  const toggleSound = () => {
+    setSoundEnabled(!soundEnabled);
+    if (!soundEnabled) {
+      soundFX.playClick();
+    }
+  };
+
+  const playSFX = (type) => {
+    if (!soundEnabled) return;
+    if (type === 'flip') soundFX.playPageFlip();
+    else if (type === 'success') soundFX.playSuccess();
+    else if (type === 'click') soundFX.playClick();
+  };
 
   const showToast = (msg, type = 'info') => {
     setToastMessage({ msg, type });
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    document.body.className = newTheme;
-  };
-
-  const addDocument = (newDoc) => {
-    setDocuments(prev => [newDoc, ...prev]);
-    showToast(`Uploaded and indexed ${newDoc.title}`, 'success');
-  };
-
-  const addFlashcard = (card) => {
-    setFlashcards(prev => [card, ...prev]);
-    showToast(`Added new flashcard: "${card.question}"`, 'success');
-  };
-
-  const value = {
-    currentPage,
-    setCurrentPage,
-    currentRole,
-    setCurrentRole,
-    theme,
-    toggleTheme,
-    searchQuery,
-    setSearchQuery,
-    notifications,
-    setNotifications,
-    documents,
-    setDocuments,
-    addDocument,
-    flashcards,
-    setFlashcards,
-    addFlashcard,
-    quizzes,
-    setQuizzes,
-    ragConfig,
-    setRagConfig,
-    isUploadModalOpen,
-    setIsUploadModalOpen,
-    activeCitation,
-    setActiveCitation,
-    toastMessage,
-    showToast
+  const openCitation = (citation) => {
+    setActiveCitation(citation);
+    setIsCitationDrawerOpen(true);
+    playSFX('click');
   };
 
   return (
-    <AppContext.Provider value={value}>
+    <AppContext.Provider value={{
+      currentPage, setCurrentPage,
+      theme, toggleTheme,
+      userRole, setUserRole,
+      soundEnabled, toggleSound, playSFX,
+      activeDocId, setActiveDocId,
+      activeCitation, openCitation,
+      isUploadModalOpen, setIsUploadModalOpen,
+      isCitationDrawerOpen, setIsCitationDrawerOpen,
+      isKnowledgeGraphOpen, setIsKnowledgeGraphOpen,
+      toastMessage, showToast
+    }}>
       {children}
     </AppContext.Provider>
   );

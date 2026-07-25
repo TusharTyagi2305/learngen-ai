@@ -1,155 +1,135 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useApp } from '../services/appState';
 import { 
-  Search, Bell, Moon, Sun, Upload, Shield, User, ChevronRight, CheckCircle2, Sparkles 
+  Search, UploadCloud, Bell, Sun, Moon, Volume2, VolumeX, Network, UserCheck, Shield 
 } from 'lucide-react';
 
 export function TopBar() {
   const { 
-    currentPage, setCurrentPage, currentRole, theme, toggleTheme, 
-    searchQuery, setSearchQuery, notifications, setIsUploadModalOpen 
+    theme, toggleTheme, 
+    userRole, setUserRole, 
+    soundEnabled, toggleSound, playSFX,
+    setIsUploadModalOpen, 
+    setIsKnowledgeGraphOpen,
+    showToast 
   } = useApp();
-  
-  const [showNotifs, setShowNotifs] = useState(false);
-
-  const isDashboardArea = !['landing', 'features', 'about', 'pricing', 'contact', 'login', 'register', 'forgot-password'].includes(currentPage);
-  if (!isDashboardArea) return null;
-
-  const pageTitles = {
-    'dashboard': 'Dashboard Overview',
-    'documents': 'Document Vault & Vectors',
-    'ai-chat': 'AI RAG Studio',
-    'quiz-generator': 'AI Quiz Generator',
-    'flashcards': 'Interactive 3D Flashcards',
-    'study-planner': 'AI Study Roadmap Planner',
-    'research-assistant': 'Research Paper Assistant',
-    'progress-dashboard': 'Analytics & Learning Metrics',
-    'profile': 'Account Profile',
-    'settings': 'Platform Settings',
-    'admin-dashboard': 'Admin System Workbench'
-  };
-
-  const unreadNotifs = notifications.filter(n => !n.read).length;
 
   return (
     <header className="glass-panel" style={{
-      borderRadius: 0,
-      borderTop: 'none',
-      borderLeft: 'none',
-      borderRight: 'none',
-      padding: '12px 28px',
+      padding: '14px 28px',
+      margin: '16px 24px 0',
       display: 'flex',
       alignItems: 'center',
       justify: 'space-between',
-      position: 'sticky',
-      top: 0,
-      zIndex: 80
+      borderRadius: 'var(--radius-md)',
+      zIndex: 100
     }}>
-      {/* Breadcrumbs & Page Title */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Workspace</span>
-        <ChevronRight size={14} style={{ color: 'var(--text-dim)' }} />
-        <span style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--accent-cyan)' }}>
-          {pageTitles[currentPage] || 'LearnGen AI'}
-        </span>
-      </div>
-
-      {/* Global Search Bar */}
-      <div style={{ position: 'relative', width: '380px' }}>
-        <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)' }} />
+      
+      {/* Search Input Bar */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--bg-tertiary)', padding: '8px 14px', borderRadius: 'var(--radius-sm)', width: '380px', border: '1px solid var(--glass-border)' }}>
+        <Search size={16} style={{ color: 'var(--text-dim)' }} />
         <input 
-          type="text"
-          placeholder="Search documents, concepts, or vector embeddings..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="input-field"
-          style={{ paddingLeft: '36px', height: '38px', borderRadius: '999px', fontSize: '0.85rem' }}
+          type="text" 
+          placeholder="Search document chunks, concepts, or vector embeddings..." 
+          style={{ background: 'none', border: 'none', color: 'var(--text-main)', outline: 'none', fontSize: '0.88rem', width: '100%' }}
         />
       </div>
 
-      {/* Right Controls */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px', position: 'relative' }}>
-        {/* Quick Ingest Button */}
+      {/* Action Controls */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        
+        {/* Persona Switcher Pill */}
+        <div style={{ display: 'flex', background: 'var(--bg-tertiary)', padding: '3px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
+          <button 
+            onClick={() => { playSFX('click'); setUserRole('student'); showToast('Switched to Student Persona'); }}
+            style={{
+              padding: '5px 12px',
+              borderRadius: '6px',
+              border: 'none',
+              fontSize: '0.78rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              background: userRole === 'student' ? 'var(--accent-blue)' : 'transparent',
+              color: userRole === 'student' ? '#fff' : 'var(--text-dim)'
+            }}
+          >
+            Student
+          </button>
+
+          <button 
+            onClick={() => { playSFX('click'); setUserRole('teacher'); showToast('Switched to Teacher Persona'); }}
+            style={{
+              padding: '5px 12px',
+              borderRadius: '6px',
+              border: 'none',
+              fontSize: '0.78rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              background: userRole === 'teacher' ? 'var(--accent-teal)' : 'transparent',
+              color: userRole === 'teacher' ? '#fff' : 'var(--text-dim)'
+            }}
+          >
+            Teacher
+          </button>
+
+          <button 
+            onClick={() => { playSFX('click'); setUserRole('admin'); showToast('Switched to Admin Persona'); }}
+            style={{
+              padding: '5px 12px',
+              borderRadius: '6px',
+              border: 'none',
+              fontSize: '0.78rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              background: userRole === 'admin' ? 'var(--accent-amber)' : 'transparent',
+              color: userRole === 'admin' ? '#fff' : 'var(--text-dim)'
+            }}
+          >
+            Admin
+          </button>
+        </div>
+
+        {/* Mind Map Knowledge Graph Modal Trigger */}
         <button 
-          onClick={() => setIsUploadModalOpen(true)}
+          onClick={() => { playSFX('click'); setIsKnowledgeGraphOpen(true); }}
           className="btn-secondary"
-          style={{ padding: '6px 12px', fontSize: '0.8rem' }}
+          style={{ padding: '8px 14px', fontSize: '0.85rem' }}
+          title="Open Document Mind Map"
         >
-          <Upload size={14} /> Upload PDF/DOCX
+          <Network size={16} style={{ color: 'var(--accent-cyan)' }} /> Mind Map
         </button>
 
-        {/* Notifications Dropdown Toggle */}
+        {/* Upload Modal Trigger */}
         <button 
-          onClick={() => setShowNotifs(!showNotifs)}
-          className="btn-secondary"
-          style={{ padding: '8px', position: 'relative' }}
-          title="Notifications"
+          onClick={() => { playSFX('click'); setIsUploadModalOpen(true); }}
+          className="gradient-btn"
+          style={{ padding: '8px 16px', fontSize: '0.85rem' }}
         >
-          <Bell size={18} />
-          {unreadNotifs > 0 && (
-            <span style={{
-              position: 'absolute',
-              top: '-2px',
-              right: '-2px',
-              background: 'var(--accent-rose)',
-              color: '#fff',
-              fontSize: '0.65rem',
-              fontWeight: 700,
-              width: '16px',
-              height: '16px',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justify: 'center'
-            }}>
-              {unreadNotifs}
-            </span>
-          )}
+          <UploadCloud size={16} /> Upload Document
         </button>
 
-        {/* Notifications Popover */}
-        {showNotifs && (
-          <div className="glass-panel animate-fade-in" style={{
-            position: 'absolute',
-            top: '48px',
-            right: '80px',
-            width: '320px',
-            background: 'var(--bg-secondary)',
-            padding: '16px',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-            zIndex: 200
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center' }}>
-              <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Activity Notifications</span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--accent-cyan)', cursor: 'pointer' }}>Mark all read</span>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {notifications.map(n => (
-                <div key={n.id} style={{ padding: '8px 10px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem' }}>
-                  <div style={{ color: 'var(--text-main)', marginBottom: '2px' }}>{n.text}</div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>{n.time}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Sound FX Toggle */}
+        <button 
+          onClick={toggleSound}
+          className="btn-secondary"
+          title={soundEnabled ? "Mute Sound Effects" : "Enable Sound Effects"}
+          style={{ padding: '8px' }}
+        >
+          {soundEnabled ? <Volume2 size={18} style={{ color: 'var(--accent-teal)' }} /> : <VolumeX size={18} style={{ color: 'var(--text-dim)' }} />}
+        </button>
 
         {/* Theme Switcher */}
         <button 
-          onClick={toggleTheme}
+          onClick={() => { playSFX('click'); toggleTheme(); }}
           className="btn-secondary"
+          title="Toggle Light/Dark Theme"
           style={{ padding: '8px' }}
-          title="Toggle Dark/Light Mode"
         >
-          {theme === 'dark' ? <Sun size={18} style={{ color: 'var(--accent-amber)' }} /> : <Moon size={18} style={{ color: 'var(--accent-purple)' }} />}
+          {theme === 'dark' ? <Sun size={18} style={{ color: 'var(--accent-amber)' }} /> : <Moon size={18} style={{ color: 'var(--accent-blue)' }} />}
         </button>
 
-        {/* Active Role Indicator */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 10px', background: 'var(--bg-tertiary)', borderRadius: '999px', border: '1px solid var(--glass-border)' }}>
-          <Shield size={14} style={{ color: 'var(--accent-cyan)' }} />
-          <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>{currentRole}</span>
-        </div>
       </div>
+
     </header>
   );
 }

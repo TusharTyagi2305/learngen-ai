@@ -10,7 +10,7 @@ export function LandingPage() {
   const { setCurrentPage } = useApp();
   const [contactSubmitted, setContactSubmitted] = useState(false);
 
-  // Features Interactive Slide Carousel State
+  // Features Interactive 3D CoverFlow Carousel State
   const [currentFeatureIdx, setCurrentFeatureIdx] = useState(0);
 
   const featureSlides = [
@@ -64,16 +64,18 @@ export function LandingPage() {
     setCurrentFeatureIdx((prev) => (prev - 1 + featureSlides.length) % featureSlides.length);
   };
 
-  // Optional subtle auto-slide every 6 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentFeatureIdx((prev) => (prev + 1) % featureSlides.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [featureSlides.length]);
+  // Pre-calculate Previous, Current, Next Slide Indices
+  const prevIdx = (currentFeatureIdx - 1 + featureSlides.length) % featureSlides.length;
+  const currIdx = currentFeatureIdx;
+  const nextIdx = (currentFeatureIdx + 1) % featureSlides.length;
 
-  const activeSlide = featureSlides[currentFeatureIdx];
-  const IconComponent = activeSlide.icon;
+  const prevSlide = featureSlides[prevIdx];
+  const currSlide = featureSlides[currIdx];
+  const nextSlide = featureSlides[nextIdx];
+
+  const CurrIcon = currSlide.icon;
+  const PrevIcon = prevSlide.icon;
+  const NextIcon = nextSlide.icon;
 
   return (
     <div style={{ position: 'relative', overflow: 'hidden', background: 'transparent' }}>
@@ -170,110 +172,145 @@ export function LandingPage() {
       </section>
 
 
-      {/* ==================== 2. FEATURES SECTION (INTERACTIVE SINGLE CARD CAROUSEL) ==================== */}
-      <section id="features" style={{ padding: '110px 24px 90px', maxWidth: '1000px', margin: '0 auto', background: 'transparent' }}>
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <span className="badge badge-cyan" style={{ marginBottom: '12px' }}>Interactive Modules Spotlight</span>
+      {/* ==================== 2. FEATURES SECTION (MODERN 3D COVER FLOW CAROUSEL) ==================== */}
+      <section id="features" style={{ padding: '110px 24px 90px', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
+        <div style={{ textAlign: 'center', marginBottom: '44px' }}>
+          <span className="badge badge-cyan" style={{ marginBottom: '12px' }}>Modern 3D Module Showcase</span>
           <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Complete RAG Platform Capabilities</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Engineered for zero hallucinations and exact context page tracking.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Click side preview cards or scroll to explore modules.</p>
         </div>
 
-        {/* SINGLE CARD FOCUS SPOTLIGHT CAROUSEL STAGE */}
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* 3D COVER FLOW TRACK WITH BLURRED PREVIOUS & NEXT CARDS */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px', position: 'relative' }}>
           
-          {/* Left Arrow Button */}
-          <button 
+          {/* PREVIOUS SLIDE (BLURRED PREVIEW ON LEFT) */}
+          <div 
             onClick={handlePrevFeature}
-            className="btn-secondary"
+            className="glass-card" 
             style={{
-              position: 'absolute',
-              left: '-20px',
-              zIndex: 20,
-              padding: '14px',
-              borderRadius: '50%',
-              background: 'rgba(15, 23, 42, 0.75)',
-              backdropFilter: 'blur(12px)',
-              borderColor: 'rgba(255, 255, 255, 0.2)',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
+              flex: '0 0 280px',
+              padding: '24px',
+              background: 'rgba(15, 23, 42, 0.35)',
+              backdropFilter: 'blur(8px)',
+              filter: 'blur(3px)',
+              opacity: 0.45,
+              transform: 'scale(0.88) translateX(20px)',
+              cursor: 'pointer',
+              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              userSelect: 'none'
             }}
-            title="Previous Feature"
           >
-            <ChevronLeft size={24} style={{ color: 'var(--text-main)' }} />
-          </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+              <div style={{ background: prevSlide.bgIcon, padding: '10px', borderRadius: '10px', color: prevSlide.color }}>
+                <PrevIcon size={20} />
+              </div>
+              <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>PREVIOUS</span>
+            </div>
+            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
+              {prevSlide.title}
+            </h4>
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+              {prevSlide.description}
+            </p>
+          </div>
 
-          {/* ACTIVE SINGLE FEATURE CARD WITH SLIDE ANIMATION */}
-          <div key={activeSlide.id} className="glass-card animate-fade-in" style={{
-            width: '100%',
-            maxWidth: '720px',
-            padding: '44px',
-            background: 'rgba(15, 23, 42, 0.55)',
+          {/* ACTIVE CENTER SLIDE (SPOTLIGHT FOCUS IN CENTER) */}
+          <div className="glass-card animate-fade-in" style={{
+            flex: '1 1 650px',
+            maxWidth: '680px',
+            padding: '40px',
+            background: 'rgba(15, 23, 42, 0.65)',
             backdropFilter: 'blur(20px)',
-            borderColor: activeSlide.color,
-            boxShadow: `0 16px 40px -10px ${activeSlide.bgIcon}`,
-            textAlign: 'left'
+            borderColor: currSlide.color,
+            boxShadow: `0 20px 50px -10px ${currSlide.bgIcon}`,
+            transform: 'scale(1.03)',
+            zIndex: 10,
+            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
           }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-              <div style={{ background: activeSlide.bgIcon, padding: '16px', borderRadius: '16px', color: activeSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <IconComponent size={32} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <div style={{ background: currSlide.bgIcon, padding: '14px', borderRadius: '14px', color: currSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <CurrIcon size={30} />
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span className="badge badge-teal" style={{ padding: '6px 14px', fontSize: '0.8rem' }}>{activeSlide.badge}</span>
-                <span style={{ fontSize: '0.85rem', color: 'var(--text-dim)', fontWeight: 600 }}>Feature {currentFeatureIdx + 1} of {featureSlides.length}</span>
+                <span className="badge badge-teal" style={{ padding: '5px 12px', fontSize: '0.78rem' }}>{currSlide.badge}</span>
+                <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 600 }}>{currIdx + 1} / {featureSlides.length}</span>
               </div>
             </div>
 
-            <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '14px', color: '#ffffff' }}>
-              {activeSlide.title}
+            <h3 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '12px', color: '#ffffff' }}>
+              {currSlide.title}
             </h3>
 
-            <p style={{ color: 'var(--text-main)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '18px' }}>
-              {activeSlide.description}
+            <p style={{ color: 'var(--text-main)', fontSize: '1.08rem', lineHeight: 1.6, marginBottom: '20px' }}>
+              {currSlide.description}
             </p>
 
-            <div style={{ padding: '14px 18px', background: 'rgba(30, 41, 59, 0.6)', borderRadius: 'var(--radius-sm)', borderLeft: `4px solid ${activeSlide.color}`, fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-              ⚡ <strong>Architect Spec:</strong> {activeSlide.detail}
+            <div style={{ padding: '14px 18px', background: 'rgba(30, 41, 59, 0.65)', borderRadius: 'var(--radius-sm)', borderLeft: `4px solid ${currSlide.color}`, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+              ⚡ <strong>Architect Spec:</strong> {currSlide.detail}
             </div>
           </div>
 
-          {/* Right Arrow Button */}
-          <button 
+          {/* NEXT SLIDE (BLURRED PREVIEW ON RIGHT) */}
+          <div 
             onClick={handleNextFeature}
-            className="btn-secondary"
+            className="glass-card" 
             style={{
-              position: 'absolute',
-              right: '-20px',
-              zIndex: 20,
-              padding: '14px',
-              borderRadius: '50%',
-              background: 'rgba(15, 23, 42, 0.75)',
-              backdropFilter: 'blur(12px)',
-              borderColor: 'rgba(255, 255, 255, 0.2)',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
+              flex: '0 0 280px',
+              padding: '24px',
+              background: 'rgba(15, 23, 42, 0.35)',
+              backdropFilter: 'blur(8px)',
+              filter: 'blur(3px)',
+              opacity: 0.45,
+              transform: 'scale(0.88) translateX(-20px)',
+              cursor: 'pointer',
+              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              userSelect: 'none'
             }}
-            title="Next Feature"
           >
-            <ChevronRight size={24} style={{ color: 'var(--text-main)' }} />
-          </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+              <div style={{ background: nextSlide.bgIcon, padding: '10px', borderRadius: '10px', color: nextSlide.color }}>
+                <NextIcon size={20} />
+              </div>
+              <span className="badge badge-cyan" style={{ fontSize: '0.7rem' }}>NEXT</span>
+            </div>
+            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
+              {nextSlide.title}
+            </h4>
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+              {nextSlide.description}
+            </p>
+          </div>
+
         </div>
 
-        {/* SLIDE INDICATOR DOTS */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '28px' }}>
-          {featureSlides.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentFeatureIdx(idx)}
-              style={{
-                width: currentFeatureIdx === idx ? '32px' : '10px',
-                height: '10px',
-                borderRadius: '999px',
-                border: 'none',
-                background: currentFeatureIdx === idx ? 'var(--accent-cyan)' : 'rgba(255, 255, 255, 0.25)',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-              title={`Go to slide ${idx + 1}`}
-            />
-          ))}
+        {/* SLIDE INDICATOR DOTS & NAVIGATION */}
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginTop: '36px' }}>
+          <button onClick={handlePrevFeature} className="btn-secondary" style={{ padding: '8px 14px', fontSize: '0.85rem' }}>
+            <ChevronLeft size={16} /> Prev Slide
+          </button>
+
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {featureSlides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentFeatureIdx(idx)}
+                style={{
+                  width: currentFeatureIdx === idx ? '32px' : '10px',
+                  height: '10px',
+                  borderRadius: '999px',
+                  border: 'none',
+                  background: currentFeatureIdx === idx ? 'var(--accent-cyan)' : 'rgba(255, 255, 255, 0.25)',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease'
+                }}
+                title={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+
+          <button onClick={handleNextFeature} className="btn-secondary" style={{ padding: '8px 14px', fontSize: '0.85rem' }}>
+            Next Slide <ChevronRight size={16} />
+          </button>
         </div>
       </section>
 

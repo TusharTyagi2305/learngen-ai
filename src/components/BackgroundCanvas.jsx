@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const START_FRAME = 2;
-const END_FRAME = 325;
-const TOTAL_FRAMES = END_FRAME - START_FRAME + 1; // 324 frames
+const START_FRAME = 1;
+const END_FRAME = 80;
+const TOTAL_FRAMES = END_FRAME - START_FRAME + 1; // 80 frames
 
 export function BackgroundCanvas() {
   const canvasRef = useRef(null);
@@ -20,7 +20,7 @@ export function BackgroundCanvas() {
     for (let i = START_FRAME; i <= END_FRAME; i++) {
       const img = new Image();
       const frameNum = String(i).padStart(6, '0');
-      img.src = `/thor-frames/frame_${frameNum}.jpg`;
+      img.src = `/thor-frames/frame_${frameNum}.webp`;
       img.onload = () => {
         loadedCount++;
         if (loadedCount === TOTAL_FRAMES) {
@@ -112,15 +112,6 @@ export function BackgroundCanvas() {
           width: '100vw', height: '100vh',
           zIndex: -2, pointerEvents: 'none',
           objectFit: 'cover'
-        }}
-      />
-      <div
-        style={{
-          position: 'fixed',
-          top: 0, left: 0,
-          width: '100vw', height: '100vh',
-          zIndex: -1, pointerEvents: 'none',
-          background: 'rgba(0, 0, 0, 0.08)'
         }}
       />
     </>

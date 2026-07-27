@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { mockRAG } from './mockRAG';
+import { api } from './api';
 
 const AppContext = createContext();
 
@@ -29,6 +30,37 @@ export function AppProvider({ children }) {
 
   // Global Toast Alert
   const [toastMessage, setToastMessage] = useState(null);
+
+  // Sync with Live FastAPI Backend on load
+  useEffect(() => {
+    async function loadBackendData() {
+      try {
+        const docRes = await api.getDocuments();
+        if (docRes?.data && Array.isArray(docRes.data) && docRes.data.length > 0) {
+          setDocuments(docRes.data);
+        }
+
+        const quizRes = await api.getQuizzes();
+        if (quizRes?.data && Array.isArray(quizRes.data) && quizRes.data.length > 0) {
+          setQuizzes(quizRes.data);
+        }
+
+        const fcRes = await api.getFlashcards();
+        if (fcRes?.data && Array.isArray(fcRes.data) && fcRes.data.length > 0) {
+          setFlashcards(fcRes.data);
+        }
+
+        const configRes = await api.getAdminConfig();
+        if (configRes?.data) {
+          setRagConfig(configRes.data);
+        }
+      } catch (err) {
+        // Smooth fallback to local mock data
+        console.log("[AppProvider] Using initial cached vault data.");
+      }
+    }
+    loadBackendData();
+  }, []);
 
   const toggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';

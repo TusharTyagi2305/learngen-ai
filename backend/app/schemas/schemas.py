@@ -18,6 +18,13 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+class OTPResendRequest(BaseModel):
+    email: EmailStr
+
+class OTPVerifyRequest(BaseModel):
+    email: EmailStr
+    otp_code: str
+
 class TokenResponse(BaseModel):
     access_token: str
     refresh_token: str
@@ -60,6 +67,7 @@ class Citation(BaseModel):
 class ChatMessageCreate(BaseModel):
     text: str
     doc_id: Optional[str] = None
+    search_external: Optional[bool] = False
 
 class ChatMessageOut(BaseModel):
     id: str

@@ -1,16 +1,19 @@
 import React from 'react';
 import { useApp } from '../services/appState';
 import { 
-  Search, UploadCloud, Bell, Sun, Moon 
+  Search, UploadCloud, Bell, Sun, Moon, Shield 
 } from 'lucide-react';
 
 export function TopBar() {
   const { 
-    theme, toggleTheme, 
-    userRole, setUserRole, 
+    user, theme, toggleTheme, 
+    userRole, currentPage, setCurrentPage,
     setIsUploadModalOpen, 
     showToast 
   } = useApp();
+
+  const activeRoleLower = (user?.role || userRole || 'student').toLowerCase();
+  const isAdminUser = activeRoleLower === 'admin' || activeRoleLower === 'super_admin' || user?.is_super_admin;
 
   return (
     <header className="glass-panel" style={{
@@ -18,7 +21,7 @@ export function TopBar() {
       margin: '16px 24px 0',
       display: 'flex',
       alignItems: 'center',
-      justify: 'space-between',
+      justifyContent: 'space-between',
       borderRadius: 'var(--radius-md)',
       zIndex: 100
     }}>
@@ -36,65 +39,56 @@ export function TopBar() {
       {/* Action Controls */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
         
-        {/* Persona Switcher Pill */}
-        <div style={{ display: 'flex', background: 'var(--bg-tertiary)', padding: '3px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)' }}>
+        {/* Admin Workbench Direct Button (Shown on user pages only) */}
+        {isAdminUser && currentPage !== 'admin-dashboard' && (
           <button 
-            onClick={() => { setUserRole('student'); showToast('Switched to Student Persona'); }}
-            style={{
-              padding: '5px 12px',
-              borderRadius: '6px',
-              border: 'none',
-              fontSize: '0.78rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              background: userRole === 'student' ? 'var(--accent-blue)' : 'transparent',
-              color: userRole === 'student' ? '#fff' : 'var(--text-dim)'
+            onClick={() => setCurrentPage('admin-dashboard')}
+            className="gradient-btn"
+            style={{ 
+              padding: '8px 14px', 
+              fontSize: '0.82rem',
+              background: 'linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)',
+              boxShadow: '0 0 15px rgba(244, 63, 94, 0.4)'
             }}
           >
-            Student
+            <Shield size={16} /> Admin Control Panel
           </button>
+        )}
 
-          <button 
-            onClick={() => { setUserRole('teacher'); showToast('Switched to Teacher Persona'); }}
-            style={{
-              padding: '5px 12px',
-              borderRadius: '6px',
-              border: 'none',
-              fontSize: '0.78rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              background: userRole === 'teacher' ? 'var(--accent-teal)' : 'transparent',
-              color: userRole === 'teacher' ? '#fff' : 'var(--text-dim)'
-            }}
-          >
-            Teacher
-          </button>
-
-          <button 
-            onClick={() => { setUserRole('admin'); showToast('Switched to Admin Persona'); }}
-            style={{
-              padding: '5px 12px',
-              borderRadius: '6px',
-              border: 'none',
-              fontSize: '0.78rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              background: userRole === 'admin' ? 'var(--accent-amber)' : 'transparent',
-              color: userRole === 'admin' ? '#fff' : 'var(--text-dim)'
-            }}
-          >
-            Admin
-          </button>
+        {/* Account Persona Verified Badge */}
+        <div 
+          onClick={() => showToast(`Account role is locked to ${activeRoleLower.toUpperCase()} (assigned at Sign In).`, 'info')}
+          style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px', 
+            background: 'var(--bg-tertiary)', 
+            padding: '6px 14px', 
+            borderRadius: 'var(--radius-sm)', 
+            border: '1px solid var(--glass-border)',
+            cursor: 'pointer'
+          }}
+          title="Role assigned during Sign In"
+        >
+          <Shield size={14} style={{ color: isAdminUser ? '#f43f5e' : 'var(--accent-blue)' }} />
+          <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-main)', textTransform: 'capitalize' }}>
+            {activeRoleLower} Persona
+          </span>
+          <span className="badge badge-teal" style={{ fontSize: '0.62rem', padding: '2px 6px' }}>
+            Verified
+          </span>
         </div>
 
-        {/* Upload Modal Trigger */}
-        <button 
-          onClick={() => setIsUploadModalOpen(true)}
-          className="gradient-btn"
-          style={{ padding: '8px 16px', fontSize: '0.85rem' }}
-        >
-          <UploadCloud size={16} /> Upload Document
-        </button>
+        {/* Upload Modal Trigger (Hidden in admin dashboard) */}
+        {currentPage !== 'admin-dashboard' && (
+          <button 
+            onClick={() => setIsUploadModalOpen(true)}
+            className="gradient-btn"
+            style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+          >
+            <UploadCloud size={16} /> Upload Document
+          </button>
+        )}
 
         {/* Theme Switcher */}
         <button 

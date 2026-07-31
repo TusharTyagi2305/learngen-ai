@@ -164,7 +164,7 @@ export function LandingPage() {
       features: [
         "Dedicated Multi-Tenant ChromaDB Cluster",
         "Role-Based Access Control (RBAC)",
-        "Teacher & Admin Analytics Workbench",
+        "Student & Admin Analytics Workbench",
         "Custom LLM API Key Integration",
         "SLA 99.9% Uptime Guarantee",
         "Dedicated Technical Architect Support"

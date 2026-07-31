@@ -1,0 +1,67 @@
+[
+  {
+    "eval_id": "EVAL-001",
+    "question": "What is the mathematical formula for Scaled Dot-Product Attention?",
+    "expected_source": "Quantum_Computing_Principles_Ch3.pdf",
+    "retrieved_source": "Quantum_Computing_Principles_Ch3.pdf",
+    "top_similarity_score": "59.1%",
+    "answer_generated": "The mathematical formula for Scaled Dot-Product Attention is `Softmax((Q * K^T) / sqrt(d_k)) * V` [Doc: Quantum_Computing_Principles_Ch3.pdf, Page 2]....",
+    "is_grounded": true,
+    "citation_correct": true,
+    "retrieval_latency_ms": 157,
+    "llm_latency_ms": 3922,
+    "total_latency_ms": 4080
+  },
+  {
+    "eval_id": "EVAL-002",
+    "question": "What key concepts allow a qubit to exist in 0 and 1 simultaneously?",
+    "expected_source": "Quantum_Computing_Principles_Ch3.pdf",
+    "retrieved_source": "Quantum_Computing_Principles_Ch3.pdf",
+    "top_similarity_score": "66.2%",
+    "answer_generated": "Based on the provided document, the key concepts are **superposition** and **entanglement**. Specifically, superposition allows a qubit to represent 0, 1, or any superposition of b...",
+    "is_grounded": true,
+    "citation_correct": true,
+    "retrieval_latency_ms": 471,
+    "llm_latency_ms": 3481,
+    "total_latency_ms": 3953
+  },
+  {
+    "eval_id": "EVAL-003",
+    "question": "What mechanism processes input tokens in parallel in Transformer architectures?",
+    "expected_source": "Quantum_Computing_Principles_Ch3.pdf",
+    "retrieved_source": "Quantum_Computing_Principles_Ch3.pdf",
+    "top_similarity_score": "60.1%",
+    "answer_generated": "In Transformer architectures, **Multi-Head Attention mechanisms** process input tokens in parallel [Doc: Quantum_Computing_Principles_Ch3.pdf, Page 2]....",
+    "is_grounded": true,
+    "citation_correct": true,
+    "retrieval_latency_ms": 70,
+    "llm_latency_ms": 2387,
+    "total_latency_ms": 2458
+  },
+  {
+    "eval_id": "EVAL-004",
+    "question": "What is the capital city of France and its total population?",
+    "expected_source": "N/A",
+    "retrieved_source": "Quantum_Computing_Principles_Ch3.pdf",
+    "top_similarity_score": "0.4%",
+    "answer_generated": "The uploaded document does not contain information to answer this question....",
+    "is_grounded": false,
+    "citation_correct": true,
+    "retrieval_latency_ms": 61,
+    "llm_latency_ms": 2311,
+    "total_latency_ms": 2373
+  },
+  {
+    "eval_id": "EVAL-005",
+    "question": "How many moons does Jupiter have according to NASA observations?",
+    "expected_source": "N/A",
+    "retrieved_source": "Quantum_Computing_Principles_Ch3.pdf",
+    "top_similarity_score": "9.5%",
+    "answer_generated": "The uploaded document does not contain information to answer this question....",
+    "is_grounded": false,
+    "citation_correct": true,
+    "retrieval_latency_ms": 740,
+    "llm_latency_ms": 2862,
+    "total_latency_ms": 3603
+  }
+]

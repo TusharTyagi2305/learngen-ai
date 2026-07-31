@@ -1,0 +1,104 @@
+[
+  {
+    "query_id": "COMP-001",
+    "user_query": "What is the mathematical formula for Scaled Dot-Product Attention?",
+    "mode_A_non_rag": {
+      "answer": "I searched your document vault for 'What is the mathematical formula for Scaled Dot-Product Attention?', but could not find relevant matching content in the uploaded document. Please verify your query or ensure the targe...",
+      "has_citations": false,
+      "latency_ms": 0
+    },
+    "mode_B_rag_pipeline": {
+      "answer": "The mathematical formula for Scaled Dot-Product Attention is:\n\nSoftmax((Q * K^T) / sqrt(d_k)) * V\n\n[Doc: Quantum_Computing_Principles_Ch3.pdf, Page 2]...",
+      "citations_count": 2,
+      "citations": [
+        {
+          "documentTitle": "Quantum_Computing_Principles_Ch3.pdf",
+          "page": 2,
+          "lineRange": "L6-L8",
+          "text": "Transformer architectures rely on Multi-Head Attention mechanisms to process input tokens in parallel.\nThe mathematical formula for Scaled Dot-Product Attention is Softmax((Q * K^T) / sqrt(d_k)) * V.\nResidual connections...",
+          "similarityScore": "59.1%",
+          "docId": "eval_comp_doc_001"
+        },
+        {
+          "documentTitle": "Quantum_Computing_Principles_Ch3.pdf",
+          "page": 1,
+          "lineRange": "L1-L2",
+          "text": "Quantum computing is a rapidly-emerging technology that harnesses the laws of quantum mechanics to solve problems too complex for classical computers.\nKey concepts include superposition and entanglement. A qubit can repr...",
+          "similarityScore": "8.4%",
+          "docId": "eval_comp_doc_001"
+        }
+      ],
+      "vector_search_ms": 211,
+      "llm_latency_ms": 3296,
+      "total_latency_ms": 3508
+    }
+  },
+  {
+    "query_id": "COMP-002",
+    "user_query": "What diagnostic accuracy do CNNs achieve according to our medical chapter?",
+    "mode_A_non_rag": {
+      "answer": "I searched your document vault for 'What diagnostic accuracy do CNNs achieve according to our medical chapter?', but could not find relevant matching content in the uploaded document. Please verify your query or ensure t...",
+      "has_citations": false,
+      "latency_ms": 0
+    },
+    "mode_B_rag_pipeline": {
+      "answer": "[GEMINI API ERROR] 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.d...",
+      "citations_count": 2,
+      "citations": [
+        {
+          "documentTitle": "Quantum_Computing_Principles_Ch3.pdf",
+          "page": 2,
+          "lineRange": "L6-L8",
+          "text": "Transformer architectures rely on Multi-Head Attention mechanisms to process input tokens in parallel.\nThe mathematical formula for Scaled Dot-Product Attention is Softmax((Q * K^T) / sqrt(d_k)) * V.\nResidual connections...",
+          "similarityScore": "28.9%",
+          "docId": "eval_comp_doc_001"
+        },
+        {
+          "documentTitle": "Quantum_Computing_Principles_Ch3.pdf",
+          "page": 1,
+          "lineRange": "L1-L2",
+          "text": "Quantum computing is a rapidly-emerging technology that harnesses the laws of quantum mechanics to solve problems too complex for classical computers.\nKey concepts include superposition and entanglement. A qubit can repr...",
+          "similarityScore": "6.5%",
+          "docId": "eval_comp_doc_001"
+        }
+      ],
+      "vector_search_ms": 102,
+      "llm_latency_ms": 195,
+      "total_latency_ms": 298
+    }
+  },
+  {
+    "query_id": "COMP-003",
+    "user_query": "What is the exact scaling factor used in dot-product attention?",
+    "mode_A_non_rag": {
+      "answer": "I searched your document vault for 'What is the exact scaling factor used in dot-product attention?', but could not find relevant matching content in the uploaded document. Please verify your query or ensure the target d...",
+      "has_citations": false,
+      "latency_ms": 0
+    },
+    "mode_B_rag_pipeline": {
+      "answer": "[GEMINI API ERROR] 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.d...",
+      "citations_count": 2,
+      "citations": [
+        {
+          "documentTitle": "Quantum_Computing_Principles_Ch3.pdf",
+          "page": 2,
+          "lineRange": "L6-L8",
+          "text": "Transformer architectures rely on Multi-Head Attention mechanisms to process input tokens in parallel.\nThe mathematical formula for Scaled Dot-Product Attention is Softmax((Q * K^T) / sqrt(d_k)) * V.\nResidual connections...",
+          "similarityScore": "60.0%",
+          "docId": "eval_comp_doc_001"
+        },
+        {
+          "documentTitle": "Quantum_Computing_Principles_Ch3.pdf",
+          "page": 1,
+          "lineRange": "L1-L2",
+          "text": "Quantum computing is a rapidly-emerging technology that harnesses the laws of quantum mechanics to solve problems too complex for classical computers.\nKey concepts include superposition and entanglement. A qubit can repr...",
+          "similarityScore": "1.4%",
+          "docId": "eval_comp_doc_001"
+        }
+      ],
+      "vector_search_ms": 103,
+      "llm_latency_ms": 230,
+      "total_latency_ms": 333
+    }
+  }
+]

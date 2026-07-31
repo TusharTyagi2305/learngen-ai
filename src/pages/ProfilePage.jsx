@@ -3,7 +3,16 @@ import { useApp } from '../services/appState';
 import { User, Mail, Shield, Key, Bell, Sun, Moon, CheckCircle2, Lock } from 'lucide-react';
 
 export function ProfilePage() {
-  const { currentRole } = useApp();
+  const { user, updateUserProfile, showToast } = useApp();
+  const [name, setName] = useState(user?.name || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [institution, setInstitution] = useState('Department of Computer Science & Engineering');
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    updateUserProfile({ name, email });
+    showToast('Profile updated successfully!', 'success');
+  };
 
   return (
     <div style={{ padding: '24px', maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -11,28 +20,52 @@ export function ProfilePage() {
 
       <div className="glass-panel" style={{ padding: '28px', background: 'var(--bg-secondary)', display: 'flex', gap: '24px', alignItems: 'center' }}>
         <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'var(--gradient-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '2rem', fontWeight: 800 }}>
-          TS
+          {user?.avatar || 'U'}
         </div>
         <div>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700 }}>Tushar Sharma</h2>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '8px' }}>tushar@example.com</div>
-          <span className="badge badge-purple">Role: {currentRole} Persona</span>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 700 }}>{user?.name || 'User'}</h2>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '8px' }}>{user?.email || 'user@example.com'}</div>
+          <span className="badge badge-purple" style={{ textTransform: 'capitalize' }}>Role: {user?.role || 'student'} Persona</span>
         </div>
       </div>
 
-      <div className="glass-panel" style={{ padding: '28px', background: 'var(--bg-secondary)' }}>
+      <form onSubmit={handleSave} className="glass-panel" style={{ padding: '28px', background: 'var(--bg-secondary)' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '16px' }}>Personal Details</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div>
             <label style={{ fontSize: '0.82rem', fontWeight: 500, display: 'block', marginBottom: '6px' }}>Full Name</label>
-            <input type="text" defaultValue="Tushar Sharma" className="input-field" />
+            <input 
+              type="text" 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              className="input-field" 
+              required
+            />
+          </div>
+          <div>
+            <label style={{ fontSize: '0.82rem', fontWeight: 500, display: 'block', marginBottom: '6px' }}>Email Address</label>
+            <input 
+              type="email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              className="input-field" 
+              required
+            />
           </div>
           <div>
             <label style={{ fontSize: '0.82rem', fontWeight: 500, display: 'block', marginBottom: '6px' }}>Academic Institution</label>
-            <input type="text" defaultValue="Department of Computer Science & Engineering" className="input-field" />
+            <input 
+              type="text" 
+              value={institution} 
+              onChange={(e) => setInstitution(e.target.value)} 
+              className="input-field" 
+            />
+          </div>
+          <div style={{ marginTop: '8px' }}>
+            <button type="submit" className="gradient-btn">Save Profile Changes</button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

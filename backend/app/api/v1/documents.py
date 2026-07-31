@@ -11,6 +11,7 @@ from app.core.exceptions import BadRequestException, NotFoundException, Forbidde
 from app.models.all_models import User, Document
 from app.schemas.schemas import ApiResponse, DocumentOut, DocumentUpdate
 from app.services.text_extractor import text_extractor
+from app.services.rag_stubs import rag_service, ai_summary_generator, ai_viva_generator
 
 router = APIRouter(prefix="/documents", tags=["Document Management"])
 
@@ -54,16 +55,28 @@ async def upload_document(
         file_type=doc_type_upper,
         file_size=file_size_str,
         pages=extraction_result["pages"],
-        chunks_count=extraction_result["chunks_count"],
+        chunks_count=0,
         status="ready",
-        extracted_text=extraction_result["text"][:10000], # Save preview text
+        extracted_text=extraction_result["text"][:10000],
         vector_collection=collection_name,
-        summary=f"Vector indexed {doc_type_upper} document with {extraction_result['chunks_count']} chunks."
+        summary=f"Vector indexed {doc_type_upper} document."
     )
 
     db.add(new_doc)
     db.commit()
     db.refresh(new_doc)
+
+    # Index document into ChromaDB Vector Vault with user_id tag
+    real_chunks_count = rag_service.index_document(
+        doc_id=new_doc.id,
+        doc_title=filename,
+        raw_text=extraction_result["text"],
+        user_id=current_user.id
+    )
+
+    new_doc.chunks_count = real_chunks_count or extraction_result["chunks_count"]
+    new_doc.summary = f"Vector indexed {doc_type_upper} document with {new_doc.chunks_count} chunks in persistent ChromaDB."
+    db.commit()
 
     return ApiResponse(
         success=True,
@@ -121,6 +134,9 @@ def delete_document(
         except Exception:
             pass
 
+    # Remove document chunks from vector vault
+    rag_service.delete_document(doc_id)
+
     db.delete(doc)
     db.commit()
 
@@ -142,3 +158,73 @@ def rename_document(
         db.commit()
 
     return ApiResponse(success=True, message="Document updated", data={"id": doc.id, "title": doc.title})
+
+@router.get("/{doc_id}/summary", response_model=ApiResponse)
+def generate_document_summary(
+    doc_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    doc = db.query(Document).filter(Document.id == doc_id, Document.user_id == current_user.id).first()
+    if not doc:
+        raise NotFoundException("Document not found or access denied")
+
+    text = doc.extracted_text or doc.summary or ""
+    summary_data = ai_summary_generator.generate_summary(doc_text=text, doc_title=doc.title)
+    return ApiResponse(success=True, data=summary_data)
+
+@router.get("/{doc_id}/viva", response_model=ApiResponse)
+def generate_viva_preparation(
+    doc_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    doc = db.query(Document).filter(Document.id == doc_id, Document.user_id == current_user.id).first()
+    if not doc:
+        raise NotFoundException("Document not found or access denied")
+
+    text = doc.extracted_text or doc.summary or ""
+    viva_data = ai_viva_generator.generate_viva_prep(doc_text=text, doc_title=doc.title)
+    return ApiResponse(success=True, data=viva_data)
+
+@router.post("/{doc_id}/reindex", response_model=ApiResponse)
+def reindex_document(
+    doc_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    doc = db.query(Document).filter(Document.id == doc_id, Document.user_id == current_user.id).first()
+    if not doc:
+        raise NotFoundException("Document not found or access denied")
+
+    file_path = os.path.join(settings.UPLOAD_DIR, doc.stored_filename)
+    if not os.path.exists(file_path):
+        raise NotFoundException("Physical document file missing on server")
+
+    ext = doc.file_type.lower()
+    extraction_result = text_extractor.extract_text(file_path, ext)
+    
+    real_chunks_count = rag_service.index_document(
+        doc_id=doc.id,
+        doc_title=doc.title,
+        raw_text=extraction_result["text"],
+        user_id=current_user.id
+    )
+
+    doc.extracted_text = extraction_result["text"][:10000]
+    doc.chunks_count = real_chunks_count or extraction_result["chunks_count"]
+    doc.pages = extraction_result["pages"]
+    doc.summary = f"Re-indexed {doc.file_type} document with {doc.chunks_count} chunks using OCR engine."
+    db.commit()
+
+    return ApiResponse(
+        success=True,
+        message=f"Document '{doc.title}' successfully re-extracted and re-indexed into vector vault ({doc.chunks_count} chunks)",
+        data={
+            "id": doc.id,
+            "title": doc.title,
+            "chunksCount": doc.chunks_count,
+            "pages": doc.pages
+        }
+    )
+

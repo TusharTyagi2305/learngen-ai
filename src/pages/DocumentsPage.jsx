@@ -11,8 +11,9 @@ export function DocumentsPage() {
   const [docSearch, setDocSearch] = useState('');
 
   const filteredDocs = documents.filter(doc => {
-    const matchesSearch = doc.title.toLowerCase().includes(docSearch.toLowerCase());
-    const matchesFilter = filterType === 'ALL' || doc.type === filterType;
+    const matchesSearch = (doc.title || '').toLowerCase().includes(docSearch.toLowerCase());
+    const docType = doc.type || doc.file_type || 'PDF';
+    const matchesFilter = filterType === 'ALL' || docType === filterType;
     return matchesSearch && matchesFilter;
   });
 
@@ -96,16 +97,16 @@ export function DocumentsPage() {
                   </div>
                 </td>
                 <td style={{ padding: '14px 16px' }}>
-                  <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>{doc.type}</span>
+                  <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>{doc.type || doc.file_type || 'PDF'}</span>
                 </td>
                 <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>
-                  {doc.size} ({doc.pages} pgs)
+                  {doc.size || doc.file_size || '1.2 MB'} ({doc.pages || 1} pgs)
                 </td>
                 <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--accent-blue)' }}>
-                  {doc.chunksCount} chunks
+                  {doc.chunksCount ?? doc.chunks_count ?? 0} chunks
                 </td>
                 <td style={{ padding: '14px 16px', color: 'var(--text-dim)' }}>
-                  {doc.uploadedAt}
+                  {doc.uploadedAt || 'Recently'}
                 </td>
                 <td style={{ padding: '14px 16px' }}>
                   <span className="badge badge-emerald">✓ {doc.status}</span>

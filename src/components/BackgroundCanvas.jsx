@@ -12,7 +12,7 @@ export function BackgroundCanvas() {
   const targetFrameRef = useRef(0);
   const currentFrameRef = useRef(0);
 
-  // Preload all 324 lightweight high-speed 60fps frames into RAM (Total size: ~28MB for instant smooth playback)
+  // Preload frames into RAM
   useEffect(() => {
     let loadedCount = 0;
     const imgs = [];
@@ -23,16 +23,23 @@ export function BackgroundCanvas() {
       img.src = `/thor-frames/frame_${frameNum}.webp`;
       img.onload = () => {
         loadedCount++;
-        if (loadedCount === TOTAL_FRAMES) {
+        if (loadedCount >= 5) {
           setIsPreloaded(true);
         }
+      };
+      img.onerror = () => {
+        setIsPreloaded(true);
       };
       imgs.push(img);
     }
     imagesRef.current = imgs;
+
+    // Fallback timer so canvas starts rendering within 300ms under any network state
+    const timer = setTimeout(() => setIsPreloaded(true), 300);
+    return () => clearTimeout(timer);
   }, []);
 
-  // Butter-Smooth 60FPS Canvas Renderer with GPU Lerp Interpolation
+  // Pure 60FPS Scroll-Driven Canvas Renderer
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -45,12 +52,13 @@ export function BackgroundCanvas() {
     };
 
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
       const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       const scrollFraction = Math.min(1, Math.max(0, scrollTop / maxScroll));
       targetFrameRef.current = scrollFraction * (TOTAL_FRAMES - 1);
     };
 
+    let animId;
     const renderLoop = () => {
       const diff = targetFrameRef.current - currentFrameRef.current;
       currentFrameRef.current += diff * 0.18; // Smooth 60fps lerp interpolation
@@ -62,13 +70,24 @@ export function BackgroundCanvas() {
 
       const img = imagesRef.current[frameIdx];
 
-      if (img && img.complete && img.naturalWidth !== 0) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw rich glowing ambient HSL background gradient so background is NEVER blank
+      const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      grad.addColorStop(0, '#0b132b');
+      grad.addColorStop(0.5, '#111827');
+      grad.addColorStop(1, '#070a12');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (img && img.complete && (img.naturalWidth > 0 || img.width > 0)) {
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
 
-        const imgRatio = img.width / img.height;
-        const canvasRatio = canvas.width / canvas.height;
+        const w = img.naturalWidth || img.width;
+        const h = img.naturalHeight || img.height || 1;
+        const imgRatio = w / h;
+        const canvasRatio = canvas.width / (canvas.height || 1);
         let renderW, renderH, offsetX, offsetY;
 
         if (canvasRatio > imgRatio) {
@@ -86,34 +105,34 @@ export function BackgroundCanvas() {
         ctx.drawImage(img, offsetX, offsetY, renderW, renderH);
       }
 
-      requestAnimationFrame(renderLoop);
+      animId = requestAnimationFrame(renderLoop);
     };
 
     handleResize();
+    handleScroll();
+
     window.addEventListener('resize', handleResize);
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    const animId = requestAnimationFrame(renderLoop);
+    animId = requestAnimationFrame(renderLoop);
 
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleScroll);
-      cancelAnimationFrame(animId);
+      if (animId) cancelAnimationFrame(animId);
     };
   }, [isPreloaded]);
 
   return (
-    <>
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'fixed',
-          top: 0, left: 0,
-          width: '100vw', height: '100vh',
-          zIndex: -2, pointerEvents: 'none',
-          objectFit: 'cover'
-        }}
-      />
-    </>
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: 'fixed',
+        top: 0, left: 0,
+        width: '100vw', height: '100vh',
+        zIndex: -1, pointerEvents: 'none',
+        objectFit: 'cover'
+      }}
+    />
   );
 }

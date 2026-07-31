@@ -16,8 +16,12 @@ class User(Base):
     email = Column(String(255), unique=True, index=True, nullable=False)
     full_name = Column(String(255), nullable=False)
     password_hash = Column(String(255), nullable=False)
-    role = Column(String(50), default="student", nullable=False) # 'student', 'teacher', 'admin'
-    is_active = Column(Boolean, default=True)
+    role = Column(String(50), default="student", nullable=False) # 'student', 'admin', 'super_admin'
+    is_super_admin = Column(Boolean, default=False, nullable=False)
+    permissions = Column(JSON, nullable=True)
+    created_by = Column(String(36), nullable=True)
+    updated_by = Column(String(36), nullable=True)
+    is_active = Column(Boolean, default=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
@@ -212,3 +216,57 @@ class AdminConfig(Base):
     top_k = Column(Integer, default=3)
     temperature = Column(Float, default=0.2)
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+
+class OTPVerification(Base):
+    __tablename__ = "otp_verifications"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    email = Column(String(255), index=True, nullable=False)
+    otp_code = Column(String(10), nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+    is_used = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    last_sent_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+class AuditLog(Base):
+    __tablename__ = "audit_logs"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    event_type = Column(String(50), nullable=False) # auth, otp, upload, gemini, db, vector, error, warning
+    action = Column(String(100), nullable=True) # promote_admin, demote_admin, admin_login, delete_user, system_setting
+    level = Column(String(20), default="INFO") # INFO, WARNING, ERROR
+    user_id = Column(String(36), nullable=True)
+    user_email = Column(String(255), nullable=True)
+    ip_address = Column(String(45), nullable=True)
+    message = Column(Text, nullable=False)
+    details = Column(JSON, nullable=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+class ApiMetricLog(Base):
+    __tablename__ = "api_metric_logs"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    method = Column(String(10), nullable=False)
+    path = Column(String(255), nullable=False)
+    status_code = Column(Integer, nullable=False)
+    response_time_ms = Column(Float, nullable=False)
+    user_id = Column(String(36), nullable=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+class RAGQueryLog(Base):
+    __tablename__ = "rag_query_logs"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), nullable=True)
+    query_text = Column(Text, nullable=False)
+    response_time_ms = Column(Float, default=0.0)
+    retrieval_time_ms = Column(Float, default=0.0)
+    gemini_time_ms = Column(Float, default=0.0)
+    confidence_score = Column(Float, default=0.95)
+    similarity_score = Column(Float, default=0.88)
+    source_type = Column(String(50), default="PDF")
+    retrieved_chunks_count = Column(Integer, default=5)
+    is_fallback = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+

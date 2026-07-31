@@ -1,17 +1,12 @@
 import React from 'react';
+import { useApp } from '../services/appState';
 
 // Weekly Study Hours Bar Chart Component
-export function WeeklyStudyChart() {
-  const data = [
-    { day: 'Mon', hours: 3.5 },
-    { day: 'Tue', hours: 4.8 },
-    { day: 'Wed', hours: 2.2 },
-    { day: 'Thu', hours: 6.0 },
-    { day: 'Fri', hours: 5.4 },
-    { day: 'Sat', hours: 7.2 },
-    { day: 'Sun', hours: 4.1 },
-  ];
-  const maxHours = 8;
+export function WeeklyStudyChart({ weeklyData }) {
+  const { getUserWeeklyData } = useApp();
+  const data = weeklyData || getUserWeeklyData();
+  
+  const maxHours = Math.max(4, ...data.map(d => d.hours || 0));
 
   return (
     <div style={{ padding: '10px 0' }}>
@@ -24,12 +19,13 @@ export function WeeklyStudyChart() {
               <div 
                 style={{
                   width: '100%',
-                  height: `${heightPercent}%`,
-                  background: idx === 5 ? 'var(--gradient-primary)' : 'var(--bg-tertiary)',
+                  height: `${Math.max(8, heightPercent)}%`,
+                  background: idx === (new Date().getDay() + 6) % 7 ? 'var(--gradient-primary)' : 'var(--bg-tertiary)',
                   borderRadius: '6px 6px 2px 2px',
                   transition: 'height 0.5s ease',
-                  border: idx === 5 ? 'none' : '1px solid var(--glass-border)'
+                  border: '1px solid var(--glass-border)'
                 }}
+                title={`${item.day}: ${item.hours} hrs study (${item.queries || 0} RAG queries)`}
               />
               <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>{item.day}</div>
             </div>
@@ -41,7 +37,20 @@ export function WeeklyStudyChart() {
 }
 
 // Learning Progress Area Trend Chart
-export function LearningProgressChart() {
+export function LearningProgressChart({ weeklyData }) {
+  const { getUserWeeklyData } = useApp();
+  const data = weeklyData || getUserWeeklyData();
+  
+  const maxH = Math.max(3, ...data.map(d => d.hours || 0));
+  const points = data.map((item, idx) => {
+    const x = (idx / Math.max(1, data.length - 1)) * 300;
+    const y = 100 - ((item.hours / maxH) * 75);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  });
+  
+  const pathD = `M0,110 L${points.join(' L')} L300,120 L0,120 Z`;
+  const strokeD = `M${points.join(' L')}`;
+
   return (
     <div style={{ width: '100%', height: '140px', position: 'relative' }}>
       <svg width="100%" height="120" viewBox="0 0 300 120" preserveAspectRatio="none">
@@ -51,8 +60,8 @@ export function LearningProgressChart() {
             <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.0" />
           </linearGradient>
         </defs>
-        <path d="M0,100 Q40,80 80,60 T160,40 T240,25 T300,10 L300,120 L0,120 Z" fill="url(#areaGrad)" />
-        <path d="M0,100 Q40,80 80,60 T160,40 T240,25 T300,10" fill="none" stroke="var(--accent-cyan)" strokeWidth="3" />
+        <path d={pathD} fill="url(#areaGrad)" />
+        <path d={strokeD} fill="none" stroke="var(--accent-cyan)" strokeWidth="3" />
       </svg>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px', fontSize: '0.75rem', color: 'var(--text-dim)' }}>
         <span>Week 1</span>
@@ -65,13 +74,10 @@ export function LearningProgressChart() {
 }
 
 // Weak Topics Breakdown Progress Bars
-export function WeakTopicsList() {
-  const topics = [
-    { name: "Quantum Entanglement Measurement", accuracy: 42, color: "var(--accent-rose)" },
-    { name: "Multi-Head Attention Scaling", accuracy: 58, color: "var(--accent-amber)" },
-    { name: "CAP Theorem Network Partitions", accuracy: 71, color: "var(--accent-purple)" },
-    { name: "Layer Normalization Dynamics", accuracy: 88, color: "var(--accent-emerald)" },
-  ];
+export function WeakTopicsList({ topics: propTopics }) {
+  const { getUserSummaryStats } = useApp();
+  const stats = getUserSummaryStats();
+  const topics = propTopics || stats.weakTopics;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -89,3 +95,4 @@ export function WeakTopicsList() {
     </div>
   );
 }
+

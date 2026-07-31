@@ -118,7 +118,7 @@ export function PricingPage() {
           <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
             <li>✓ Dedicated ChromaDB Cluster</li>
             <li>✓ Role Based Access Control (RBAC)</li>
-            <li>✓ Teacher & Admin Dashboards</li>
+            <li>✓ Student & Admin Dashboards</li>
             <li>✓ Custom LLM API Integration</li>
           </ul>
           <button onClick={() => setCurrentPage('contact')} className="btn-secondary" style={{ width: '100%', justifyContent: 'center' }}>

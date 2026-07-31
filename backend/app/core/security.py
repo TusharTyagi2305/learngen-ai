@@ -9,7 +9,8 @@ def get_password_hash(password: str) -> str:
     """Hash password using PBKDF2 HMAC SHA256 (compatible with Python 3.14)"""
     salt = os.urandom(16)
     pwd_hash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
-    return f"{salt.hex()}:${pwd_hash.hex()}"
+    return f"{salt.hex()}${pwd_hash.hex()}"
+
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     try:

@@ -7,7 +7,9 @@ import {
 import { WeeklyStudyChart, LearningProgressChart } from '../components/Charts';
 
 export function DashboardHome() {
-  const { setCurrentPage, documents, setIsUploadModalOpen, currentRole } = useApp();
+  const { user, setCurrentPage, documents, setIsUploadModalOpen, currentRole, getUserSummaryStats } = useApp();
+  const safeDocs = Array.isArray(documents) ? documents : [];
+  const stats = getUserSummaryStats();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '24px' }}>
@@ -22,10 +24,10 @@ export function DashboardHome() {
         justify: 'space-between'
       }}>
         <div>
-          <span className="badge badge-teal" style={{ marginBottom: '8px' }}>RAG Workspace • Active Persona: {currentRole}</span>
-          <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '6px' }}>Welcome back, Tushar 👋</h1>
+          <span className="badge badge-teal" style={{ marginBottom: '8px', textTransform: 'capitalize' }}>RAG Workspace • Active Persona: {user?.role || currentRole || 'student'}</span>
+          <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '6px' }}>Welcome back, {user?.name || 'Learner'} 👋</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-            Your RAG Vector Vault has <strong>{documents.length} active documents</strong> ready for context-grounded AI learning.
+            Your RAG Vector Vault has <strong>{safeDocs.length} active documents</strong> ready for context-grounded AI learning.
           </p>
         </div>
         <button onClick={() => setIsUploadModalOpen(true)} className="gradient-btn" style={{ padding: '12px 20px' }}>
@@ -62,7 +64,7 @@ export function DashboardHome() {
             <ArrowRight size={16} style={{ color: 'var(--text-dim)' }} />
           </div>
           <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '4px' }}>Document Vault</h3>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{documents.length} Vector Index Collections</p>
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{safeDocs.length} Vector Index Collections</p>
         </div>
 
         <div 
@@ -107,25 +109,38 @@ export function DashboardHome() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Recent Vector Ingested Files</h3>
               <button onClick={() => setCurrentPage('documents')} style={{ background: 'none', border: 'none', color: 'var(--accent-cyan)', fontSize: '0.82rem', cursor: 'pointer' }}>
-                View All ({documents.length}) →
+                View All ({safeDocs.length}) →
               </button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {documents.slice(0, 3).map(doc => (
-                <div key={doc.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <FileText size={20} style={{ color: 'var(--accent-cyan)' }} />
-                    <div>
-                      <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{doc.title}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                        {doc.type} • {doc.size} • {doc.chunksCount} chunks indexed
+              {safeDocs.length === 0 ? (
+                <div style={{ padding: '24px 16px', textAlign: 'center', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)' }}>
+                  <Upload size={28} style={{ color: 'var(--accent-cyan)', marginBottom: '8px' }} />
+                  <div style={{ fontWeight: 600, fontSize: '0.9rem', marginBottom: '4px' }}>No documents in your vault yet</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+                    Upload your lecture notes, PDFs, or research papers to unlock AI RAG Studio chat, quiz synthesis, and 3D flashcards.
+                  </div>
+                  <button onClick={() => setIsUploadModalOpen(true)} className="gradient-btn" style={{ fontSize: '0.8rem', padding: '6px 14px', margin: '0 auto' }}>
+                    Upload First Document
+                  </button>
+                </div>
+              ) : (
+                safeDocs.slice(0, 3).map(doc => (
+                  <div key={doc.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <FileText size={20} style={{ color: 'var(--accent-cyan)' }} />
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{doc.title}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
+                          {doc.type || doc.file_type || 'PDF'} • {doc.size || doc.file_size || '1.2 MB'} • {doc.chunksCount ?? doc.chunks_count ?? 0} chunks indexed
+                        </div>
                       </div>
                     </div>
+                    <span className="badge badge-emerald">{doc.status}</span>
                   </div>
-                  <span className="badge badge-emerald">{doc.status}</span>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
 
@@ -133,7 +148,7 @@ export function DashboardHome() {
           <div className="glass-panel" style={{ padding: '20px', background: 'var(--bg-secondary)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Weekly Study & RAG Query Hours</h3>
-              <span className="badge badge-cyan">33.2 hrs total</span>
+              <span className="badge badge-cyan">{stats.totalStudyHours} hrs total</span>
             </div>
             <WeeklyStudyChart />
           </div>
@@ -146,7 +161,7 @@ export function DashboardHome() {
             <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '12px' }}>Learning Progress Trend</h3>
             <LearningProgressChart />
             <div style={{ marginTop: '16px', padding: '12px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-              🎯 <strong>Daily Study Goal:</strong> 4.5 / 5 hours completed today. Keep up the streak!
+              🎯 <strong>Daily Study Goal:</strong> {stats.todayStudyHours} / 5 hours completed today. Keep up the streak!
             </div>
           </div>
 

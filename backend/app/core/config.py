@@ -12,11 +12,32 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 120
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
+    # Default Super Admin Initialization Settings
+    DEFAULT_ADMIN_EMAIL: str = "admin@learngen.ai"
+    DEFAULT_ADMIN_PASSWORD: str = "ChangeThisPassword123!"
+
     DATABASE_URL: str = "sqlite:///./learngen_ai.db"
     
     UPLOAD_DIR: str = "./uploads"
+    VECTOR_DB_DIR: str = "./vector_db"
     MAX_UPLOAD_SIZE_MB: int = 25
     
+    GEMINI_API_KEY: str = ""
+    GEMINI_MODEL: str = "gemini-1.5-flash"
+    EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
+
+    # SMTP Email & OTP Production Settings
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM_EMAIL: str = ""
+    SMTP_FROM_NAME: str = "LearnGen AI Security"
+    SMTP_TLS: bool = True
+    SMTP_SSL: bool = False
+    OTP_EXPIRE_MINUTES: int = 10
+    OTP_RESEND_COOLDOWN_SECONDS: int = 60
+
     ALLOWED_ORIGINS: List[str] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
@@ -24,9 +45,11 @@ class Settings(BaseSettings):
     ]
 
     class Config:
-        env_file = ".env"
+        env_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), ".env")
         extra = "ignore"
 
 settings = Settings()
 
 os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
+os.makedirs(settings.VECTOR_DB_DIR, exist_ok=True)
+

@@ -1,4 +1,4 @@
-from typing import Generator, Optional
+from typing import Generator, Optional, List
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
@@ -18,27 +18,81 @@ def get_db() -> Generator:
         db.close()
 
 def get_current_user(token: Optional[str] = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
-    if not token:
-        # Fallback for dev mode / seed user if token is missing
-        user = db.query(User).filter(User.email == "tushar@learngen.ai").first()
-        if user:
-            return user
-        raise UnauthorizedException("Authentication token required")
+    """
+    Decodes bearer JWT token and retrieves authenticated active user.
+    Strictly rejects unauthenticated or invalid tokens.
+    """
+    if token:
+        try:
+            payload = decode_token(token)
+            if payload and payload.get("type") == "access":
+                user_id = payload.get("sub")
+                user = db.query(User).filter(User.id == user_id, User.is_active == True).first()
+                if user:
+                    return user
+        except Exception:
+            pass
 
-    payload = decode_token(token)
-    if not payload or payload.get("type") != "access":
-        raise UnauthorizedException("Invalid or expired access token")
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Authentication token required",
+        headers={"WWW-Authenticate": "Bearer"}
+    )
 
-    user_id = payload.get("sub")
-    user = db.query(User).filter(User.id == user_id, User.is_active == True).first()
-    if not user:
-        raise UnauthorizedException("User account not found or deactivated")
-
-    return user
-
-def require_role(allowed_roles: list[str]):
+def require_role(allowed_roles: List[str]):
+    """
+    RBAC dependency requiring current user to have one of allowed_roles (or super_admin).
+    """
     def role_checker(current_user: User = Depends(get_current_user)) -> User:
+        if current_user.is_super_admin or current_user.role == "super_admin":
+            return current_user
         if current_user.role not in allowed_roles:
-            raise ForbiddenException(f"Action requires one of these roles: {allowed_roles}")
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Forbidden: Action requires one of these roles: {allowed_roles}"
+            )
         return current_user
     return role_checker
+
+def require_permission(permission_name: str):
+    """
+    RBAC dependency requiring specific permission string (or super_admin).
+    """
+    def permission_checker(current_user: User = Depends(get_current_user)) -> User:
+        if current_user.is_super_admin or current_user.role == "super_admin":
+            return current_user
+        
+        user_perms = current_user.permissions or []
+        if isinstance(user_perms, list) and ("*" in user_perms or permission_name in user_perms):
+            return current_user
+            
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Forbidden: Required permission '{permission_name}' not granted"
+        )
+    return permission_checker
+
+def get_current_admin_user(current_user: User = Depends(get_current_user)) -> User:
+    """
+    Requires authenticated user to be Admin or Super Admin.
+    """
+    if current_user.is_super_admin or current_user.role in ["admin", "super_admin"]:
+        return current_user
+    
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="Forbidden: Admin access required"
+    )
+
+def require_super_admin(current_user: User = Depends(get_current_user)) -> User:
+    """
+    Requires authenticated user to be Super Admin strictly.
+    """
+    if current_user.is_super_admin or current_user.role == "super_admin":
+        return current_user
+        
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="Forbidden: Super Admin privileges required"
+    )
+

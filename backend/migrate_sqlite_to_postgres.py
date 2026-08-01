@@ -98,7 +98,13 @@ def run_migration(sqlite_path: str = "learngen_ai_backup.db", target_url: str = 
             target_table = pg_metadata.tables[t_name]
             insert_dicts = []
             for row in rows:
-                insert_dicts.append(dict(row))
+                r_dict = dict(row)
+                if t_name == "users":
+                    if r_dict.get("is_super_admin") is None:
+                        r_dict["is_super_admin"] = False
+                    if r_dict.get("is_active") is None:
+                        r_dict["is_active"] = True
+                insert_dicts.append(r_dict)
 
             pg_transaction_conn.execute(target_table.insert(), insert_dicts)
             print(f"  [+] Migrated {len(insert_dicts)} records into PostgreSQL table '{t_name}'")

@@ -66,7 +66,7 @@ class EmailService:
 
         msg = MIMEMultipart("alternative")
         msg["Subject"] = subject
-        msg["From"] = f"{from_name} <{from_email}>"
+        msg["From"] = f"{from_name} <{smtp_user}>"
         msg["To"] = recipient_email
         msg["X-Priority"] = "1"
         msg["X-MSMail-Priority"] = "High"
@@ -86,7 +86,9 @@ class EmailService:
             smtp_user = (settings.SMTP_USER or "").strip()
             smtp_password = (settings.SMTP_PASSWORD or "").replace(" ", "").strip()
             server.login(smtp_user, smtp_password)
-            server.sendmail(from_email, [recipient_email], msg.as_string())
+            print("[SMTP] Login successful")
+            server.sendmail(smtp_user, [recipient_email], msg.as_string())
+            print("[SMTP] Email sent")
             server.quit()
             print(f"[SMTP SUCCESS] High-priority OTP email delivered to {recipient_email}")
             return True

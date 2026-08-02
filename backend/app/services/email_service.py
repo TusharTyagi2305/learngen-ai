@@ -83,7 +83,9 @@ class EmailService:
                 if settings.SMTP_TLS:
                     server.starttls()
 
-            server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
+            smtp_user = (settings.SMTP_USER or "").strip()
+            smtp_password = (settings.SMTP_PASSWORD or "").replace(" ", "").strip()
+            server.login(smtp_user, smtp_password)
             server.sendmail(from_email, [recipient_email], msg.as_string())
             server.quit()
             print(f"[SMTP SUCCESS] High-priority OTP email delivered to {recipient_email}")

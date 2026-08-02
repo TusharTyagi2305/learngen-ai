@@ -63,10 +63,11 @@ class EmailService:
         """
 
         text_content = f"LearnGen AI Verification Code: {otp_code}\nExpires in {settings.OTP_EXPIRE_MINUTES} minutes."
-
+       smtp_user = (settings.SMTP_USER or "").strip()
+smtp_password = (settings.SMTP_PASSWORD or "").replace(" ", "").strip()
         msg = MIMEMultipart("alternative")
         msg["Subject"] = subject
-        msg["From"] = f"{from_name} <{smtp_user}>"
+        msg["From"] = f"{from_name} <{from_email}>"
         msg["To"] = recipient_email
         msg["X-Priority"] = "1"
         msg["X-MSMail-Priority"] = "High"
@@ -83,8 +84,7 @@ class EmailService:
                 if settings.SMTP_TLS:
                     server.starttls()
 
-            smtp_user = (settings.SMTP_USER or "").strip()
-            smtp_password = (settings.SMTP_PASSWORD or "").replace(" ", "").strip()
+           
             server.login(smtp_user, smtp_password)
             print("[SMTP] Login successful")
             server.sendmail(smtp_user, [recipient_email], msg.as_string())

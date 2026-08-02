@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../services/appState';
-import { Brain, Moon, Sun, ArrowRight, Sparkles } from 'lucide-react';
+import { Brain, Moon, Sun, ArrowRight, Sparkles, Menu, X } from 'lucide-react';
 
 export function Navbar() {
   const { currentPage, setCurrentPage, theme, toggleTheme } = useApp();
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isPublicPage = ['landing', 'features', 'about', 'pricing', 'contact', 'login', 'register', 'forgot-password'].includes(currentPage);
   if (!isPublicPage) return null;
@@ -39,6 +40,7 @@ export function Navbar() {
 
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
+    setIsMobileMenuOpen(false);
     if (currentPage !== 'landing') {
       setCurrentPage('landing');
       setTimeout(() => {
@@ -52,7 +54,7 @@ export function Navbar() {
   };
 
   return (
-    <header style={{
+    <header className="navbar-container" style={{
       position: 'fixed',
       top: 0,
       left: 0,
@@ -61,14 +63,14 @@ export function Navbar() {
       width: '100%',
       padding: isScrolled ? '12px 28px' : '18px 28px',
       background: theme === 'dark' 
-        ? (isScrolled ? 'rgba(11, 15, 23, 0.35)' : 'rgba(11, 15, 23, 0.15)') 
-        : (isScrolled ? 'rgba(255, 255, 255, 0.45)' : 'rgba(255, 255, 255, 0.2)'),
-      backdropFilter: 'blur(12px)',
-      WebkitBackdropFilter: 'blur(12px)',
+        ? (isScrolled ? 'rgba(11, 15, 23, 0.85)' : 'rgba(11, 15, 23, 0.45)') 
+        : (isScrolled ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.5)'),
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
       borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
     }}>
-      <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
         
         {/* Brand Logo */}
         <div 
@@ -86,8 +88,8 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Sheer Navigation Options with Active State */}
-        <nav style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
+        {/* Desktop Navigation Options */}
+        <nav className="desktop-only-flex" style={{ gap: '28px', alignItems: 'center' }}>
           {[
             { id: 'home', label: 'Home' },
             { id: 'features', label: 'Features' },
@@ -116,7 +118,7 @@ export function Navbar() {
         </nav>
 
         {/* Right Action Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button 
             onClick={toggleTheme} 
             className="btn-secondary" 
@@ -127,21 +129,84 @@ export function Navbar() {
           </button>
 
           <button 
-            onClick={() => setCurrentPage('login')} 
-            className="btn-secondary"
+            onClick={() => { setCurrentPage('login'); setIsMobileMenuOpen(false); }} 
+            className="btn-secondary desktop-only-flex"
             style={{ background: 'rgba(255, 255, 255, 0.08)' }}
           >
             Sign In
           </button>
 
           <button 
-            onClick={() => setCurrentPage('dashboard')} 
-            className="gradient-btn"
+            onClick={() => { setCurrentPage('dashboard'); setIsMobileMenuOpen(false); }} 
+            className="gradient-btn desktop-only-flex"
+            style={{ padding: '8px 16px', fontSize: '0.85rem' }}
           >
             <Sparkles size={16} /> Open Workspace <ArrowRight size={16} />
           </button>
+
+          {/* Mobile Menu Toggle Button */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(prev => !prev)} 
+            className="btn-secondary mobile-only-flex"
+            style={{ padding: '8px' }}
+          >
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
 
+        {/* Mobile Dropdown Navigation Drawer */}
+        {isMobileMenuOpen && (
+          <div className="animate-fade-in" style={{
+            width: '100%',
+            marginTop: '16px',
+            padding: '16px 0 8px',
+            borderTop: '1px solid var(--glass-border)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px'
+          }}>
+            {[
+              { id: 'home', label: 'Home' },
+              { id: 'features', label: 'Features' },
+              { id: 'architecture', label: 'Architecture' },
+              { id: 'pricing', label: 'Pricing' },
+              { id: 'contact', label: 'Contact' },
+            ].map(nav => (
+              <button 
+                key={nav.id}
+                onClick={() => scrollToSection(nav.id)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  textAlign: 'left',
+                  color: activeSection === nav.id ? 'var(--accent-cyan)' : 'var(--text-main)',
+                  fontWeight: activeSection === nav.id ? 700 : 500,
+                  fontSize: '1rem',
+                  padding: '8px 12px'
+                }}
+              >
+                {nav.label}
+              </button>
+            ))}
+
+            <div style={{ display: 'flex', gap: '10px', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid var(--glass-border)' }}>
+              <button 
+                onClick={() => { setCurrentPage('login'); setIsMobileMenuOpen(false); }} 
+                className="btn-secondary"
+                style={{ flex: 1, justifyContent: 'center' }}
+              >
+                Sign In
+              </button>
+              <button 
+                onClick={() => { setCurrentPage('dashboard'); setIsMobileMenuOpen(false); }} 
+                className="gradient-btn"
+                style={{ flex: 1, justifyContent: 'center', fontSize: '0.85rem' }}
+              >
+                <Sparkles size={16} /> Open Workspace
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );

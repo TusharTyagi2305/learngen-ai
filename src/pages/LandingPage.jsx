@@ -214,7 +214,7 @@ export function LandingPage() {
             <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', marginLeft: '12px' }}>LearnGen AI RAG Studio — Document Grounded Context</span>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '16px', background: 'rgba(11, 15, 23, 0.55)', padding: '20px', borderRadius: 'var(--radius-md)' }}>
+          <div className="grid-responsive-chat" style={{ background: 'rgba(11, 15, 23, 0.55)', padding: '20px', borderRadius: 'var(--radius-md)' }}>
             {/* Left Doc Sidebar */}
             <div style={{ background: 'rgba(15, 23, 42, 0.6)', padding: '14px', borderRadius: 'var(--radius-sm)' }}>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginBottom: '8px', textTransform: 'uppercase' }}>Indexed Document Vault</div>
@@ -248,7 +248,7 @@ export function LandingPage() {
 
       {/* STATS BANNER */}
       <section style={{ padding: '40px 24px', background: 'rgba(15, 23, 42, 0.35)', backdropFilter: 'blur(10px)', borderTop: '1px solid var(--glass-border)', borderBottom: '1px solid var(--glass-border)', textAlign: 'center' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+        <div className="grid-responsive-4" style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div>
             <div style={{ fontSize: '2.6rem', fontWeight: 800, color: 'var(--accent-cyan)', textShadow: '0 2px 10px rgba(0,0,0,0.6)' }}>100K+</div>
             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Target Architecture Capacity</div>

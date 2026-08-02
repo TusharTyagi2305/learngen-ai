@@ -1080,7 +1080,7 @@ export function AdminDashboardPage() {
             <Sliders size={20} style={{ color: 'var(--accent-blue)' }} /> RAG Hyperparameter Tuning
           </h3>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '28px' }}>
+          <div className="grid-responsive-2">
             <div>
               <label style={{ fontSize: '0.9rem', fontWeight: 600 }}>Chunk Size: {ragConfig.chunkSize} tokens</label>
               <input type="range" min="128" max="2048" step="128" value={ragConfig.chunkSize} onChange={(e) => setRagConfig(p => ({ ...p, chunkSize: Number(e.target.value) }))} style={{ width: '100%' }} />

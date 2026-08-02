@@ -123,7 +123,7 @@ function AppContent() {
 
   return (
     <ErrorBoundary>
-      <div style={{ display: 'flex', minHeight: '100vh', width: '100vw', overflowX: 'hidden', position: 'relative', background: 'transparent' }}>
+      <div className="app-layout-shell">
         
         {/* 3D Animated Scroll Background - Home Page Only */}
         {currentPage === 'landing' && <BackgroundCanvas />}
@@ -132,7 +132,7 @@ function AppContent() {
         {!isPublicPage && <Sidebar />}
 
         {/* Main Content Area */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh', marginLeft: isPublicPage ? 0 : '260px', background: 'transparent', position: 'relative', zIndex: 10 }}>
+        <div className={`main-content-layout ${!isPublicPage ? 'has-sidebar' : ''}`}>
           {/* Public Header Navbar */}
           {isPublicPage && <Navbar />}
 
@@ -140,7 +140,7 @@ function AppContent() {
           {!isPublicPage && <TopBar />}
 
           {/* Page Content View */}
-          <main style={{ flex: 1, paddingBottom: '32px' }}>
+          <main className="page-padding" style={{ flex: 1, paddingBottom: '32px' }}>
             {renderCurrentPage()}
           </main>
         </div>

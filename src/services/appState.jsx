@@ -118,8 +118,11 @@ export function AppProvider({ children }) {
 
   const [currentPage, setCurrentPageState] = useState(() => getPageFromLocation());
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const setCurrentPage = (page) => {
     setCurrentPageState(page);
+    setIsMobileMenuOpen(false);
     try {
       localStorage.setItem('learngen_current_page', page);
       const targetPath = pageToPathMap[page] || '/';
@@ -478,6 +481,7 @@ export function AppProvider({ children }) {
     <AppContext.Provider value={{
       currentPage, setCurrentPage,
       adminActiveTab, setAdminActiveTab,
+      isMobileMenuOpen, setIsMobileMenuOpen,
       theme, toggleTheme,
       user, setUser, updateUserProfile, loginUser, logoutUser,
       registeredAccounts, registerAccount, loginWithCredentials,

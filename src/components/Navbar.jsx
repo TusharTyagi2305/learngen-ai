@@ -3,10 +3,20 @@ import { useApp } from '../services/appState';
 import { Brain, Moon, Sun, ArrowRight, Sparkles, Menu, X } from 'lucide-react';
 
 export function Navbar() {
-  const { currentPage, setCurrentPage, theme, toggleTheme } = useApp();
+  const { currentPage, setCurrentPage, theme, toggleTheme, user, showToast } = useApp();
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleOpenWorkspace = () => {
+    setIsMobileMenuOpen(false);
+    if (!user) {
+      if (showToast) showToast('🔒 Please Sign Up or Sign In first to access your Workspace.', 'info');
+      setCurrentPage('register');
+    } else {
+      setCurrentPage('dashboard');
+    }
+  };
 
   const isPublicPage = ['landing', 'features', 'about', 'pricing', 'contact', 'login', 'register', 'forgot-password'].includes(currentPage);
   if (!isPublicPage) return null;
@@ -137,7 +147,7 @@ export function Navbar() {
           </button>
 
           <button 
-            onClick={() => { setCurrentPage('dashboard'); setIsMobileMenuOpen(false); }} 
+            onClick={handleOpenWorkspace} 
             className="gradient-btn desktop-only-flex"
             style={{ padding: '8px 16px', fontSize: '0.85rem' }}
           >
@@ -198,7 +208,7 @@ export function Navbar() {
                 Sign In
               </button>
               <button 
-                onClick={() => { setCurrentPage('dashboard'); setIsMobileMenuOpen(false); }} 
+                onClick={handleOpenWorkspace} 
                 className="gradient-btn"
                 style={{ flex: 1, justifyContent: 'center', fontSize: '0.85rem' }}
               >

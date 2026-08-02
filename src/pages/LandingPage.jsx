@@ -298,7 +298,7 @@ export function LandingPage() {
                 {/* PREV ATTACHED PAGE */}
                 <div 
                   onClick={() => { setFeatureDir('prev'); setFeatureIdx(pIdx); }}
-                  className="glass-card" 
+                  className="glass-card desktop-only-block" 
                   style={{
                     flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
                     borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
@@ -322,12 +322,12 @@ export function LandingPage() {
                   key={`feat-${cSlide.id}-${featureDir}`}
                   className={`glass-card ${featureDir === 'next' ? 'animate-slide-next' : 'animate-slide-prev'}`}
                   style={{
-                    flex: '1 1 640px', maxWidth: '660px', padding: '42px', background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(24px)',
+                    flex: '1 1 640px', width: '100%', maxWidth: '660px', padding: '32px 24px', background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(24px)',
                     borderColor: cSlide.color, boxShadow: `0 25px 60px -10px ${cSlide.bgIcon}`,
-                    transform: 'perspective(1000px) rotateY(0deg) scale(1.04)', zIndex: 20
+                    transform: 'none', zIndex: 20
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '8px' }}>
                     <div style={{ background: cSlide.bgIcon, padding: '14px', borderRadius: '14px', color: cSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <CIcon size={32} />
                     </div>
@@ -336,8 +336,8 @@ export function LandingPage() {
                       <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 600 }}>Page {cIdx + 1} of {featureSlides.length}</span>
                     </div>
                   </div>
-                  <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '14px', color: '#ffffff' }}>{cSlide.title}</h3>
-                  <p style={{ color: 'var(--text-main)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '20px' }}>{cSlide.description}</p>
+                  <h3 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '14px', color: '#ffffff' }}>{cSlide.title}</h3>
+                  <p style={{ color: 'var(--text-main)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '20px' }}>{cSlide.description}</p>
                   <div style={{ padding: '14px 18px', background: 'rgba(30, 41, 59, 0.75)', borderRadius: 'var(--radius-sm)', borderLeft: `4px solid ${cSlide.color}`, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
                     ⚡ <strong>Architect Spec:</strong> {cSlide.detail}
                   </div>
@@ -346,7 +346,7 @@ export function LandingPage() {
                 {/* NEXT ATTACHED PAGE */}
                 <div 
                   onClick={() => { setFeatureDir('next'); setFeatureIdx(nIdx); }}
-                  className="glass-card" 
+                  className="glass-card desktop-only-block" 
                   style={{
                     flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
                     borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,

@@ -20,7 +20,37 @@ export function Sidebar() {
 
   const currentRoleNormalized = (user?.role || userRole || 'student').toLowerCase();
   const isAdminUser = currentRoleNormalized === 'admin' || currentRoleNormalized === 'super_admin' || user?.is_super_admin;
-  const isAdminPage = currentPage === 'admin-dashboard';
+  const userNavItems = [
+    ...(isAdminUser ? [{ id: 'admin-dashboard', label: 'Admin Control Panel', icon: Shield, badge: 'ADMIN', isAdminBadge: true }] : []),
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'documents', label: 'Document Vault', icon: FileText, badge: 'RAG' },
+    { id: 'ai-chat', label: 'AI RAG Studio', icon: MessageSquare, badge: 'Live' },
+    { id: 'quiz-generator', label: 'Quiz Generator', icon: HelpCircle },
+    { id: 'flashcards', label: '3D Flashcards', icon: Layers },
+    { id: 'study-planner', label: 'Study Planner', icon: Calendar },
+    { id: 'research-assistant', label: 'Research Assistant', icon: Microscope },
+    { id: 'progress-dashboard', label: 'Analytics & Progress', icon: BarChart3 },
+    { id: 'profile', label: 'User Profile', icon: User },
+    { id: 'settings', label: 'Settings', icon: Settings },
+  ];
+
+  const adminNavItems = [
+    { id: 'overview', label: 'Dashboard Overview', icon: BarChart3 },
+    { id: 'documents', label: 'Document Analytics', icon: FileText },
+    { id: 'vector', label: 'Vector DB Analytics', icon: Database },
+    { id: 'rag', label: 'AI RAG Analytics', icon: Bot },
+    { id: 'chat', label: 'Chat Analytics', icon: MessageSquare },
+    { id: 'quizzes', label: 'Quiz & Flashcards', icon: HelpCircle },
+    { id: 'health', label: 'System Health', icon: Server },
+    { id: 'db_monitor', label: 'Database Monitor', icon: HardDrive },
+    { id: 'vector_exp', label: 'Vector Explorer', icon: Layers },
+    { id: 'users', label: 'User Management', icon: Users },
+    { id: 'files', label: 'File Manager', icon: Folder },
+    { id: 'logs', label: 'System Logs', icon: Terminal },
+    { id: 'api_monitor', label: 'API Monitor', icon: Activity },
+    { id: 'settings', label: 'Hyperparameters', icon: Sliders },
+    { id: 'backup', label: 'Backup & Recovery', icon: Archive }
+  ];
 
   return (
     <>

@@ -116,15 +116,12 @@ def register_user(request: UserRegister, background_tasks: BackgroundTasks, db: 
             db.commit()
 
     # Generate & send OTP via SMTP asynchronously
-    otp_code = generate_and_send_otp(email=email_clean, db=db, background_tasks=background_tasks)
-    is_smtp_live = email_service.validate_smtp_config()
-
-    msg = f"Verification code sent to {email_clean}. Check your email inbox!" if is_smtp_live else f"Verification code generated! OTP: {otp_code}"
+    generate_and_send_otp(email=email_clean, db=db, background_tasks=background_tasks)
 
     return ApiResponse(
         success=True,
-        message=msg,
-        data={"email": email_clean, "demo_otp": otp_code if not is_smtp_live else None}
+        message=f"Verification code sent to {email_clean}. Please check your email inbox.",
+        data={"email": email_clean}
     )
 
 @router.post("/resend-otp", response_model=ApiResponse)
@@ -137,15 +134,12 @@ def resend_otp(payload: OTPResendRequest, background_tasks: BackgroundTasks, db:
     if user.is_active:
         raise BadRequestException("This account is already active. Please sign in.")
 
-    otp_code = generate_and_send_otp(email=email_clean, db=db, background_tasks=background_tasks)
-    is_smtp_live = email_service.validate_smtp_config()
-
-    msg = f"A new verification code has been sent to {email_clean}." if is_smtp_live else f"New verification code generated! OTP: {otp_code}"
+    generate_and_send_otp(email=email_clean, db=db, background_tasks=background_tasks)
 
     return ApiResponse(
         success=True,
-        message=msg,
-        data={"email": email_clean, "demo_otp": otp_code if not is_smtp_live else None}
+        message=f"A new verification OTP code has been sent to {email_clean}.",
+        data={"email": email_clean}
     )
 
 @router.post("/verify-otp", response_model=ApiResponse)

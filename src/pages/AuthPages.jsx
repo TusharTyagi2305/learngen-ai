@@ -87,14 +87,10 @@ export function AuthPages() {
 
       setIsOtpView(true);
       setCooldownSeconds(60);
-      const otpToUse = res?.data?.demo_otp || res?.data?.otp_code || '123456';
-      setEnteredOtp(otpToUse);
-      showToast(`🔑 Verification OTP generated: ${otpToUse} (Auto-filled below)`, 'info');
+      setEnteredOtp('');
+      showToast(res?.message || `📩 Verification code sent to ${emailClean}. Please check your email inbox!`, 'info');
     } catch (err) {
-      // Fallback: activate account in local AppState vault if backend is offline/unreachable
-      registerAccount({ email: emailClean, password: password, name: fullName.trim(), role: roleState.toLowerCase() });
-      showToast(`Account created & activated! Welcome to LearnGen AI`, 'success');
-      setCurrentPage('dashboard');
+      setAuthError(err.message || 'Error sending verification code.');
     } finally {
       setLoading(false);
     }
@@ -105,14 +101,17 @@ export function AuthPages() {
     e.preventDefault();
     setAuthError('');
 
-    const otpCodeToSubmit = enteredOtp.trim() || '123456';
+    if (!enteredOtp.trim() || enteredOtp.trim().length !== 6) {
+      setAuthError('Please enter the 6-digit OTP code sent to your email.');
+      return;
+    }
 
     setLoading(true);
     const emailClean = email.toLowerCase().trim();
     try {
       const res = await api.verifyOtp({
         email: emailClean,
-        otp_code: otpCodeToSubmit
+        otp_code: enteredOtp.trim()
       });
 
       if (res?.data?.access_token) {
@@ -130,16 +129,7 @@ export function AuthPages() {
       showToast('🎉 Email verified successfully! Welcome to LearnGen AI.', 'success');
       setCurrentPage('dashboard');
     } catch (err) {
-      // Fallback: activate account locally if backend verification fails
-      registerAccount({
-        email: emailClean,
-        password: password,
-        name: fullName.trim(),
-        role: roleState.toLowerCase()
-      });
-
-      showToast('🎉 Account activated & logged in successfully!', 'success');
-      setCurrentPage('dashboard');
+      setAuthError(err.message || 'Failed to verify OTP code.');
     } finally {
       setLoading(false);
     }
@@ -347,19 +337,19 @@ export function AuthPages() {
           /* VIEW 2: OTP EMAIL VERIFICATION SCREEN */
           <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
             
-            {/* Verification OTP Display Banner */}
+            {/* Email Dispatch Notice Banner */}
             <div className="glass-panel" style={{ 
               padding: '16px', 
-              background: 'rgba(6, 182, 212, 0.12)', 
-              borderColor: 'var(--accent-cyan)',
+              background: 'rgba(6, 182, 212, 0.08)', 
+              borderColor: 'rgba(6, 182, 212, 0.3)',
               borderRadius: 'var(--radius-sm)',
               textAlign: 'center'
             }}>
-              <div style={{ fontSize: '0.88rem', color: 'var(--accent-cyan)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                <Key size={18} /> Verification Code: <span style={{ fontSize: '1.4rem', letterSpacing: '4px', color: '#ffffff', background: 'var(--accent-cyan)', padding: '2px 12px', borderRadius: '6px', fontFamily: 'monospace' }}>{enteredOtp || '123456'}</span>
+              <div style={{ fontSize: '0.82rem', color: 'var(--accent-cyan)', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                <Mail size={16} /> Check Your Email Inbox
               </div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '8px', lineHeight: 1.4 }}>
-                OTP Code is auto-filled below! Click button to launch your Workspace.
+              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '6px', lineHeight: 1.4 }}>
+                We dispatched a 6-digit verification code to <strong style={{ color: '#fff' }}>{email}</strong>. Code expires in 10 minutes.
               </div>
             </div>
 

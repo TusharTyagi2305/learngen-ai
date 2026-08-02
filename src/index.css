@@ -65,12 +65,19 @@ body.light {
   padding: 0;
 }
 
+html, body, #root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-main);
   font-family: var(--font-sans);
   min-height: 100vh;
-  overflow-x: hidden;
   line-height: 1.5;
   transition: background-color 0.3s ease, color 0.3s ease;
 }

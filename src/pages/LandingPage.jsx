@@ -407,7 +407,9 @@ export function LandingPage() {
 
           const PIcon = pSlide.icon;
           const CIcon = cSlide.icon;
-                 return (
+          const NIcon = nSlide.icon;
+
+          return (
             <div style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '100%', perspective: '1200px', position: 'relative', padding: '10px 0' }}>
                 

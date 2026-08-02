@@ -16,20 +16,10 @@ from typing import List, Dict, Any, Optional
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("RAG_Engine")
 
-try:
-    import chromadb
-    HAS_CHROMADB = True
-except ImportError:
-    HAS_CHROMADB = False
-
-try:
-    from sentence_transformers import SentenceTransformer
-    HAS_SENTENCE_TRANSFORMERS = True
-except ImportError:
-    HAS_SENTENCE_TRANSFORMERS = False
-
 import importlib.util
 
+HAS_CHROMADB = importlib.util.find_spec("chromadb") is not None
+HAS_SENTENCE_TRANSFORMERS = importlib.util.find_spec("sentence_transformers") is not None
 HAS_GEMINI = importlib.util.find_spec("google.genai") is not None or importlib.util.find_spec("google.generativeai") is not None
 genai_sdk = "genai" if importlib.util.find_spec("google.genai") is not None else ("generativeai" if importlib.util.find_spec("google.generativeai") is not None else None)
 genai = None
@@ -197,16 +187,21 @@ class DocumentChunkingService:
 
 class EmbeddingService:
     def __init__(self):
-        self.model = None
+        self._model = None
 
     def _get_model(self):
-        if self.model is None:
+        if self._model is None:
             if not HAS_SENTENCE_TRANSFORMERS:
                 raise RuntimeError("sentence-transformers package is missing. Real dense embeddings are required.")
             model_name = getattr(settings, "EMBEDDING_MODEL", "all-MiniLM-L6-v2")
-            logger.info(f"[DEBUG RAG] Loading Embedding Model: {model_name}")
-            self.model = SentenceTransformer(model_name)
-        return self.model
+            logger.info(f"[LazyLoad RAG] Loading SentenceTransformer Embedding Model: '{model_name}' on first RAG request")
+            from sentence_transformers import SentenceTransformer
+            self._model = SentenceTransformer(model_name)
+        return self._model
+
+    @property
+    def model(self):
+        return self._get_model()
 
     def generate_embeddings(self, text_chunks: List[str]) -> List[List[float]]:
         if not text_chunks:
@@ -218,33 +213,45 @@ class EmbeddingService:
 
 class VectorStoreService:
     def __init__(self):
-        self.client = None
-        self.collection = None
+        self._client = None
+        self._collection = None
         self._memory_store: Dict[str, Dict[str, Any]] = {}
-        self._init_db()
+        self._initialized = False
 
-    def _init_db(self):
-        if HAS_CHROMADB:
-            try:
-                os.makedirs(settings.VECTOR_DB_DIR, exist_ok=True)
-                self.client = chromadb.PersistentClient(path=settings.VECTOR_DB_DIR)
-                self.collection = self.client.get_or_create_collection(
-                    name="learngen_vector_vault",
-                    metadata={"hnsw:space": "cosine"}
-                )
-                logger.info(f"[DEBUG RAG] Persistent ChromaDB collection initialized at '{settings.VECTOR_DB_DIR}'")
-            except Exception as e:
-                logger.warning(f"[DEBUG RAG] ChromaDB init fallback: {e}")
-                self.client = None
-                self.collection = None
+    def _get_collection(self):
+        if not self._initialized:
+            self._initialized = True
+            if HAS_CHROMADB:
+                try:
+                    os.makedirs(settings.VECTOR_DB_DIR, exist_ok=True)
+                    import chromadb
+                    logger.info(f"[LazyLoad RAG] Initializing Persistent ChromaDB client at '{settings.VECTOR_DB_DIR}' on first RAG request")
+                    self._client = chromadb.PersistentClient(path=settings.VECTOR_DB_DIR)
+                    self._collection = self._client.get_or_create_collection(
+                        name="learngen_vector_vault",
+                        embedding_function=None,
+                        metadata={"hnsw:space": "cosine"}
+                    )
+                except Exception as e:
+                    logger.warning(f"[LazyLoad RAG] ChromaDB init fallback: {e}")
+                    self._client = None
+                    self._collection = None
+        return self._collection
+
+    @property
+    def client(self):
+        self._get_collection()
+        return self._client
+
+    @property
+    def collection(self):
+        return self._get_collection()
 
     def purge_document(self, doc_id: str) -> bool:
-        """
-        Removes any stale embeddings for doc_id prior to re-ingestion.
-        """
-        if self.collection is not None:
+        col = self._get_collection()
+        if col is not None:
             try:
-                self.collection.delete(where={"doc_id": doc_id})
+                col.delete(where={"doc_id": doc_id})
                 logger.info(f"[DEBUG RAG] Purged stale ChromaDB vectors for document '{doc_id}'")
             except Exception as e:
                 logger.warning(f"[DEBUG RAG] Delete ChromaDB error: {e}")
@@ -260,14 +267,15 @@ class VectorStoreService:
 
         # Purge stale embeddings first to guarantee clean re-ingestion
         self.purge_document(doc_id)
+        col = self._get_collection()
 
-        if self.collection is not None:
+        if col is not None:
             try:
                 ids = [c["id"] for c in chunks]
                 texts = [c["text"] for c in chunks]
                 metadatas = [c["metadata"] for c in chunks]
                 
-                self.collection.upsert(
+                col.upsert(
                     ids=ids,
                     documents=texts,
                     embeddings=embeddings,
@@ -298,8 +306,9 @@ class VectorStoreService:
         top_k: int = 5
     ) -> List[Dict[str, Any]]:
         results = []
+        col = self._get_collection()
 
-        if self.collection is not None:
+        if col is not None:
             try:
                 where_clause = None
                 if doc_id and user_id:
@@ -309,7 +318,7 @@ class VectorStoreService:
                 elif user_id:
                     where_clause = {"user_id": user_id}
 
-                res = self.collection.query(
+                res = col.query(
                     query_embeddings=[query_embedding],
                     n_results=min(top_k, 25),
                     where=where_clause
@@ -317,7 +326,7 @@ class VectorStoreService:
                 
                 # Resilient Fallback: If 0 results with user_id filter, query all vector documents
                 if not (res and res.get("documents") and res["documents"][0]) and where_clause:
-                    res = self.collection.query(
+                    res = col.query(
                         query_embeddings=[query_embedding],
                         n_results=min(top_k, 25)
                     )
@@ -424,26 +433,40 @@ class LLMService:
     def __init__(self):
         self.api_key = settings.GEMINI_API_KEY or os.environ.get("GEMINI_API_KEY", "")
         self.model_name = getattr(settings, "GEMINI_MODEL", "gemini-1.5-flash")
-        self.client = None
-        self.gemini_model = None
-        self._init_gemini()
+        self._client = None
+        self._gemini_model = None
+        self._initialized = False
 
     def _init_gemini(self):
-        global genai
+        if self._initialized:
+            return
+        self._initialized = True
         if HAS_GEMINI and self.api_key:
             try:
                 if genai_sdk == "genai":
                     from google import genai
-                    self.client = genai.Client(api_key=self.api_key)
+                    self._client = genai.Client(api_key=self.api_key)
                 elif genai_sdk == "generativeai":
                     import google.generativeai as genai
                     genai.configure(api_key=self.api_key)
-                    self.gemini_model = genai.GenerativeModel(self.model_name)
-                logger.info(f"[DEBUG RAG] Gemini SDK ('{genai_sdk}') initialized with model '{self.model_name}'")
+                    self._gemini_model = genai.GenerativeModel(self.model_name)
+                logger.info(f"[LazyLoad RAG] Gemini SDK ('{genai_sdk}') initialized with model '{self.model_name}' on first request")
             except Exception as e:
-                logger.warning(f"[DEBUG RAG] Gemini init exception: {e}")
-                self.client = None
-                self.gemini_model = None
+                logger.warning(f"[LazyLoad RAG] Gemini init exception: {e}")
+                self._client = None
+                self._gemini_model = None
+
+    @property
+    def client(self):
+        if not self._initialized:
+            self._init_gemini()
+        return self._client
+
+    @property
+    def gemini_model(self):
+        if not self._initialized:
+            self._init_gemini()
+        return self._gemini_model
 
     def generate_grounded(self, query: str, matches: List[Dict[str, Any]], external_mode: bool = False) -> Dict[str, Any]:
         """

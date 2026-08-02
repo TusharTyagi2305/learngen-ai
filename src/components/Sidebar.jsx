@@ -11,6 +11,7 @@ export function Sidebar() {
   const { 
     user, currentPage, setCurrentPage, 
     adminActiveTab, setAdminActiveTab,
+    isMobileMenuOpen, setIsMobileMenuOpen,
     userRole, setIsUploadModalOpen, logoutUser 
   } = useApp();
 
@@ -21,63 +22,37 @@ export function Sidebar() {
   const isAdminUser = currentRoleNormalized === 'admin' || currentRoleNormalized === 'super_admin' || user?.is_super_admin;
   const isAdminPage = currentPage === 'admin-dashboard';
 
-  const userNavItems = [
-    ...(isAdminUser ? [{ id: 'admin-dashboard', label: 'Admin Control Panel', icon: Shield, badge: 'ADMIN', isAdminBadge: true }] : []),
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'documents', label: 'Document Vault', icon: FileText, badge: 'RAG' },
-    { id: 'ai-chat', label: 'AI RAG Studio', icon: MessageSquare, badge: 'Live' },
-    { id: 'quiz-generator', label: 'Quiz Generator', icon: HelpCircle },
-    { id: 'flashcards', label: '3D Flashcards', icon: Layers },
-    { id: 'study-planner', label: 'Study Planner', icon: Calendar },
-    { id: 'research-assistant', label: 'Research Assistant', icon: Microscope },
-    { id: 'progress-dashboard', label: 'Analytics & Progress', icon: BarChart3 },
-    { id: 'profile', label: 'User Profile', icon: User },
-    { id: 'settings', label: 'Settings', icon: Settings },
-  ];
-
-  const adminNavItems = [
-    { id: 'overview', label: 'Dashboard Overview', icon: BarChart3 },
-    { id: 'documents', label: 'Document Analytics', icon: FileText },
-    { id: 'vector', label: 'Vector DB Analytics', icon: Database },
-    { id: 'rag', label: 'AI RAG Analytics', icon: Bot },
-    { id: 'chat', label: 'Chat Analytics', icon: MessageSquare },
-    { id: 'quizzes', label: 'Quiz & Flashcards', icon: HelpCircle },
-    { id: 'health', label: 'System Health', icon: Server },
-    { id: 'db_monitor', label: 'Database Monitor', icon: HardDrive },
-    { id: 'vector_exp', label: 'Vector Explorer', icon: Layers },
-    { id: 'users', label: 'User Management', icon: Users },
-    { id: 'files', label: 'File Manager', icon: Folder },
-    { id: 'logs', label: 'System Logs', icon: Terminal },
-    { id: 'api_monitor', label: 'API Monitor', icon: Activity },
-    { id: 'settings', label: 'Hyperparameters', icon: Sliders },
-    { id: 'backup', label: 'Backup & Recovery', icon: Archive }
-  ];
-
   return (
-    <aside style={{
-      width: '260px',
-      background: 'var(--bg-secondary)',
-      borderRight: '1px solid var(--glass-border)',
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100vh',
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      bottom: 0,
-      zIndex: 100
-    }}>
-      {/* Brand Header */}
-      <div style={{ padding: '20px 20px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--glass-border)' }}>
-        <div onClick={() => setCurrentPage(isAdminPage ? 'admin-dashboard' : 'dashboard')} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-          <div style={{ background: isAdminPage ? 'linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)' : 'var(--gradient-primary)', padding: '6px', borderRadius: '10px' }}>
-            {isAdminPage ? <Shield style={{ color: '#fff', width: '20px', height: '20px' }} /> : <Brain style={{ color: '#fff', width: '20px', height: '20px' }} />}
+    <>
+      {/* Mobile Drawer Overlay */}
+      <div 
+        className={`sidebar-overlay ${isMobileMenuOpen ? 'open' : ''}`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
+
+      <aside className={`sidebar-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
+        {/* Brand Header */}
+        <div style={{ padding: '20px 20px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--glass-border)' }}>
+          <div onClick={() => { setCurrentPage(isAdminPage ? 'admin-dashboard' : 'dashboard'); setIsMobileMenuOpen(false); }} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+            <div style={{ background: isAdminPage ? 'linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)' : 'var(--gradient-primary)', padding: '6px', borderRadius: '10px' }}>
+              {isAdminPage ? <Shield style={{ color: '#fff', width: '20px', height: '20px' }} /> : <Brain style={{ color: '#fff', width: '20px', height: '20px' }} />}
+            </div>
+            <span style={{ fontSize: '1.2rem', fontWeight: 800, fontFamily: 'var(--font-heading)' }} className="gradient-text">
+              {isAdminPage ? 'Admin Control' : 'LearnGen AI'}
+            </span>
           </div>
-          <span style={{ fontSize: '1.2rem', fontWeight: 800, fontFamily: 'var(--font-heading)' }} className="gradient-text">
-            {isAdminPage ? 'Admin Control' : 'LearnGen AI'}
-          </span>
+
+          {/* Mobile Close Button */}
+          {isMobileMenuOpen && (
+            <button 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="btn-secondary"
+              style={{ padding: '6px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }}
+            >
+              ✕
+            </button>
+          )}
         </div>
-      </div>
 
       {/* Account Persona Badge */}
       <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--glass-border)', background: 'var(--bg-tertiary)' }}>
@@ -225,5 +200,6 @@ export function Sidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }

@@ -1,14 +1,14 @@
 import React from 'react';
 import { useApp } from '../services/appState';
 import { 
-  Search, UploadCloud, Bell, Sun, Moon, Shield 
+  Search, UploadCloud, Bell, Sun, Moon, Shield, Menu 
 } from 'lucide-react';
 
 export function TopBar() {
   const { 
     user, theme, toggleTheme, 
     userRole, currentPage, setCurrentPage,
-    setIsUploadModalOpen, 
+    setIsUploadModalOpen, setIsMobileMenuOpen,
     showToast 
   } = useApp();
 
@@ -16,7 +16,7 @@ export function TopBar() {
   const isAdminUser = activeRoleLower === 'admin' || activeRoleLower === 'super_admin' || user?.is_super_admin;
 
   return (
-    <header className="glass-panel" style={{
+    <header className="glass-panel topbar-container" style={{
       padding: '14px 28px',
       margin: '16px 24px 0',
       display: 'flex',
@@ -25,9 +25,19 @@ export function TopBar() {
       borderRadius: 'var(--radius-md)',
       zIndex: 100
     }}>
-      
+
+      {/* Mobile Drawer Hamburger Toggle Button */}
+      <button 
+        onClick={() => setIsMobileMenuOpen(prev => !prev)}
+        className="btn-secondary mobile-only-flex"
+        style={{ padding: '8px 10px', gap: '6px' }}
+        title="Open Navigation Menu"
+      >
+        <Menu size={20} />
+      </button>
+
       {/* Search Input Bar */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--bg-tertiary)', padding: '8px 14px', borderRadius: 'var(--radius-sm)', width: '380px', border: '1px solid var(--glass-border)' }}>
+      <div className="topbar-search-bar" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--bg-tertiary)', padding: '8px 14px', borderRadius: 'var(--radius-sm)', width: '380px', border: '1px solid var(--glass-border)' }}>
         <Search size={16} style={{ color: 'var(--text-dim)' }} />
         <input 
           type="text" 

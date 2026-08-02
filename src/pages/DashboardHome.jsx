@@ -99,7 +99,7 @@ export function DashboardHome() {
       </div>
 
       {/* Main Analytics & Activity Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '24px' }}>
+      <div className="grid-responsive-chat">
         
         {/* Left Column: Recent Documents & Analytics */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

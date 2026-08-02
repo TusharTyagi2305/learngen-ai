@@ -48,7 +48,7 @@ export function ProgressDashboardPage() {
       </div>
 
       {/* Main Charts Breakdown Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+      <div className="grid-responsive-2">
         
         <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '16px' }}>Weekly Study Velocity (Hours)</h3>

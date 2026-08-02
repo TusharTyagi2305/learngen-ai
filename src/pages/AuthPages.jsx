@@ -351,6 +351,9 @@ export function AuthPages() {
               <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '6px', lineHeight: 1.4 }}>
                 We dispatched a 6-digit verification code to <strong style={{ color: '#fff' }}>{email}</strong>. Code expires in 10 minutes.
               </div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', marginTop: '6px', fontStyle: 'italic' }}>
+                💡 Tip: Check your Primary Inbox & Spam / Junk folder if not immediately visible.
+              </div>
             </div>
 
             <div>

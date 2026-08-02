@@ -1,9 +1,9 @@
 /**
  * LearnGen AI — Centralized Production API Client
- * Connects Frontend UI to Python FastAPI Backend (http://localhost:8000/api/v1)
+ * Connects Frontend UI to Python FastAPI Backend (https://learngen-ai-backend.onrender.com/api/v1)
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/v1";
+export const API_BASE_URL = import.meta.env.VITE_API_URL || "https://learngen-ai-backend.onrender.com/api/v1";
 
 // Token storage helpers
 export const getAccessToken = () => localStorage.getItem("access_token");

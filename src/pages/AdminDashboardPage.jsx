@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../services/appState';
+import { API_BASE_URL } from '../services/api';
 import { 
   Shield, Database, Cpu, Sliders, Server, Users, Key, Activity, 
   FileText, Layers, Bot, MessageSquare, HelpCircle, HardDrive, 
@@ -70,22 +71,22 @@ export function AdminDashboardPage() {
         resStats, resDoc, resVec, resRag, resChat, resQuiz, resFlash, resHealth,
         resDb, resVecExp, resUsers, resFiles, resLogs, resApi, resSet, resBack
       ] = await Promise.all([
-        fetch('http://127.0.0.1:8000/api/v1/admin/dashboard-stats', { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/document-analytics', { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/vector-analytics', { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/rag-analytics', { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/chat-analytics', { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/quiz-analytics', { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/flashcard-analytics', { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/system-health', { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/database-monitor', { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/vector-explorer', { headers }).then(r => r.json()),
-        fetch(`http://127.0.0.1:8000/api/v1/admin/users?page=${usersPage}&search=${searchQuery}&role_filter=${userRoleFilter}`, { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/file-manager', { headers }).then(r => r.json()),
-        fetch(`http://127.0.0.1:8000/api/v1/admin/logs?page=${logsPage}&level=${logLevelFilter}`, { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/api-monitor', { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/settings', { headers }).then(r => r.json()),
-        fetch('http://127.0.0.1:8000/api/v1/admin/backup/list', { headers }).then(r => r.json())
+        fetch(`${API_BASE_URL}/admin/dashboard-stats`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/document-analytics`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/vector-analytics`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/rag-analytics`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/chat-analytics`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/quiz-analytics`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/flashcard-analytics`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/system-health`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/database-monitor`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/vector-explorer`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/users?page=${usersPage}&search=${searchQuery}&role_filter=${userRoleFilter}`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/file-manager`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/logs?page=${logsPage}&level=${logLevelFilter}`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/api-monitor`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/settings`, { headers }).then(r => r.json()),
+        fetch(`${API_BASE_URL}/admin/backup/list`, { headers }).then(r => r.json())
       ]);
 
       if (resStats.success) setOverviewStats(resStats.data);
@@ -127,7 +128,7 @@ export function AdminDashboardPage() {
     e.preventDefault();
     setIsLoggingIn(true);
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/auth/login', {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: adminEmail, password: adminPassword })
@@ -152,7 +153,7 @@ export function AdminDashboardPage() {
   // User Actions
   const handleToggleUserStatus = async (userId) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/admin/users/${userId}/status`, {
+      const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/status`, {
         method: 'PATCH',
         headers: getAuthHeaders()
       });
@@ -168,7 +169,7 @@ export function AdminDashboardPage() {
 
   const handleAssignRole = async (userId, newRole) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/admin/users/${userId}/role?new_role=${newRole}`, {
+      const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/role?new_role=${newRole}`, {
         method: 'PATCH',
         headers: getAuthHeaders()
       });
@@ -185,7 +186,7 @@ export function AdminDashboardPage() {
   const handleDeleteUser = async (userId) => {
     if (!window.confirm('Are you sure you want to delete this user account?')) return;
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/admin/users/${userId}`, {
+      const res = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
         method: 'DELETE',
         headers: getAuthHeaders()
       });
@@ -203,7 +204,7 @@ export function AdminDashboardPage() {
 
   const handlePromoteUser = async (userId) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/admin/users/${userId}/promote`, {
+      const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/promote`, {
         method: 'POST',
         headers: getAuthHeaders()
       });
@@ -221,7 +222,7 @@ export function AdminDashboardPage() {
 
   const handleDemoteUser = async (userId) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/admin/users/${userId}/demote`, {
+      const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/demote`, {
         method: 'POST',
         headers: getAuthHeaders()
       });
@@ -240,7 +241,7 @@ export function AdminDashboardPage() {
   // Vector DB Actions
   const handleVectorAction = async (action, docId = null) => {
     try {
-      const url = `http://127.0.0.1:8000/api/v1/admin/vector-actions/${action}${docId ? `?doc_id=${docId}` : ''}`;
+      const url = `${API_BASE_URL}/admin/vector-actions/${action}${docId ? `?doc_id=${docId}` : ''}`;
       const res = await fetch(url, {
         method: 'POST',
         headers: getAuthHeaders()
@@ -259,7 +260,7 @@ export function AdminDashboardPage() {
   const handleVectorSearchTest = async () => {
     if (!vectorSearchInput.trim()) return;
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/admin/vector-explorer/query?query_text=${encodeURIComponent(vectorSearchInput)}`, {
+      const res = await fetch(`${API_BASE_URL}/admin/vector-explorer/query?query_text=${encodeURIComponent(vectorSearchInput)}`, {
         method: 'POST',
         headers: getAuthHeaders()
       });
@@ -275,7 +276,7 @@ export function AdminDashboardPage() {
   // Backup Creation
   const handleCreateBackup = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/admin/backup/create', {
+      const res = await fetch(`${API_BASE_URL}/admin/backup/create`, {
         method: 'POST',
         headers: getAuthHeaders()
       });
@@ -293,7 +294,7 @@ export function AdminDashboardPage() {
   const handleViewTableRows = async (tableName) => {
     setSelectedTable(tableName);
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/admin/database-table/${tableName}`, {
+      const res = await fetch(`${API_BASE_URL}/admin/database-table/${tableName}`, {
         headers: getAuthHeaders()
       });
       const data = await res.json();
@@ -307,7 +308,7 @@ export function AdminDashboardPage() {
   const handleDeleteDoc = async (docId) => {
     if (!window.confirm('Delete document from storage and vector store?')) return;
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/admin/file-manager/${docId}`, {
+      const res = await fetch(`${API_BASE_URL}/admin/file-manager/${docId}`, {
         method: 'DELETE',
         headers: getAuthHeaders()
       });
@@ -324,7 +325,7 @@ export function AdminDashboardPage() {
   // Preview Document
   const handlePreviewDoc = async (docId) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/admin/file-manager/${docId}/preview`, {
+      const res = await fetch(`${API_BASE_URL}/admin/file-manager/${docId}/preview`, {
         headers: getAuthHeaders()
       });
       const data = await res.json();
@@ -337,7 +338,7 @@ export function AdminDashboardPage() {
   // Inspect Chat Session
   const handleInspectChat = async (sessionId) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/admin/chat-sessions/${sessionId}`, {
+      const res = await fetch(`${API_BASE_URL}/admin/chat-sessions/${sessionId}`, {
         headers: getAuthHeaders()
       });
       const data = await res.json();
@@ -950,7 +951,7 @@ export function AdminDashboardPage() {
             <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
                 <h4 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Table Inspector: {selectedTable}</h4>
-                <a href={`http://127.0.0.1:8000/api/v1/admin/database-table/${selectedTable}/export`} className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={14} /> Export CSV</a>
+                <a href={`${API_BASE_URL}/admin/database-table/${selectedTable}/export`} className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={14} /> Export CSV</a>
               </div>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
@@ -1045,7 +1046,7 @@ export function AdminDashboardPage() {
           <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>System Audit Logs</h3>
-              <a href="http://127.0.0.1:8000/api/v1/admin/logs/export" className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={14} /> Export Logs CSV</a>
+              <a href={`${API_BASE_URL}/admin/logs/export`} className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={14} /> Export Logs CSV</a>
             </div>
 
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
@@ -1107,7 +1108,7 @@ export function AdminDashboardPage() {
                     <div style={{ fontWeight: 600 }}>{b.filename}</div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Size: {b.size_mb} MB | Created: {b.created_at}</div>
                   </div>
-                  <a href={`http://127.0.0.1:8000/api/v1/admin/backup/download/${b.filename}`} className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={14} /> Download ZIP</a>
+                  <a href={`${API_BASE_URL}/admin/backup/download/${b.filename}`} className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={14} /> Download ZIP</a>
                 </div>
               ))}
             </div>

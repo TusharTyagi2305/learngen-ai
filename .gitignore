@@ -20,9 +20,13 @@ dist-isolation
 
 # Environment variables & secrets
 .env
-.env.*
+.env.local
+.env.production
 backend/.env
 *.env
+!.env.example
+!.env.production.example
+!backend/.env.example
 
 # Local Storage & Databases
 vector_db/

@@ -20,6 +20,7 @@ export function Sidebar() {
 
   const currentRoleNormalized = (user?.role || userRole || 'student').toLowerCase();
   const isAdminUser = currentRoleNormalized === 'admin' || currentRoleNormalized === 'super_admin' || user?.is_super_admin;
+  const isAdminPage = currentPage === 'admin-dashboard';
   const userNavItems = [
     ...(isAdminUser ? [{ id: 'admin-dashboard', label: 'Admin Control Panel', icon: Shield, badge: 'ADMIN', isAdminBadge: true }] : []),
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },

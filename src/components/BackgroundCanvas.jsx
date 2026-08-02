@@ -12,8 +12,13 @@ export function BackgroundCanvas() {
   const targetFrameRef = useRef(0);
   const currentFrameRef = useRef(0);
 
-  // Preload frames into RAM
+  // Preload frames into RAM (Desktop / Tablet only to protect Mobile RAM & GPU)
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setIsPreloaded(true);
+      return;
+    }
+
     let loadedCount = 0;
     const imgs = [];
 
@@ -34,7 +39,6 @@ export function BackgroundCanvas() {
     }
     imagesRef.current = imgs;
 
-    // Fallback timer so canvas starts rendering within 300ms under any network state
     const timer = setTimeout(() => setIsPreloaded(true), 300);
     return () => clearTimeout(timer);
   }, []);
@@ -46,7 +50,8 @@ export function BackgroundCanvas() {
     const ctx = canvas.getContext('2d');
 
     const handleResize = () => {
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      const isMobile = window.innerWidth < 768;
+      const dpr = isMobile ? 1 : Math.min(1.2, Math.max(1, window.devicePixelRatio || 1));
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
     };

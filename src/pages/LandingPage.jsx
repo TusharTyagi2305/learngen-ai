@@ -292,8 +292,8 @@ export function LandingPage() {
           const NIcon = nSlide.icon;
 
           return (
-            <>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', perspective: '1200px', position: 'relative', padding: '20px 0' }}>
+            <div style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '100%', perspective: '1200px', position: 'relative', padding: '10px 0' }}>
                 
                 {/* PREV ATTACHED PAGE */}
                 <div 
@@ -322,9 +322,9 @@ export function LandingPage() {
                   key={`feat-${cSlide.id}-${featureDir}`}
                   className={`glass-card ${featureDir === 'next' ? 'animate-slide-next' : 'animate-slide-prev'}`}
                   style={{
-                    flex: '1 1 640px', width: '100%', maxWidth: '660px', padding: '32px 24px', background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(24px)',
+                    flex: '1 1 100%', width: '100%', maxWidth: '660px', minWidth: 0, padding: '28px 20px', background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(24px)',
                     borderColor: cSlide.color, boxShadow: `0 25px 60px -10px ${cSlide.bgIcon}`,
-                    transform: 'none', zIndex: 20
+                    transform: 'none', zIndex: 20, boxSizing: 'border-box'
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '8px' }}>
@@ -381,7 +381,7 @@ export function LandingPage() {
                   Flip Right Page <ChevronRight size={16} />
                 </button>
               </div>
-            </>
+            </div>
           );
         })()}
       </section>
@@ -407,16 +407,14 @@ export function LandingPage() {
 
           const PIcon = pSlide.icon;
           const CIcon = cSlide.icon;
-          const NIcon = nSlide.icon;
-
-          return (
-            <>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', perspective: '1200px', position: 'relative', padding: '20px 0' }}>
+                 return (
+            <div style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '100%', perspective: '1200px', position: 'relative', padding: '10px 0' }}>
                 
                 {/* PREV ATTACHED PAGE */}
                 <div 
                   onClick={() => { setArchDir('prev'); setArchIdx(pIdx); }}
-                  className="glass-card" 
+                  className="glass-card desktop-only-block" 
                   style={{
                     flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
                     borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
@@ -441,12 +439,12 @@ export function LandingPage() {
                   key={`arch-${cSlide.id}-${archDir}`}
                   className={`glass-card ${archDir === 'next' ? 'animate-slide-next' : 'animate-slide-prev'}`}
                   style={{
-                    flex: '1 1 640px', maxWidth: '660px', padding: '42px', background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(24px)',
+                    flex: '1 1 100%', width: '100%', maxWidth: '660px', minWidth: 0, padding: '28px 20px', background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(24px)',
                     borderColor: cSlide.color, boxShadow: `0 25px 60px -10px ${cSlide.bgIcon}`,
-                    transform: 'perspective(1000px) rotateY(0deg) scale(1.04)', zIndex: 20
+                    transform: 'none', zIndex: 20, boxSizing: 'border-box'
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '8px' }}>
                     <div style={{ background: cSlide.bgIcon, padding: '14px', borderRadius: '14px', color: cSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <CIcon size={32} />
                     </div>
@@ -455,10 +453,10 @@ export function LandingPage() {
                       <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 600 }}>Layer {cIdx + 1} of {archSlides.length}</span>
                     </div>
                   </div>
-                  <h3 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '4px', color: '#ffffff' }}>{cSlide.title}</h3>
+                  <h3 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '4px', color: '#ffffff' }}>{cSlide.title}</h3>
                   <div style={{ fontSize: '0.95rem', color: cSlide.color, fontWeight: 700, marginBottom: '14px' }}>{cSlide.subtitle}</div>
                   
-                  <p style={{ color: 'var(--text-main)', fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '20px' }}>{cSlide.description}</p>
+                  <p style={{ color: 'var(--text-main)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '20px' }}>{cSlide.description}</p>
 
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     {cSlide.tech.map((t, idx) => (
@@ -472,7 +470,7 @@ export function LandingPage() {
                 {/* NEXT ATTACHED PAGE */}
                 <div 
                   onClick={() => { setArchDir('next'); setArchIdx(nIdx); }}
-                  className="glass-card" 
+                  className="glass-card desktop-only-block" 
                   style={{
                     flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
                     borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
@@ -508,7 +506,7 @@ export function LandingPage() {
                   Flip Right Layer <ChevronRight size={16} />
                 </button>
               </div>
-            </>
+            </div>
           );
         })()}
       </section>
@@ -537,13 +535,13 @@ export function LandingPage() {
           const NIcon = nSlide.icon;
 
           return (
-            <>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', perspective: '1200px', position: 'relative', padding: '20px 0' }}>
+            <div style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '100%', perspective: '1200px', position: 'relative', padding: '20px 0' }}>
                 
                 {/* PREV ATTACHED PLAN */}
                 <div 
                   onClick={() => { setPricingDir('prev'); setPricingIdx(pIdx); }}
-                  className="glass-card" 
+                  className="glass-card desktop-only-block" 
                   style={{
                     flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
                     borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
@@ -568,22 +566,22 @@ export function LandingPage() {
                   key={`price-${cSlide.id}-${pricingDir}`}
                   className={`glass-card ${pricingDir === 'next' ? 'animate-slide-next' : 'animate-slide-prev'}`}
                   style={{
-                    flex: '1 1 640px', maxWidth: '660px', padding: '42px', background: 'rgba(15, 23, 42, 0.88)', backdropFilter: 'blur(24px)',
+                    flex: '1 1 100%', width: '100%', maxWidth: '660px', minWidth: 0, padding: '42px', background: 'rgba(15, 23, 42, 0.88)', backdropFilter: 'blur(24px)',
                     borderColor: cSlide.color, boxShadow: `0 25px 60px -10px ${cSlide.bgIcon}`,
-                    transform: 'perspective(1000px) rotateY(0deg) scale(1.04)', zIndex: 20
+                    transform: 'perspective(1000px) rotateY(0deg) scale(1.04)', zIndex: 20, boxSizing: 'border-box'
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', flexWrap: 'wrap', gap: '8px' }}>
                     <div style={{ background: cSlide.bgIcon, padding: '14px', borderRadius: '14px', color: cSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <CIcon size={32} />
                     </div>
                     <span className="badge badge-teal" style={{ padding: '6px 14px', fontSize: '0.8rem' }}>{cSlide.badge}</span>
                   </div>
 
-                  <h3 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#ffffff' }}>{cSlide.title}</h3>
+                  <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff' }}>{cSlide.title}</h3>
                   
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '14px 0 22px' }}>
-                    <span style={{ fontSize: '3rem', fontWeight: 800, color: cSlide.color }}>{cSlide.price}</span>
+                    <span style={{ fontSize: '2.5rem', fontWeight: 800, color: cSlide.color }}>{cSlide.price}</span>
                     <span style={{ fontSize: '1.05rem', color: 'var(--text-dim)' }}>{cSlide.period}</span>
                   </div>
 
@@ -608,7 +606,7 @@ export function LandingPage() {
                 {/* NEXT ATTACHED PLAN */}
                 <div 
                   onClick={() => { setPricingDir('next'); setPricingIdx(nIdx); }}
-                  className="glass-card" 
+                  className="glass-card desktop-only-block" 
                   style={{
                     flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
                     borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
@@ -644,7 +642,7 @@ export function LandingPage() {
                   Flip Right Plan <ChevronRight size={16} />
                 </button>
               </div>
-            </>
+            </div>
           );
         })()}
       </section>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const START_FRAME = 1;
 const END_FRAME = 80;
@@ -6,41 +6,29 @@ const TOTAL_FRAMES = END_FRAME - START_FRAME + 1; // 80 frames
 
 export function BackgroundCanvas() {
   const canvasRef = useRef(null);
-  const imagesRef = useRef([]);
-  const [isPreloaded, setIsPreloaded] = useState(false);
+  const imagesMapRef = useRef({});
 
   const targetFrameRef = useRef(0);
   const currentFrameRef = useRef(0);
 
-  // Preload frames into RAM (Desktop / Tablet only to protect Mobile RAM & GPU)
+  // Helper to load frame on demand with caching
+  const getOrLoadFrame = (frameIndex) => {
+    const frameNum1Based = Math.min(END_FRAME, Math.max(START_FRAME, frameIndex + 1));
+    if (imagesMapRef.current[frameNum1Based]) {
+      return imagesMapRef.current[frameNum1Based];
+    }
+    const img = new Image();
+    const formatted = String(frameNum1Based).padStart(6, '0');
+    img.src = `/thor-frames/frame_${formatted}.webp`;
+    imagesMapRef.current[frameNum1Based] = img;
+    return img;
+  };
+
+  // Eagerly preload initial 15 key frames for instant startup
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      setIsPreloaded(true);
-      return;
+    for (let i = 1; i <= 15; i++) {
+      getOrLoadFrame(i - 1);
     }
-
-    let loadedCount = 0;
-    const imgs = [];
-
-    for (let i = START_FRAME; i <= END_FRAME; i++) {
-      const img = new Image();
-      const frameNum = String(i).padStart(6, '0');
-      img.src = `/thor-frames/frame_${frameNum}.webp`;
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount >= 5) {
-          setIsPreloaded(true);
-        }
-      };
-      img.onerror = () => {
-        setIsPreloaded(true);
-      };
-      imgs.push(img);
-    }
-    imagesRef.current = imgs;
-
-    const timer = setTimeout(() => setIsPreloaded(true), 300);
-    return () => clearTimeout(timer);
   }, []);
 
   // Pure 60FPS Scroll-Driven Canvas Renderer
@@ -51,7 +39,7 @@ export function BackgroundCanvas() {
 
     const handleResize = () => {
       const isMobile = window.innerWidth < 768;
-      const dpr = isMobile ? 1 : Math.min(1.2, Math.max(1, window.devicePixelRatio || 1));
+      const dpr = isMobile ? 1 : Math.min(1.25, Math.max(1, window.devicePixelRatio || 1));
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
     };
@@ -73,11 +61,11 @@ export function BackgroundCanvas() {
         Math.max(0, Math.round(currentFrameRef.current))
       );
 
-      const img = imagesRef.current[frameIdx];
+      const img = getOrLoadFrame(frameIdx);
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw rich glowing ambient HSL background gradient so background is NEVER blank
+      // Draw rich glowing ambient background gradient so background is NEVER blank
       const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
       grad.addColorStop(0, '#0b132b');
       grad.addColorStop(0.5, '#111827');
@@ -126,7 +114,7 @@ export function BackgroundCanvas() {
       window.removeEventListener('scroll', handleScroll);
       if (animId) cancelAnimationFrame(animId);
     };
-  }, [isPreloaded]);
+  }, []);
 
   return (
     <canvas

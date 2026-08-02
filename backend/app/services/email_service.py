@@ -78,9 +78,9 @@ smtp_password = (settings.SMTP_PASSWORD or "").replace(" ", "").strip()
 
         try:
             if settings.SMTP_SSL:
-                server = smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, timeout=5)
+                server = smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, timeout=30)
             else:
-                server = smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=5)
+                server = smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=30)
                 if settings.SMTP_TLS:
                     server.starttls()
 

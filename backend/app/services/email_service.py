@@ -68,22 +68,25 @@ class EmailService:
         msg["Subject"] = subject
         msg["From"] = f"{from_name} <{from_email}>"
         msg["To"] = recipient_email
+        msg["X-Priority"] = "1"
+        msg["X-MSMail-Priority"] = "High"
+        msg["Importance"] = "High"
 
         msg.attach(MIMEText(text_content, "plain"))
         msg.attach(MIMEText(html_content, "html"))
 
         try:
             if settings.SMTP_SSL:
-                server = smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, timeout=10)
+                server = smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, timeout=5)
             else:
-                server = smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=10)
+                server = smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=5)
                 if settings.SMTP_TLS:
                     server.starttls()
 
             server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
             server.sendmail(from_email, [recipient_email], msg.as_string())
             server.quit()
-            print(f"[SMTP SUCCESS] Verification OTP sent successfully to {recipient_email}")
+            print(f"[SMTP SUCCESS] High-priority OTP email delivered to {recipient_email}")
             return True
         except Exception as exc:
             print(f"[SMTP FAILURE] Failed to deliver OTP email to {recipient_email}: {str(exc)}")

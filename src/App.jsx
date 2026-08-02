@@ -94,6 +94,22 @@ function AppContent() {
 
   const isAdminUser = user?.role === 'admin' || user?.role === 'super_admin' || user?.is_super_admin;
 
+  // STRICT AUTH ROUTE GUARD: Unauthenticated users MUST sign up or log in first
+  if (!isPublicPage && !user) {
+    return (
+      <ErrorBoundary>
+        <div className="app-layout-shell">
+          <div className="main-content-layout">
+            <Navbar />
+            <main className="page-padding" style={{ flex: 1, paddingBottom: '32px' }}>
+              <AuthPages />
+            </main>
+          </div>
+        </div>
+      </ErrorBoundary>
+    );
+  }
+
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'landing': return <LandingPage />;

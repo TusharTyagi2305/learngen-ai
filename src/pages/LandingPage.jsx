@@ -7,8 +7,17 @@ import {
 } from 'lucide-react';
 
 export function LandingPage() {
-  const { setCurrentPage } = useApp();
+  const { setCurrentPage, user, showToast } = useApp();
   const [contactSubmitted, setContactSubmitted] = useState(false);
+
+  const handleOpenWorkspace = () => {
+    if (!user) {
+      if (showToast) showToast('🔒 Please Sign Up or Sign In first to access your Workspace.', 'info');
+      setCurrentPage('register');
+    } else {
+      setCurrentPage('dashboard');
+    }
+  };
 
   // ==================== 1. FEATURES CAROUSEL STATE ====================
   const [featureIdx, setFeatureIdx] = useState(0);
@@ -193,7 +202,7 @@ export function LandingPage() {
         </p>
 
         <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', alignItems: 'center' }}>
-          <button onClick={() => setCurrentPage('dashboard')} className="gradient-btn" style={{ padding: '14px 30px', fontSize: '1.05rem', borderRadius: 'var(--radius-md)' }}>
+          <button onClick={handleOpenWorkspace} className="gradient-btn" style={{ padding: '14px 30px', fontSize: '1.05rem', borderRadius: 'var(--radius-md)' }}>
             <Sparkles size={20} /> Open Workspace Free <ArrowRight size={20} />
           </button>
           <button 
@@ -597,7 +606,7 @@ export function LandingPage() {
                   </ul>
 
                   <button 
-                    onClick={() => setCurrentPage('dashboard')} 
+                    onClick={handleOpenWorkspace} 
                     className={cSlide.isPopular ? "gradient-btn" : "btn-secondary"} 
                     style={{ width: '100%', justifyContent: 'center', padding: '13px', fontSize: '1rem', borderRadius: 'var(--radius-sm)' }}
                   >

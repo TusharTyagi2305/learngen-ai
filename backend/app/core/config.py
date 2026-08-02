@@ -27,11 +27,11 @@ class Settings(BaseSettings):
     EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
 
     # SMTP Email & OTP Production Settings
-    SMTP_HOST: str = ""
+    SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
-    SMTP_USER: str = ""
-    SMTP_PASSWORD: str = ""
-    SMTP_FROM_EMAIL: str = ""
+    SMTP_USER: str = "support.Learngen.ai@gmail.com"
+    SMTP_PASSWORD: str = "nsdzfpsilyavorrw"
+    SMTP_FROM_EMAIL: str = "support.learngen.ai@gmail.com"
     SMTP_FROM_NAME: str = "LearnGen AI Security"
     SMTP_TLS: bool = True
     SMTP_SSL: bool = False

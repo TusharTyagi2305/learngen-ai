@@ -26,15 +26,9 @@ class Settings(BaseSettings):
     GEMINI_MODEL: str = "gemini-1.5-flash"
     EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
 
-    # SMTP Email & OTP Production Settings
-    SMTP_HOST: str = "smtp.gmail.com"
-    SMTP_PORT: int = 587
-    SMTP_USER: str = "support.Learngen.ai@gmail.com"
-    SMTP_PASSWORD: str = "nsdzfpsilyavorrw"
-    SMTP_FROM_EMAIL: str = "support.learngen.ai@gmail.com"
-    SMTP_FROM_NAME: str = "LearnGen AI Security"
-    SMTP_TLS: bool = True
-    SMTP_SSL: bool = False
+    # Resend Production Email Settings
+    RESEND_API_KEY: str = ""
+    EMAIL_FROM: str = "LearnGen AI <onboarding@resend.dev>"
     OTP_EXPIRE_MINUTES: int = 10
     OTP_RESEND_COOLDOWN_SECONDS: int = 60
 

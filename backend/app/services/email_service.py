@@ -63,8 +63,9 @@ class EmailService:
         """
 
         text_content = f"LearnGen AI Verification Code: {otp_code}\nExpires in {settings.OTP_EXPIRE_MINUTES} minutes."
-       smtp_user = (settings.SMTP_USER or "").strip()
-smtp_password = (settings.SMTP_PASSWORD or "").replace(" ", "").strip()
+        smtp_user = (settings.SMTP_USER or "").strip()
+        smtp_password = (settings.SMTP_PASSWORD or "").replace(" ", "").strip()
+
         msg = MIMEMultipart("alternative")
         msg["Subject"] = subject
         msg["From"] = f"{from_name} <{from_email}>"

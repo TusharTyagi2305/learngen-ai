@@ -61,10 +61,14 @@ def generate_and_send_otp(email: str, db: Session, background_tasks: Optional[Ba
     db.add(otp_record)
     db.commit()
 
-    # Deliver HTML Email via SMTP instantly in background daemon thread
-    email_service.send_otp_email(
-    recipient_email=email,
-    otp_code=otp_code)
+    # Deliver HTML Email via SMTP asynchronously in background daemon thread
+    import threading
+    t = threading.Thread(
+        target=email_service.send_otp_email,
+        kwargs={"recipient_email": email, "otp_code": otp_code},
+        daemon=True
+    )
+    t.start()
 
     return otp_code
 

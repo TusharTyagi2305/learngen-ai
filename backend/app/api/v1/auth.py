@@ -182,6 +182,24 @@ def verify_otp(payload: OTPVerifyRequest, db: Session = Depends(get_db)):
     user.is_active = True
     db.commit()
 
+    # Trigger Welcome Email and Admin Notification Email in background thread via Resend API
+    import threading
+    threading.Thread(
+        target=email_service.send_welcome_email,
+        kwargs={"recipient_email": user.email, "user_name": user.full_name},
+        daemon=True
+    ).start()
+
+    threading.Thread(
+        target=email_service.send_admin_notification_email,
+        kwargs={
+            "admin_email": settings.DEFAULT_ADMIN_EMAIL,
+            "event_title": "New User Account Activated",
+            "event_details": f"User '{user.full_name}' ({user.email}) has successfully activated their account."
+        },
+        daemon=True
+    ).start()
+
     # Generate JWT Tokens
     access_token = create_access_token(subject=user.id, role=user.role)
     refresh_token_str = create_refresh_token(subject=user.id)
@@ -249,6 +267,30 @@ def login_user(user_in: UserLogin, db: Session = Depends(get_db)):
                 "is_active": True
             }
         }
+    )
+
+@router.post("/forgot-password", response_model=ApiResponse)
+def request_password_reset(payload: OTPResendRequest, db: Session = Depends(get_db)):
+    """
+    Triggers a Password Reset Email using Resend API.
+    """
+    email_clean = payload.email.lower().strip()
+    user = db.query(User).filter(User.email == email_clean).first()
+    
+    reset_token = secrets.token_urlsafe(32)
+    
+    # Dispatch Password Reset Email asynchronously in background thread via Resend API
+    import threading
+    threading.Thread(
+        target=email_service.send_password_reset_email,
+        kwargs={"recipient_email": email_clean, "reset_token": reset_token},
+        daemon=True
+    ).start()
+
+    return ApiResponse(
+        success=True,
+        message=f"If an account exists for {email_clean}, a password reset token has been dispatched to your email.",
+        data={"email": email_clean, "reset_token": reset_token}
     )
 
 @router.post("/admin-login", response_model=ApiResponse)

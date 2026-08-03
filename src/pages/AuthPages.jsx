@@ -28,6 +28,7 @@ export function AuthPages() {
   const [isOtpView, setIsOtpView] = useState(false);
   const [enteredOtp, setEnteredOtp] = useState('');
   const [cooldownSeconds, setCooldownSeconds] = useState(0);
+  const [serverOtp, setServerOtp] = useState('');
 
   // UI Feedback State
   const [authError, setAuthError] = useState('');
@@ -48,6 +49,7 @@ export function AuthPages() {
     setAuthError('');
     setIsOtpView(false);
     setEnteredOtp('');
+    setServerOtp('');
     setCurrentPage(targetMode);
   };
 
@@ -88,6 +90,9 @@ export function AuthPages() {
       setIsOtpView(true);
       setCooldownSeconds(60);
       setEnteredOtp('');
+      if (res?.data?.demo_otp || res?.data?.otp_code) {
+        setServerOtp(res.data.demo_otp || res.data.otp_code);
+      }
       showToast(res?.message || `📩 Verification code sent to ${emailClean}. Please check your email inbox!`, 'info');
     } catch (err) {
       setAuthError(err.message || 'Error sending verification code.');
@@ -421,6 +426,35 @@ export function AuthPages() {
                 {cooldownSeconds > 0 ? `Resend OTP (${cooldownSeconds}s)` : 'Resend OTP'}
               </button>
             </div>
+
+            {serverOtp && (
+              <div style={{ textAlign: 'center', marginTop: '10px', paddingTop: '10px', borderTop: '1px dashed var(--glass-border)' }}>
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    setEnteredOtp(serverOtp);
+                    showToast(`🔑 Backup code retrieved: ${serverOtp} (Auto-filled)`, 'info');
+                  }} 
+                  style={{ 
+                    background: 'rgba(6, 182, 212, 0.1)', 
+                    border: '1px solid rgba(6, 182, 212, 0.3)', 
+                    color: 'var(--accent-cyan)', 
+                    fontSize: '0.8rem', 
+                    padding: '8px 14px',
+                    borderRadius: 'var(--radius-sm)',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <Key size={14} /> Didn't get email in inbox? Click to retrieve backup OTP code ({serverOtp})
+                </button>
+              </div>
+            )}
           </form>
         ) : (
           

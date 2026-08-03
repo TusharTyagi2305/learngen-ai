@@ -518,7 +518,7 @@ export function AuthPages() {
                 <input 
                   type="email" 
                   required 
-                  placeholder="student@university.edu" 
+                  placeholder="yourname@gmail.com" 
                   className="input-field" 
                   style={{ paddingLeft: '36px' }}
                   value={email}

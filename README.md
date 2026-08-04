@@ -87,29 +87,32 @@ GEMINI_API_KEY=your_actual_gemini_api_key_here
 GEMINI_MODEL=gemini-flash-latest
 EMBEDDING_MODEL=all-MiniLM-L6-v2
 
-# Resend Transactional Email API Configuration
-RESEND_API_KEY=re_xxxxxxxxxxxxxxxxx
-EMAIL_FROM=LearnGen AI <onboarding@resend.dev>
+# Brevo Transactional Email API Configuration
+BREVO_API_KEY=xkeysib-xxxxxxxxxxxxxxxxx
+EMAIL_FROM=noreply@learngen.ai
+EMAIL_FROM_NAME=LearnGen AI
 
 ALLOWED_ORIGINS=["http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173"]
 ```
 
 ---
 
-### 6. Production Email Setup (Resend API on Render)
+### 6. Production Email Setup (Brevo API on Render)
 
-LearnGen AI uses the official **Resend Python SDK** for transactional emails (OTP verification, welcome emails, password resets, admin notifications).
+LearnGen AI uses the official **Brevo (Sendinblue) REST API** for transactional emails (OTP verification, welcome emails, password resets, admin notifications).
 
 #### Render Environment Variables:
 Add the following environment variables to your Render Web Service dashboard:
 
 ```env
-RESEND_API_KEY=re_xxxxxxxxxxxxxxxxx
-EMAIL_FROM=LearnGen AI <onboarding@resend.dev>
+BREVO_API_KEY=xkeysib-xxxxxxxxxxxxxxxxx
+EMAIL_FROM=noreply@learngen.ai
+EMAIL_FROM_NAME=LearnGen AI
 ```
 
-- **`RESEND_API_KEY`**: Your API key generated from [resend.com](https://resend.com).
-- **`EMAIL_FROM`**: The sender identity. You can use `onboarding@resend.dev` for testing, or your verified domain sender (e.g. `support@yourdomain.com`).
+- **`BREVO_API_KEY`**: Your API key generated from [brevo.com](https://brevo.com).
+- **`EMAIL_FROM`**: The sender identity. You should use a verified domain sender (e.g. `noreply@yourdomain.com`).
+- **`EMAIL_FROM_NAME`**: The sender name (e.g. `LearnGen AI`).
 ```
 
 ---

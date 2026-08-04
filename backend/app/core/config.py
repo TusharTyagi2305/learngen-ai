@@ -26,9 +26,10 @@ class Settings(BaseSettings):
     GEMINI_MODEL: str = "gemini-1.5-flash"
     EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
 
-    # Resend Production Email Settings
-    RESEND_API_KEY: str = ""
-    EMAIL_FROM: str = "LearnGen AI <onboarding@resend.dev>"
+    # Brevo Transactional Email Settings
+    BREVO_API_KEY: str = ""
+    EMAIL_FROM: str = "LearnGen AI <noreply@learngen.ai>"
+    EMAIL_FROM_NAME: str = "LearnGen AI"
     OTP_EXPIRE_MINUTES: int = 10
     OTP_RESEND_COOLDOWN_SECONDS: int = 60
 

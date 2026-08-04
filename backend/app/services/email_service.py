@@ -1,25 +1,25 @@
 import logging
-import resend
+import requests
 from typing import Optional
 from app.core.config import settings
 
-# Configure production logger for Resend Email events
+# Configure production logger for Brevo Email events
 logger = logging.getLogger("learngen.email")
 
 class EmailService:
     """
-    Production Email Service utilizing the official Resend Python SDK.
+    Production Email Service utilizing the official Brevo (Sendinblue) REST API.
     Handles transactional OTP verification emails, welcome emails, password resets,
     and admin notifications with resilient error handling and non-blocking delivery.
     """
 
     @staticmethod
-    def is_resend_configured() -> bool:
+    def is_brevo_configured() -> bool:
         """
-        Validates if RESEND_API_KEY is present and properly formatted.
+        Validates if BREVO_API_KEY is present and properly formatted.
         """
-        api_key = settings.RESEND_API_KEY.strip() if settings.RESEND_API_KEY else ""
-        return bool(api_key and api_key.startswith("re_"))
+        api_key = settings.BREVO_API_KEY.strip() if settings.BREVO_API_KEY else ""
+        return bool(api_key and api_key.startswith("xkeysib-"))
 
     @classmethod
     def _send_email(
@@ -30,51 +30,59 @@ class EmailService:
         text_content: str
     ) -> bool:
         """
-        Internal wrapper to dispatch email using Resend Python SDK.
+        Internal wrapper to dispatch email using Brevo REST API.
         Logs email request, success ID, and exact failure details without crashing APIs.
         """
         recipient = recipient_email.strip() if recipient_email else ""
         if not recipient:
-            logger.error("[RESEND FAILURE] Recipient email is empty or invalid.")
+            logger.error("[BREVO FAILURE] Recipient email is empty or invalid.")
             return False
 
-        if not cls.is_resend_configured():
+        if not cls.is_brevo_configured():
             logger.warning(
-                f"[RESEND DEMO MODE] RESEND_API_KEY is not configured in environment. "
-                f"Skipping live Resend API call for recipient '{recipient}'. Subject: '{subject}'"
+                f"[BREVO DEMO MODE] BREVO_API_KEY is not configured in environment. "
+                f"Skipping live Brevo API call for recipient '{recipient}'. Subject: '{subject}'"
             )
             return False
 
-        resend.api_key = settings.RESEND_API_KEY.strip()
-        sender = settings.EMAIL_FROM or "LearnGen AI <onboarding@resend.dev>"
+        api_key = settings.BREVO_API_KEY.strip()
+        sender_email = settings.EMAIL_FROM or "noreply@learngen.ai"
+        sender_name = settings.EMAIL_FROM_NAME or "LearnGen AI"
 
-        logger.info(f"[RESEND REQUEST] Attempting email delivery to '{recipient}' | Subject: '{subject}' | From: '{sender}'")
+        logger.info(f"[BREVO REQUEST] Attempting email delivery to '{recipient}' | Subject: '{subject}' | From: '{sender_name} <{sender_email}>'")
 
         try:
-            params = {
-                "from": sender,
-                "to": [recipient],
+            url = "https://api.brevo.com/v3/smtp/email"
+            headers = {
+                "accept": "application/json",
+                "api-key": api_key,
+                "content-type": "application/json"
+            }
+            payload = {
+                "sender": {"name": sender_name, "email": sender_email},
+                "to": [{"email": recipient}],
                 "subject": subject,
-                "html": html_content,
-                "text": text_content,
+                "htmlContent": html_content,
+                "textContent": text_content
             }
             
-            response = resend.Emails.send(params)
-
-            email_id = None
-            if isinstance(response, dict):
-                email_id = response.get("id")
-            elif hasattr(response, "id"):
-                email_id = getattr(response, "id")
+            response = requests.post(url, headers=headers, json=payload, timeout=10)
+            
+            if response.status_code in (200, 201, 202):
+                response_data = response.json()
+                email_id = response_data.get("messageId", "Unknown")
+                logger.info(f"[BREVO SUCCESS] Email delivered successfully to '{recipient}'! Brevo Message ID: {email_id}")
+                return True
             else:
-                email_id = str(response)
-
-            logger.info(f"[RESEND SUCCESS] Email delivered successfully to '{recipient}'! Resend Message ID: {email_id}")
-            return True
+                logger.error(
+                    f"[BREVO FAILURE] Failed to deliver email to '{recipient}'. "
+                    f"Subject: '{subject}' | Status Code: {response.status_code} | Response: {response.text}"
+                )
+                return False
 
         except Exception as exc:
             logger.error(
-                f"[RESEND FAILURE] Exception occurred while delivering email to '{recipient}'. "
+                f"[BREVO FAILURE] Exception occurred while delivering email to '{recipient}'. "
                 f"Subject: '{subject}' | Error: {str(exc)}",
                 exc_info=True
             )

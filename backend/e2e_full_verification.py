@@ -21,7 +21,8 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 from fastapi.testclient import TestClient
 from app.main import app
 from app.core.config import settings
-from app.services.rag_stubs import rag_service, SentenceTransformer
+from app.services.rag_stubs import rag_service
+from sentence_transformers import SentenceTransformer
 
 from app.core.database import engine, Base
 

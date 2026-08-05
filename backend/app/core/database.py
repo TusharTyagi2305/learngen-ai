@@ -2,9 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from app.core.config import settings
 
-db_url = settings.DATABASE_URL
+db_url = settings.NEON_DATABASE_URL
 if db_url.startswith("sqlite"):
-    raise ValueError("SQLite is disabled in production. DATABASE_URL must point to PostgreSQL.")
+    raise ValueError("SQLite is disabled in production. NEON_DATABASE_URL must point to PostgreSQL.")
 
 engine = create_engine(db_url, pool_pre_ping=True)
 

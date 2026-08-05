@@ -22,7 +22,7 @@ from app.core.config import settings
 from app.core.database import Base
 import app.models.all_models  # noqa
 
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+config.set_main_option("sqlalchemy.url", settings.NEON_DATABASE_URL)
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,

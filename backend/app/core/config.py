@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     DEFAULT_ADMIN_EMAIL: str = "admin@learngen.ai"
     DEFAULT_ADMIN_PASSWORD: str = "ChangeThisPassword123!"
 
-    DATABASE_URL: str = "postgresql+psycopg://neondb_owner:npg_ea5NjbECly1L@ep-rough-poetry-azusyynm.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+    NEON_DATABASE_URL: str = "postgresql+psycopg://neondb_owner:npg_ea5NjbECly1L@ep-rough-poetry-azusyynm.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
     
     UPLOAD_DIR: str = "./uploads"
     VECTOR_DB_DIR: str = "./vector_db"

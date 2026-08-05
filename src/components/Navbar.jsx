@@ -3,7 +3,7 @@ import { useApp } from '../services/appState';
 import { Brain, Moon, Sun, ArrowRight, Sparkles, Menu, X } from 'lucide-react';
 
 export function Navbar() {
-  const { currentPage, setCurrentPage, theme, toggleTheme, user, showToast } = useApp();
+  const { currentPage, setCurrentPage, theme, toggleTheme, user, showToast, logoutUser } = useApp();
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -138,13 +138,32 @@ export function Navbar() {
             {theme === 'dark' ? <Sun size={18} style={{ color: 'var(--accent-amber)' }} /> : <Moon size={18} style={{ color: 'var(--accent-blue)' }} />}
           </button>
 
-          <button 
-            onClick={() => { setCurrentPage('login'); setIsMobileMenuOpen(false); }} 
-            className="btn-secondary desktop-only-flex"
-            style={{ background: 'rgba(255, 255, 255, 0.08)' }}
-          >
-            Sign In
-          </button>
+          {user ? (
+            <>
+              <button 
+                onClick={() => { setCurrentPage('dashboard'); setIsMobileMenuOpen(false); }} 
+                className="btn-secondary desktop-only-flex"
+                style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+              >
+                Dashboard
+              </button>
+              <button 
+                onClick={() => { logoutUser(); setIsMobileMenuOpen(false); }} 
+                className="btn-secondary desktop-only-flex"
+                style={{ background: 'rgba(244, 63, 94, 0.1)', borderColor: 'rgba(244, 63, 94, 0.3)', color: 'var(--accent-rose)' }}
+              >
+                Log Out
+              </button>
+            </>
+          ) : (
+            <button 
+              onClick={() => { setCurrentPage('login'); setIsMobileMenuOpen(false); }} 
+              className="btn-secondary desktop-only-flex"
+              style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+            >
+              Sign In
+            </button>
+          )}
 
           <button 
             onClick={handleOpenWorkspace} 
@@ -175,46 +194,86 @@ export function Navbar() {
             flexDirection: 'column',
             gap: '12px'
           }}>
-            {[
-              { id: 'home', label: 'Home' },
-              { id: 'features', label: 'Features' },
-              { id: 'architecture', label: 'Architecture' },
-              { id: 'pricing', label: 'Pricing' },
-              { id: 'contact', label: 'Contact' },
-            ].map(nav => (
-              <button 
-                key={nav.id}
-                onClick={() => scrollToSection(nav.id)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  textAlign: 'left',
-                  color: activeSection === nav.id ? 'var(--accent-cyan)' : 'var(--text-main)',
-                  fontWeight: activeSection === nav.id ? 700 : 500,
-                  fontSize: '1rem',
-                  padding: '8px 12px'
-                }}
-              >
-                {nav.label}
-              </button>
-            ))}
-
-            <div style={{ display: 'flex', gap: '10px', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid var(--glass-border)' }}>
-              <button 
-                onClick={() => { setCurrentPage('login'); setIsMobileMenuOpen(false); }} 
-                className="btn-secondary"
-                style={{ flex: 1, justifyContent: 'center' }}
-              >
-                Sign In
-              </button>
-              <button 
-                onClick={handleOpenWorkspace} 
-                className="gradient-btn"
-                style={{ flex: 1, justifyContent: 'center', fontSize: '0.85rem' }}
-              >
-                <Sparkles size={16} /> Open Workspace
-              </button>
-            </div>
+            {user ? (
+              // Authenticated User Mobile Menu
+              <>
+                {[
+                  { id: 'dashboard', label: 'Dashboard' },
+                  { id: 'profile', label: 'Profile' },
+                  { id: 'settings', label: 'Settings' }
+                ].map(nav => (
+                  <button 
+                    key={nav.id}
+                    onClick={() => { setCurrentPage(nav.id); setIsMobileMenuOpen(false); }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      textAlign: 'left',
+                      color: 'var(--text-main)',
+                      fontWeight: 500,
+                      fontSize: '1rem',
+                      padding: '8px 12px'
+                    }}
+                  >
+                    {nav.label}
+                  </button>
+                ))}
+                
+                <div style={{ display: 'flex', gap: '10px', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid var(--glass-border)' }}>
+                  <button 
+                    onClick={() => { logoutUser(); setIsMobileMenuOpen(false); }} 
+                    className="btn-secondary"
+                    style={{ flex: 1, justifyContent: 'center', borderColor: 'rgba(244, 63, 94, 0.3)', color: 'var(--accent-rose)' }}
+                  >
+                    Log Out
+                  </button>
+                </div>
+              </>
+            ) : (
+              // Public Mobile Menu
+              <>
+                {[
+                  { id: 'home', label: 'Home' },
+                  { id: 'features', label: 'Features' },
+                  { id: 'architecture', label: 'Architecture' },
+                  { id: 'pricing', label: 'Pricing' },
+                  { id: 'contact', label: 'Contact' },
+                ].map(nav => (
+                  <button 
+                    key={nav.id}
+                    onClick={() => scrollToSection(nav.id)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      textAlign: 'left',
+                      color: activeSection === nav.id ? 'var(--accent-cyan)' : 'var(--text-main)',
+                      fontWeight: activeSection === nav.id ? 700 : 500,
+                      fontSize: '1rem',
+                      padding: '8px 12px'
+                    }}
+                  >
+                    {nav.label}
+                  </button>
+                ))}
+    
+                <div style={{ display: 'flex', gap: '10px', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid var(--glass-border)' }}>
+                  <button 
+                    onClick={() => { setCurrentPage('login'); setIsMobileMenuOpen(false); }} 
+                    className="btn-secondary"
+                    style={{ flex: 1, justifyContent: 'center' }}
+                  >
+                    Sign In
+                  </button>
+                  <button 
+                    onClick={handleOpenWorkspace} 
+                    className="gradient-btn"
+                    style={{ flex: 1, justifyContent: 'center', fontSize: '0.85rem' }}
+                  >
+                    <Sparkles size={16} /> Open Workspace
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>

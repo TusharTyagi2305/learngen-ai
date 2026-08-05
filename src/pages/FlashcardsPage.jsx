@@ -167,7 +167,7 @@ export function FlashcardsPage() {
           }}
         >
           {/* Card Top Metadata */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', fontSize: '0.8rem', color: 'var(--text-dim)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', fontSize: '0.8rem', color: 'var(--text-dim)', transform: isFlipped ? 'rotateY(180deg)' : 'none', transition: 'transform 0s' }}>
             <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--accent-cyan)' }}>
               Card {currentCardIdx + 1} of {safeDeck.length}
             </span>
@@ -175,9 +175,9 @@ export function FlashcardsPage() {
           </div>
 
           {/* Card Content (Front vs Back) */}
-          <div style={{ margin: '30px 0' }}>
+          <div style={{ margin: '30px 0', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {!isFlipped ? (
-              <div>
+              <div style={{ width: '100%' }}>
                 <div style={{ fontSize: '0.78rem', color: 'var(--accent-cyan)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '12px' }}>
                   QUESTION (Click to Flip 🔄)
                 </div>
@@ -186,7 +186,7 @@ export function FlashcardsPage() {
                 </h3>
               </div>
             ) : (
-              <div style={{ transform: 'rotateY(180deg)' }}>
+              <div style={{ transform: 'rotateY(180deg)', width: '100%' }}>
                 <div style={{ fontSize: '0.78rem', color: 'var(--accent-teal)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '12px' }}>
                   GROUNDED ANSWER
                 </div>
@@ -198,7 +198,7 @@ export function FlashcardsPage() {
           </div>
 
           {/* Card Footer Hint */}
-          <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+          <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transform: isFlipped ? 'rotateY(180deg)' : 'none', transition: 'transform 0s' }}>
             <RotateCw size={14} /> Click card to flip answer
           </div>
         </div>

@@ -156,10 +156,10 @@ export function QuizGeneratorPage() {
   };
 
   return (
-    <div style={{ padding: '32px 36px', maxWidth: '960px', margin: '0 auto' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 32px) clamp(16px, 4vw, 36px)', maxWidth: '960px', margin: '0 auto' }}>
       
       {/* Header Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '32px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
             <span className="badge badge-teal"><HelpCircle size={14} /> AI Quiz Synthesizer</span>
@@ -181,10 +181,10 @@ export function QuizGeneratorPage() {
       </div>
 
       {/* Main Question Card with Side Slide Animation */}
-      <div key={currentQuizIdx} className={`glass-panel ${slideAnim}`} style={{ padding: '36px', borderRadius: 'var(--radius-xl)', marginBottom: '28px', background: 'var(--bg-secondary)' }}>
+      <div key={currentQuizIdx} className={`glass-panel ${slideAnim}`} style={{ padding: 'clamp(20px, 5vw, 36px)', borderRadius: 'var(--radius-xl)', marginBottom: '28px', background: 'var(--bg-secondary)' }}>
         
         {/* Card Header & Controls */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', fontSize: '0.85rem', color: 'var(--text-dim)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '20px', fontSize: '0.85rem', color: 'var(--text-dim)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--accent-teal)' }}>
               Question {currentQuizIdx + 1} of {safeQuizzes.length}
@@ -226,7 +226,7 @@ export function QuizGeneratorPage() {
                   cursor: isAnswered ? 'default' : 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
                   fontSize: '0.98rem',
                   fontWeight: 500,
                   transition: 'all 0.2s ease'
@@ -259,7 +259,7 @@ export function QuizGeneratorPage() {
         )}
 
         {/* Side Slide Navigation Controls */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
           <div style={{ display: 'flex', gap: '8px' }}>
             <button 
               onClick={handlePrevQuestion}

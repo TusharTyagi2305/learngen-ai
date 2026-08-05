@@ -135,10 +135,10 @@ export function AIChatPage() {
   };
 
   return (
-    <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 80px)' }}>
+    <div style={{ padding: 'clamp(12px, 3vw, 20px) clamp(12px, 4vw, 24px)', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 80px)' }}>
       
       {/* Top Studio Control Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <h1 style={{ fontSize: '1.6rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
             AI RAG Learning Studio <span className="badge badge-teal">Semantic Vector Search</span>
@@ -183,7 +183,7 @@ export function AIChatPage() {
       </div>
 
       {/* Chat Messages Log Area */}
-      <div className="glass-panel" style={{ flex: 1, overflowY: 'auto', padding: '24px 28px', background: 'var(--bg-secondary)', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div className="glass-panel" style={{ flex: 1, overflowY: 'auto', padding: 'clamp(16px, 4vw, 24px) clamp(16px, 4vw, 28px)', background: 'var(--bg-secondary)', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {messages.map(msg => (
           <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', alignItems: msg.sender === 'user' ? 'flex-end' : 'flex-start', width: '100%' }}>
             
@@ -241,9 +241,9 @@ export function AIChatPage() {
           onChange={(e) => setInputQuery(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
           className="input-field"
-          style={{ border: 'none', background: 'transparent' }}
+          style={{ border: 'none', background: 'transparent', flex: 1, minWidth: '100px' }}
         />
-        <button onClick={() => handleSendMessage()} className="gradient-btn" style={{ padding: '10px 18px' }}>
+        <button onClick={() => handleSendMessage()} className="gradient-btn" style={{ padding: '10px 18px', flexShrink: 0 }}>
           <Send size={16} /> Send
         </button>
       </div>

@@ -244,7 +244,7 @@ export function AuthPages() {
         borderRadius={20}
         style={{ width: '100%', maxWidth: '460px' }}
       >
-        <div className="glass-panel animate-fade-in" style={{ width: '100%', padding: '36px', background: 'var(--bg-secondary)', borderRadius: 'inherit' }}>
+        <div className="glass-panel animate-fade-in" style={{ width: '100%', padding: 'clamp(20px, 6vw, 36px)', background: 'var(--bg-secondary)', borderRadius: 'inherit' }}>
           
           {/* Brand Header */}
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
@@ -688,7 +688,7 @@ export function AdminLoginPage() {
         borderRadius={20}
         style={{ width: '100%', maxWidth: '460px' }}
       >
-        <div className="glass-panel animate-fade-in" style={{ width: '100%', padding: '36px', background: 'var(--bg-secondary)', borderRadius: 'inherit' }}>
+        <div className="glass-panel animate-fade-in" style={{ width: '100%', padding: 'clamp(20px, 6vw, 36px)', background: 'var(--bg-secondary)', borderRadius: 'inherit' }}>
           
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>

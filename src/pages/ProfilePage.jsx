@@ -15,10 +15,10 @@ export function ProfilePage() {
   };
 
   return (
-    <div style={{ padding: '24px', maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 24px)', maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
       <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Account Profile</h1>
 
-      <div className="glass-panel" style={{ padding: '28px', background: 'var(--bg-secondary)', display: 'flex', gap: '24px', alignItems: 'center' }}>
+      <div className="glass-panel" style={{ padding: '28px', background: 'var(--bg-secondary)', display: 'flex', gap: '24px', alignItems: 'center', flexWrap: 'wrap' }}>
         <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'var(--gradient-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '2rem', fontWeight: 800 }}>
           {user?.avatar || 'U'}
         </div>
@@ -79,12 +79,12 @@ export function SettingsPage() {
   };
 
   return (
-    <div style={{ padding: '24px', maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 24px)', maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
       <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Platform Settings & Keys</h1>
 
       <div className="glass-panel" style={{ padding: '28px', background: 'var(--bg-secondary)' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '16px' }}>Visual Theme Preference</h3>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
           <div>
             <div style={{ fontWeight: 600, fontSize: '0.95rem' }}>Active Interface Theme</div>
             <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Currently set to {theme.toUpperCase()} mode.</div>

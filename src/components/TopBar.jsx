@@ -37,7 +37,7 @@ export function TopBar() {
       </button>
 
       {/* Search Input Bar */}
-      <div className="topbar-search-bar" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--bg-tertiary)', padding: '8px 14px', borderRadius: 'var(--radius-sm)', width: '380px', border: '1px solid var(--glass-border)' }}>
+      <div className="topbar-search-bar" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--bg-tertiary)', padding: '8px 14px', borderRadius: 'var(--radius-sm)', width: '100%', maxWidth: '380px', border: '1px solid var(--glass-border)' }}>
         <Search size={16} style={{ color: 'var(--text-dim)' }} />
         <input 
           type="text" 
@@ -47,7 +47,7 @@ export function TopBar() {
       </div>
 
       {/* Action Controls */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
         
         {/* Admin Workbench Direct Button (Shown on user pages only) */}
         {isAdminUser && currentPage !== 'admin-dashboard' && (

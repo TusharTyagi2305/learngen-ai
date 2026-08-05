@@ -187,12 +187,12 @@ export function LandingPage() {
     <div style={{ position: 'relative', overflow: 'hidden', background: 'transparent' }}>
       
       {/* ==================== 1. HERO / HOME SECTION ==================== */}
-      <section id="home" style={{ padding: '140px 24px 70px', textAlign: 'center', maxWidth: '1020px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
+      <section id="home" style={{ padding: 'clamp(80px, 15vw, 140px) 24px clamp(40px, 10vw, 70px)', textAlign: 'center', maxWidth: '1020px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
         <div className="badge badge-teal animate-float" style={{ marginBottom: '22px', padding: '6px 16px', fontSize: '0.82rem' }}>
           <Sparkles size={14} /> Handcrafted 3D RAG Studio for Students & Researchers
         </div>
         
-        <h1 style={{ fontSize: '3.8rem', fontWeight: 800, lineHeight: 1.15, marginBottom: '24px' }}>
+        <h1 style={{ fontSize: 'clamp(2.2rem, 6vw, 3.8rem)', fontWeight: 800, lineHeight: 1.15, marginBottom: '24px' }}>
           Master Complex Subjects Directly From <br />
           <span className="gradient-text">Your Own Notes & Research Papers</span>
         </h1>
@@ -201,7 +201,7 @@ export function LandingPage() {
           LearnGen AI transforms PDFs, DOCX, and PPTX lectures into grounded AI study tutors, interactive 3D flashcards, dynamic MCQ quizzes, and adaptive learning roadmaps.
         </p>
 
-        <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
           <button onClick={handleOpenWorkspace} className="gradient-btn" style={{ padding: '14px 30px', fontSize: '1.05rem', borderRadius: 'var(--radius-md)' }}>
             <Sparkles size={20} /> Open Workspace Free <ArrowRight size={20} />
           </button>
@@ -279,7 +279,7 @@ export function LandingPage() {
 
 
       {/* ==================== 2. FEATURES SECTION (3D BOOK PAGE FLIP CAROUSEL) ==================== */}
-      <section id="features" style={{ padding: '110px 24px 90px', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
+      <section id="features" style={{ padding: 'clamp(60px, 10vw, 110px) 24px clamp(50px, 8vw, 90px)', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
           <span className="badge badge-teal" style={{ marginBottom: '12px' }}>3D Page Flip Module Deck</span>
           <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Complete RAG Platform Capabilities</h2>
@@ -397,7 +397,7 @@ export function LandingPage() {
 
 
       {/* ==================== 3. ARCHITECTURE SECTION (3D BOOK PAGE FLIP CAROUSEL) ==================== */}
-      <section id="architecture" style={{ padding: '110px 24px 90px', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
+      <section id="architecture" style={{ padding: 'clamp(60px, 10vw, 110px) 24px clamp(50px, 8vw, 90px)', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
           <span className="badge badge-teal" style={{ marginBottom: '12px' }}>Software Engineering Blueprint Deck</span>
           <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '12px' }}>System Architecture & Tech Stack</h2>
@@ -524,7 +524,7 @@ export function LandingPage() {
 
 
       {/* ==================== 4. PRICING SECTION (3D BOOK PAGE FLIP CAROUSEL) ==================== */}
-      <section id="pricing" style={{ padding: '110px 24px 90px', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
+      <section id="pricing" style={{ padding: 'clamp(60px, 10vw, 110px) 24px clamp(50px, 8vw, 90px)', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
           <span className="badge badge-amber" style={{ marginBottom: '12px' }}>3D Academic Plans Deck</span>
           <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Simple Academic Pricing</h2>
@@ -660,8 +660,8 @@ export function LandingPage() {
 
 
       {/* ==================== 5. CONTACT SECTION WITH CRYSTAL CLEAR BACKGROUND ==================== */}
-      <section id="contact" style={{ padding: '110px 24px 120px', background: 'transparent' }}>
-        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      <section id="contact" style={{ padding: 'clamp(60px, 10vw, 110px) 24px clamp(60px, 12vw, 120px)', background: 'transparent' }}>
+        <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
           <div className="glass-panel" style={{ padding: '36px', background: 'rgba(15, 23, 42, 0.45)', backdropFilter: 'blur(16px)', borderColor: 'rgba(255, 255, 255, 0.15)' }}>
             <h2 style={{ fontSize: '2.2rem', fontWeight: 800, marginBottom: '8px' }}>Get in Touch</h2>
             <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>Have questions about LearnGen AI's RAG pipeline or enterprise deployment?</p>

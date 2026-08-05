@@ -38,8 +38,8 @@ export function DocumentsPage() {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="glass-panel" style={{ padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-secondary)' }}>
-        <div style={{ position: 'relative', width: '320px' }}>
+      <div className="glass-panel" style={{ padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-secondary)', flexWrap: 'wrap', gap: '12px' }}>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '320px', flex: '1 1 auto' }}>
           <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)' }} />
           <input 
             type="text" 
@@ -74,68 +74,70 @@ export function DocumentsPage() {
       </div>
 
       {/* Documents Table */}
-      <div className="glass-panel" style={{ padding: '0', overflow: 'hidden', background: 'var(--bg-secondary)' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
-          <thead>
-            <tr style={{ background: 'var(--bg-tertiary)', borderBottom: '1px solid var(--glass-border)', color: 'var(--text-dim)', fontSize: '0.78rem', textTransform: 'uppercase' }}>
-              <th style={{ padding: '14px 20px' }}>Document Name</th>
-              <th style={{ padding: '14px 16px' }}>Type</th>
-              <th style={{ padding: '14px 16px' }}>Size / Pages</th>
-              <th style={{ padding: '14px 16px' }}>Chunks Indexed</th>
-              <th style={{ padding: '14px 16px' }}>Upload Date</th>
-              <th style={{ padding: '14px 16px' }}>Status</th>
-              <th style={{ padding: '14px 20px', textAlign: 'right' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredDocs.map(doc => (
-              <tr key={doc.id} style={{ borderBottom: '1px solid var(--glass-border)', transition: 'background 0.2s ease' }}>
-                <td style={{ padding: '14px 20px', fontWeight: 600 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <FileText size={18} style={{ color: 'var(--accent-cyan)' }} />
-                    <span>{doc.title}</span>
-                  </div>
-                </td>
-                <td style={{ padding: '14px 16px' }}>
-                  <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>{doc.type || doc.file_type || 'PDF'}</span>
-                </td>
-                <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>
-                  {doc.size || doc.file_size || '1.2 MB'} ({doc.pages || 1} pgs)
-                </td>
-                <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--accent-blue)' }}>
-                  {doc.chunksCount ?? doc.chunks_count ?? 0} chunks
-                </td>
-                <td style={{ padding: '14px 16px', color: 'var(--text-dim)' }}>
-                  {doc.uploadedAt || 'Recently'}
-                </td>
-                <td style={{ padding: '14px 16px' }}>
-                  <span className="badge badge-emerald">✓ {doc.status}</span>
-                </td>
-                <td style={{ padding: '14px 20px', textAlign: 'right' }}>
-                  <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
-                    {doc.chunks && doc.chunks[0] && (
-                      <button 
-                        onClick={() => setActiveCitation({ ...doc.chunks[0], documentTitle: doc.title })}
-                        className="btn-secondary"
-                        style={{ padding: '4px 8px', fontSize: '0.75rem' }}
-                        title="Inspect Chunks"
-                      >
-                        <Eye size={14} /> Chunks
-                      </button>
-                    )}
-                    <button 
-                      onClick={() => handleDeleteDoc(doc.id)}
-                      style={{ background: 'none', border: 'none', color: 'var(--accent-rose)', cursor: 'pointer', padding: '4px' }}
-                      title="Delete Document"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </td>
+      <div className="glass-panel table-responsive-container" style={{ padding: '0', overflow: 'hidden', background: 'var(--bg-secondary)' }}>
+        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <table style={{ width: '100%', minWidth: '800px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
+            <thead>
+              <tr style={{ background: 'var(--bg-tertiary)', borderBottom: '1px solid var(--glass-border)', color: 'var(--text-dim)', fontSize: '0.78rem', textTransform: 'uppercase' }}>
+                <th style={{ padding: '14px 20px' }}>Document Name</th>
+                <th style={{ padding: '14px 16px' }}>Type</th>
+                <th style={{ padding: '14px 16px' }}>Size / Pages</th>
+                <th style={{ padding: '14px 16px' }}>Chunks Indexed</th>
+                <th style={{ padding: '14px 16px' }}>Upload Date</th>
+                <th style={{ padding: '14px 16px' }}>Status</th>
+                <th style={{ padding: '14px 20px', textAlign: 'right' }}>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredDocs.map(doc => (
+                <tr key={doc.id} style={{ borderBottom: '1px solid var(--glass-border)', transition: 'background 0.2s ease' }}>
+                  <td style={{ padding: '14px 20px', fontWeight: 600 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <FileText size={18} style={{ color: 'var(--accent-cyan)' }} />
+                      <span>{doc.title}</span>
+                    </div>
+                  </td>
+                  <td style={{ padding: '14px 16px' }}>
+                    <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>{doc.type || doc.file_type || 'PDF'}</span>
+                  </td>
+                  <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>
+                    {doc.size || doc.file_size || '1.2 MB'} ({doc.pages || 1} pgs)
+                  </td>
+                  <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--accent-blue)' }}>
+                    {doc.chunksCount ?? doc.chunks_count ?? 0} chunks
+                  </td>
+                  <td style={{ padding: '14px 16px', color: 'var(--text-dim)' }}>
+                    {doc.uploadedAt || 'Recently'}
+                  </td>
+                  <td style={{ padding: '14px 16px' }}>
+                    <span className="badge badge-emerald">✓ {doc.status}</span>
+                  </td>
+                  <td style={{ padding: '14px 20px', textAlign: 'right' }}>
+                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                      {doc.chunks && doc.chunks[0] && (
+                        <button 
+                          onClick={() => setActiveCitation({ ...doc.chunks[0], documentTitle: doc.title })}
+                          className="btn-secondary"
+                          style={{ padding: '4px 8px', fontSize: '0.75rem' }}
+                          title="Inspect Chunks"
+                        >
+                          <Eye size={14} /> Chunks
+                        </button>
+                      )}
+                      <button 
+                        onClick={() => handleDeleteDoc(doc.id)}
+                        style={{ background: 'none', border: 'none', color: 'var(--accent-rose)', cursor: 'pointer', padding: '4px' }}
+                        title="Delete Document"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

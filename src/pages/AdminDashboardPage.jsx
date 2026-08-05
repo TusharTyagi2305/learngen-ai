@@ -696,33 +696,35 @@ export function AdminDashboardPage() {
           {/* Recent Uploads Table */}
           <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '16px' }}>Recent Documents Vault Table</h3>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
-              <thead>
-                <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--text-muted)' }}>
-                  <th style={{ padding: '12px' }}>Document Title</th>
-                  <th style={{ padding: '12px' }}>Type</th>
-                  <th style={{ padding: '12px' }}>Owner</th>
-                  <th style={{ padding: '12px' }}>Chunks</th>
-                  <th style={{ padding: '12px' }}>Status</th>
-                  <th style={{ padding: '12px' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {docAnalytics?.recent_uploads?.map(d => (
-                  <tr key={d.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <td style={{ padding: '12px', fontWeight: 600 }}>{d.title}</td>
-                    <td style={{ padding: '12px' }}><span className="badge badge-blue">{d.file_type}</span></td>
-                    <td style={{ padding: '12px' }}>{d.owner}</td>
-                    <td style={{ padding: '12px' }}>{d.chunks_count}</td>
-                    <td style={{ padding: '12px' }}><span className="badge badge-emerald">{d.status}</span></td>
-                    <td style={{ padding: '12px', display: 'flex', gap: '8px' }}>
-                      <button onClick={() => handlePreviewDoc(d.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem' }}><Eye size={12} /> View</button>
-                      <button onClick={() => handleDeleteDoc(d.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem', color: 'var(--accent-rose)' }}><Trash2 size={12} /> Delete</button>
-                    </td>
+            <div className="table-responsive-container" style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+              <table style={{ width: '100%', minWidth: '700px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--text-muted)' }}>
+                    <th style={{ padding: '12px' }}>Document Title</th>
+                    <th style={{ padding: '12px' }}>Type</th>
+                    <th style={{ padding: '12px' }}>Owner</th>
+                    <th style={{ padding: '12px' }}>Chunks</th>
+                    <th style={{ padding: '12px' }}>Status</th>
+                    <th style={{ padding: '12px' }}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {docAnalytics?.recent_uploads?.map(d => (
+                    <tr key={d.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <td style={{ padding: '12px', fontWeight: 600 }}>{d.title}</td>
+                      <td style={{ padding: '12px' }}><span className="badge badge-blue">{d.file_type}</span></td>
+                      <td style={{ padding: '12px' }}>{d.owner}</td>
+                      <td style={{ padding: '12px' }}>{d.chunks_count}</td>
+                      <td style={{ padding: '12px' }}><span className="badge badge-emerald">{d.status}</span></td>
+                      <td style={{ padding: '12px', display: 'flex', gap: '8px' }}>
+                        <button onClick={() => handlePreviewDoc(d.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem' }}><Eye size={12} /> View</button>
+                        <button onClick={() => handleDeleteDoc(d.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem', color: 'var(--accent-rose)' }}><Trash2 size={12} /> Delete</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
@@ -953,8 +955,8 @@ export function AdminDashboardPage() {
                 <h4 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Table Inspector: {selectedTable}</h4>
                 <a href={`${API_BASE_URL}/admin/database-table/${selectedTable}/export`} className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={14} /> Export CSV</a>
               </div>
-              <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+              <div className="table-responsive-container" style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+                <table style={{ width: '100%', minWidth: '600px', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
                   <thead>
                     <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--text-muted)' }}>
                       {tableData.columns?.map(col => <th key={col} style={{ padding: '8px' }}>{col}</th>)}
@@ -989,53 +991,55 @@ export function AdminDashboardPage() {
               </div>
             </div>
 
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
-              <thead>
-                <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--text-muted)' }}>
-                  <th style={{ padding: '12px' }}>Full Name</th>
-                  <th style={{ padding: '12px' }}>Email</th>
-                  <th style={{ padding: '12px' }}>Role</th>
-                  <th style={{ padding: '12px' }}>Status</th>
-                  <th style={{ padding: '12px' }}>Actions & RBAC</th>
-                </tr>
-              </thead>
-              <tbody>
-                {usersList?.users?.map(u => (
-                  <tr key={u.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <td style={{ padding: '12px', fontWeight: 600 }}>
-                      {u.full_name}
-                      {u.is_super_admin && <span className="badge badge-rose" style={{ marginLeft: '6px', fontSize: '0.65rem' }}>Super Admin</span>}
-                    </td>
-                    <td style={{ padding: '12px' }}>{u.email}</td>
-                    <td style={{ padding: '12px' }}>
-                      <span className={`badge ${u.role === 'admin' || u.role === 'super_admin' ? 'badge-rose' : 'badge-teal'}`}>
-                        {u.role.toUpperCase()}
-                      </span>
-                    </td>
-                    <td style={{ padding: '12px' }}><span className={`badge ${u.is_active ? 'badge-emerald' : 'badge-rose'}`}>{u.is_active ? 'Active' : 'Banned'}</span></td>
-                    <td style={{ padding: '12px', display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
-                      <button onClick={() => handleToggleUserStatus(u.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem' }}>{u.is_active ? 'Ban' : 'Unban'}</button>
-                      
-                      {/* Super Admin Promotion / Demotion Controls */}
-                      {u.role !== 'admin' && !u.is_super_admin && (
-                        <button onClick={() => handlePromoteUser(u.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem', color: 'var(--accent-cyan)', borderColor: 'rgba(6, 182, 212, 0.4)' }}>
-                          Promote to Admin
-                        </button>
-                      )}
-                      {u.role === 'admin' && !u.is_super_admin && (
-                        <button onClick={() => handleDemoteUser(u.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem', color: 'var(--accent-amber)', borderColor: 'rgba(245, 158, 11, 0.4)' }}>
-                          Demote Admin
-                        </button>
-                      )}
-
-                      {!u.is_super_admin && (
-                        <button onClick={() => handleDeleteUser(u.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem', color: 'var(--accent-rose)' }}>Delete</button>
-                      )}
-                    </td>
+            <div className="table-responsive-container" style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+              <table style={{ width: '100%', minWidth: '800px', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--text-muted)' }}>
+                    <th style={{ padding: '12px' }}>Full Name</th>
+                    <th style={{ padding: '12px' }}>Email</th>
+                    <th style={{ padding: '12px' }}>Role</th>
+                    <th style={{ padding: '12px' }}>Status</th>
+                    <th style={{ padding: '12px' }}>Actions & RBAC</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {usersList?.users?.map(u => (
+                    <tr key={u.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <td style={{ padding: '12px', fontWeight: 600 }}>
+                        {u.full_name}
+                        {u.is_super_admin && <span className="badge badge-rose" style={{ marginLeft: '6px', fontSize: '0.65rem' }}>Super Admin</span>}
+                      </td>
+                      <td style={{ padding: '12px' }}>{u.email}</td>
+                      <td style={{ padding: '12px' }}>
+                        <span className={`badge ${u.role === 'admin' || u.role === 'super_admin' ? 'badge-rose' : 'badge-teal'}`}>
+                          {u.role.toUpperCase()}
+                        </span>
+                      </td>
+                      <td style={{ padding: '12px' }}><span className={`badge ${u.is_active ? 'badge-emerald' : 'badge-rose'}`}>{u.is_active ? 'Active' : 'Banned'}</span></td>
+                      <td style={{ padding: '12px', display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <button onClick={() => handleToggleUserStatus(u.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem' }}>{u.is_active ? 'Ban' : 'Unban'}</button>
+                        
+                        {/* Super Admin Promotion / Demotion Controls */}
+                        {u.role !== 'admin' && !u.is_super_admin && (
+                          <button onClick={() => handlePromoteUser(u.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem', color: 'var(--accent-cyan)', borderColor: 'rgba(6, 182, 212, 0.4)' }}>
+                            Promote to Admin
+                          </button>
+                        )}
+                        {u.role === 'admin' && !u.is_super_admin && (
+                          <button onClick={() => handleDemoteUser(u.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem', color: 'var(--accent-amber)', borderColor: 'rgba(245, 158, 11, 0.4)' }}>
+                            Demote Admin
+                          </button>
+                        )}
+
+                        {!u.is_super_admin && (
+                          <button onClick={() => handleDeleteUser(u.id)} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.75rem', color: 'var(--accent-rose)' }}>Delete</button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
@@ -1049,26 +1053,28 @@ export function AdminDashboardPage() {
               <a href={`${API_BASE_URL}/admin/logs/export`} className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={14} /> Export Logs CSV</a>
             </div>
 
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
-              <thead>
-                <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--text-muted)' }}>
-                  <th style={{ padding: '10px' }}>Level</th>
-                  <th style={{ padding: '10px' }}>Event Type</th>
-                  <th style={{ padding: '10px' }}>Message</th>
-                  <th style={{ padding: '10px' }}>Timestamp</th>
-                </tr>
-              </thead>
-              <tbody>
-                {systemLogs?.logs?.map(l => (
-                  <tr key={l.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <td style={{ padding: '10px' }}><span className={`badge ${l.level === 'ERROR' ? 'badge-rose' : 'badge-blue'}`}>{l.level}</span></td>
-                    <td style={{ padding: '10px' }}>{l.event_type}</td>
-                    <td style={{ padding: '10px' }}>{l.message}</td>
-                    <td style={{ padding: '10px', color: 'var(--text-dim)' }}>{l.created_at}</td>
+            <div className="table-responsive-container" style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+              <table style={{ width: '100%', minWidth: '600px', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid var(--glass-border)', color: 'var(--text-muted)' }}>
+                    <th style={{ padding: '10px' }}>Level</th>
+                    <th style={{ padding: '10px' }}>Event Type</th>
+                    <th style={{ padding: '10px' }}>Message</th>
+                    <th style={{ padding: '10px' }}>Timestamp</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {systemLogs?.logs?.map(l => (
+                    <tr key={l.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <td style={{ padding: '10px' }}><span className={`badge ${l.level === 'ERROR' ? 'badge-rose' : 'badge-blue'}`}>{l.level}</span></td>
+                      <td style={{ padding: '10px' }}>{l.event_type}</td>
+                      <td style={{ padding: '10px' }}>{l.message}</td>
+                      <td style={{ padding: '10px', color: 'var(--text-dim)' }}>{l.created_at}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

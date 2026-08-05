@@ -49,8 +49,8 @@ function RichMarkdownRenderer({ text }) {
             const bodyRows = rowLines.slice(1).map(parseRow);
 
             return (
-              <div key={bIdx} style={{ overflowX: 'auto', margin: '14px 0', borderRadius: '12px', border: '1px solid var(--glass-border)', boxShadow: 'var(--shadow-card)' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.92rem', textAlign: 'left' }}>
+              <div key={bIdx} className="table-responsive-container" style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', margin: '14px 0', borderRadius: '12px', border: '1px solid var(--glass-border)', boxShadow: 'var(--shadow-card)' }}>
+                <table style={{ width: '100%', minWidth: '500px', borderCollapse: 'collapse', fontSize: '0.92rem', textAlign: 'left' }}>
                   <thead>
                     <tr style={{ background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.18) 0%, rgba(59, 130, 246, 0.18) 100%)', borderBottom: '2px solid var(--glass-border)', color: 'var(--accent-cyan)' }}>
                       {headerCells.map((cell, cIdx) => (
@@ -161,7 +161,7 @@ function NetworkTopologyDiagram({ text }) {
 
   return (
     <div style={{ marginTop: '20px', padding: '20px', borderRadius: '14px', background: 'var(--bg-tertiary)', border: '1px solid var(--glass-border)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Network size={18} style={{ color: 'var(--accent-cyan)' }} />
           <span style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--accent-teal)' }}>
@@ -175,7 +175,7 @@ function NetworkTopologyDiagram({ text }) {
           </span>
         </div>
 
-        <div style={{ display: 'flex', gap: '6px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
           {hasBus && hasStar && (
             <button
               onClick={() => setActiveDiagram('compare')}
@@ -341,7 +341,7 @@ function NetworkTopologyDiagram({ text }) {
         )}
 
         {activeDiagram === 'compare' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div className="grid-responsive-2" style={{ gap: '16px' }}>
             <div style={{ background: 'rgba(255,255,255,0.02)', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
               <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: '6px' }}>Bus Topology Layout</div>
               <svg viewBox="0 0 240 100" style={{ width: '100%' }}>
@@ -510,7 +510,7 @@ export function AnswerCard({
         {/* Primary Source Chunk Inspector snippet */}
         {primaryCitation && primaryCitation.text && (
           <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <FileText size={14} /> Retrieved Chunk: {primaryCitation.filename} (Page {primaryCitation.page || 1})
               </span>
@@ -534,8 +534,8 @@ export function AnswerCard({
       </div>
 
       {/* Control Action Toolbar */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 4px', fontSize: '0.82rem', color: 'var(--text-dim)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', padding: '0 4px', fontSize: '0.82rem', color: 'var(--text-dim)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
           <button 
             onClick={handleCopy}
             className="btn-secondary"

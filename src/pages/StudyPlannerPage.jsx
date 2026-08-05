@@ -75,10 +75,10 @@ export function StudyPlannerPage() {
   const progressPercent = milestones.length > 0 ? Math.round((completedCount / milestones.length) * 100) : 0;
 
   return (
-    <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '900px', margin: '0 auto' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 24px)', display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '900px', margin: '0 auto' }}>
       
       {/* Top Banner */}
-      <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <span className="badge badge-cyan" style={{ marginBottom: '6px' }}>AI Roadmap Generator</span>
           <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Adaptive Study Roadmap</h1>
@@ -94,7 +94,7 @@ export function StudyPlannerPage() {
       </div>
 
       {/* Add New Task Input */}
-      <div className="glass-panel" style={{ padding: '16px 20px', background: 'var(--bg-secondary)', display: 'flex', gap: '10px' }}>
+      <div className="glass-panel" style={{ padding: '16px 20px', background: 'var(--bg-secondary)', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
         <input 
           type="text" 
           placeholder="Add a new custom study target (e.g. Master TCP/IP 3-Way Handshake)..." 
@@ -102,8 +102,9 @@ export function StudyPlannerPage() {
           onChange={(e) => setNewTitle(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
           className="input-field"
+          style={{ flex: '1 1 auto', minWidth: '200px' }}
         />
-        <button onClick={handleAddTask} className="gradient-btn" style={{ whiteSpace: 'nowrap', padding: '10px 18px' }}>
+        <button onClick={handleAddTask} className="gradient-btn" style={{ whiteSpace: 'nowrap', padding: '10px 18px', flexShrink: 0 }}>
           <Plus size={16} /> Add Target
         </button>
       </div>
@@ -125,7 +126,9 @@ export function StudyPlannerPage() {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                justify: 'space-between',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '12px',
                 padding: '16px',
                 background: 'var(--bg-tertiary)',
                 borderRadius: 'var(--radius-sm)',
@@ -189,7 +192,7 @@ export function ResearchAssistantPage() {
   };
 
   return (
-    <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '1000px', margin: '0 auto' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 24px)', display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '1000px', margin: '0 auto' }}>
       <div>
         <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Deep Research Paper Assistant</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
@@ -199,16 +202,17 @@ export function ResearchAssistantPage() {
 
       <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '12px' }}>Multi-Document Cross Query</h3>
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
           <input 
             type="text" 
             placeholder="e.g. Compare Bus Topology and Star Topology principles from uploaded notes..." 
             value={researchQuery}
             onChange={(e) => setResearchQuery(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSynthesize()}
-            className="input-field" 
+            className="input-field"
+            style={{ flex: '1 1 auto', minWidth: '200px' }} 
           />
-          <button onClick={handleSynthesize} disabled={isSynthesizing} className="gradient-btn" style={{ whiteSpace: 'nowrap' }}>
+          <button onClick={handleSynthesize} disabled={isSynthesizing} className="gradient-btn" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
             <Sparkles size={16} className={isSynthesizing ? 'animate-spin' : ''} /> 
             {isSynthesizing ? 'Synthesizing...' : 'Synthesize Vault'}
           </button>

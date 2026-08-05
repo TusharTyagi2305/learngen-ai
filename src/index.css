@@ -354,7 +354,7 @@ button:active {
 .app-layout-shell {
   display: flex;
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
   overflow-x: hidden;
   position: relative;
 }
@@ -464,7 +464,7 @@ button:active {
   }
 
   .sidebar-drawer {
-    width: 280px;
+    width: min(280px, 85vw);
     transform: translateX(-100%);
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
     z-index: 1000;
@@ -542,14 +542,14 @@ button:active {
     width: 94% !important;
     max-width: 100% !important;
     margin: 10px auto !important;
-    padding: 18px !important;
+    padding: clamp(16px, 4vw, 24px) !important;
     max-height: 90vh !important;
     overflow-y: auto !important;
   }
 
   /* Font size scaling for ultra small mobile screens */
-  h1 { font-size: 1.8rem !important; }
-  h2 { font-size: 1.4rem !important; }
-  h3 { font-size: 1.2rem !important; }
+  h1 { font-size: clamp(1.8rem, 8vw, 2.5rem) !important; }
+  h2 { font-size: clamp(1.4rem, 6vw, 2rem) !important; }
+  h3 { font-size: clamp(1.2rem, 5vw, 1.5rem) !important; }
 }
 

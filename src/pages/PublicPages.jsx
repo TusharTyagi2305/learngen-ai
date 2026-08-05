@@ -16,7 +16,7 @@ export function FeaturesPage() {
         <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Designed according to enterprise Senior Architect specifications.</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
         <div className="glass-card" style={{ padding: '24px' }}>
           <h3 style={{ fontSize: '1.2rem', color: 'var(--accent-cyan)', marginBottom: '8px' }}>1. Multi-Format Text Extraction</h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>PyPDF2, python-docx, and python-pptx extract raw text, preserving tabular data and chapter page boundaries.</p>
@@ -49,7 +49,7 @@ export function AboutPage() {
         </p>
 
         <h3 style={{ fontSize: '1.3rem', marginTop: '24px', marginBottom: '12px' }}>Technology Stack Blueprint</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+        <div className="grid-responsive-2" style={{ gap: '12px' }}>
           <div style={{ padding: '12px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)' }}>
             <strong style={{ color: 'var(--accent-cyan)' }}>Frontend:</strong> React 19, Next.js, Vanilla/Tailwind CSS
           </div>
@@ -78,7 +78,7 @@ export function PricingPage() {
         <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Choose the tier that fits your study or institutional requirements.</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
         {/* Student Plan */}
         <div className="glass-card" style={{ padding: '32px' }}>
           <h3 style={{ fontSize: '1.4rem' }}>Student Free</h3>

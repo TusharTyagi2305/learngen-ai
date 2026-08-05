@@ -24,9 +24,9 @@ export function BackgroundCanvas() {
     return img;
   };
 
-  // Eagerly preload initial 15 key frames for instant startup
+  // Eagerly preload all frames to ensure zero decoding stutter during scrolling
   useEffect(() => {
-    for (let i = 1; i <= 15; i++) {
+    for (let i = START_FRAME; i <= END_FRAME; i++) {
       getOrLoadFrame(i - 1);
     }
   }, []);
@@ -62,20 +62,13 @@ export function BackgroundCanvas() {
         lastRenderedFrameIdx = frameIdx;
         const img = getOrLoadFrame(frameIdx);
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Draw rich glowing ambient background gradient so background is NEVER blank
-        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        grad.addColorStop(0, '#0b132b');
-        grad.addColorStop(0.5, '#111827');
-        grad.addColorStop(1, '#070a12');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
         if (img && img.complete && (img.naturalWidth > 0 || img.width > 0)) {
           // Disable image smoothing on mobile for better performance, keep high on desktop
           ctx.imageSmoothingEnabled = window.innerWidth >= 768;
           ctx.imageSmoothingQuality = window.innerWidth >= 768 ? 'high' : 'low';
+
+          // Clear canvas only when we are about to draw
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           const w = img.naturalWidth || img.width;
           const h = img.naturalHeight || img.height || 1;
@@ -148,7 +141,8 @@ export function BackgroundCanvas() {
         top: 0, left: 0,
         width: '100vw', height: '100vh',
         zIndex: -1, pointerEvents: 'none',
-        objectFit: 'cover'
+        objectFit: 'cover',
+        background: 'linear-gradient(135deg, #0b132b, #111827, #070a12)'
       }}
     />
   );

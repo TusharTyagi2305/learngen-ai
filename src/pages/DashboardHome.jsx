@@ -127,17 +127,17 @@ export function DashboardHome() {
                 </div>
               ) : (
                 safeDocs.slice(0, 3).map(doc => (
-                  <div key={doc.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <FileText size={20} style={{ color: 'var(--accent-cyan)' }} />
-                      <div>
-                        <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{doc.title}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
+                  <div key={doc.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)', gap: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0 }}>
+                      <FileText size={20} style={{ color: 'var(--accent-cyan)', flexShrink: 0 }} />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontWeight: 600, fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{doc.title}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {doc.type || doc.file_type || 'PDF'} • {doc.size || doc.file_size || '1.2 MB'} • {doc.chunksCount ?? doc.chunks_count ?? 0} chunks indexed
                         </div>
                       </div>
                     </div>
-                    <span className="badge badge-emerald">{doc.status}</span>
+                    <span className="badge badge-emerald" style={{ flexShrink: 0 }}>{doc.status}</span>
                   </div>
                 ))
               )}

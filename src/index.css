@@ -492,7 +492,8 @@ button:active {
     grid-template-columns: 1fr;
   }
 
-  .desktop-only-flex {
+  .desktop-only-flex,
+  .desktop-only-block {
     display: none !important;
   }
 

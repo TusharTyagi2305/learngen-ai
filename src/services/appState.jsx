@@ -51,7 +51,12 @@ export function AppProvider({ children }) {
   // Persistent Current Page State across Browser URL Navigation & Page Refresh
   const getPageFromLocation = () => {
     try {
-      const path = (window.location.pathname || '').toLowerCase().replace(/\/+$/, '');
+      let path = (window.location.pathname || '').toLowerCase();
+      // Remove trailing slashes but preserve root '/'
+      if (path.length > 1) {
+        path = path.replace(/\/+$/, '');
+      }
+
       if (path === '/admin/login') return 'admin-login';
       if (path === '/admin' || path === '/admin/dashboard') return 'admin-dashboard';
       if (path === '/login') return 'login';
@@ -74,6 +79,15 @@ export function AppProvider({ children }) {
 
       const savedUser = localStorage.getItem('learngen_user');
       const savedPage = localStorage.getItem('learngen_current_page');
+      
+      // Auto-restore session for PWA root launches or unmapped paths
+      if (path === '/' || path === '') {
+        if (savedUser) {
+          return (savedPage && !['landing', 'login', 'register', 'forgot-password'].includes(savedPage)) ? savedPage : 'dashboard';
+        }
+        return 'landing';
+      }
+
       if (savedPage === 'admin-login') return 'admin-login';
       if (savedPage === 'admin-dashboard') return 'admin-dashboard';
 

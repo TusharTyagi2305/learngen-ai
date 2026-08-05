@@ -121,10 +121,10 @@ export function FlashcardsPage() {
   };
 
   return (
-    <div style={{ padding: '32px 36px', maxWidth: '1000px', margin: '0 auto' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 32px) clamp(16px, 4vw, 36px)', maxWidth: '1000px', margin: '0 auto' }}>
       
       {/* Header Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '32px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
             <span className="badge badge-cyan"><Layers size={14} /> Spaced Repetition 3D Deck</span>
@@ -152,7 +152,7 @@ export function FlashcardsPage() {
           className="glass-panel"
           style={{
             minHeight: '340px',
-            padding: '40px',
+            padding: 'clamp(20px, 5vw, 40px)',
             display: 'flex',
             flexDirection: 'column',
             justify: 'space-between',
@@ -167,7 +167,7 @@ export function FlashcardsPage() {
           }}
         >
           {/* Card Top Metadata */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-dim)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', fontSize: '0.8rem', color: 'var(--text-dim)' }}>
             <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--accent-cyan)' }}>
               Card {currentCardIdx + 1} of {safeDeck.length}
             </span>
@@ -230,7 +230,7 @@ export function FlashcardsPage() {
       </div>
 
       {/* Spaced Repetition Rating Buttons */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '16px' }}>
         <button 
           onClick={() => handleRating('hard')}
           className="btn-secondary"

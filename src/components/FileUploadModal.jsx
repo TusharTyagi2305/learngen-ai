@@ -100,7 +100,7 @@ export function FileUploadModal() {
         width: '100%',
         maxWidth: '540px',
         background: 'var(--bg-secondary)',
-        padding: '28px',
+        padding: 'clamp(20px, 5vw, 28px)',
         position: 'relative'
       }}>
         {/* Close Button */}
@@ -125,7 +125,7 @@ export function FileUploadModal() {
               style={{
                 border: '2px dashed var(--accent-blue)',
                 borderRadius: 'var(--radius-md)',
-                padding: '32px 20px',
+                padding: 'clamp(24px, 5vw, 32px) clamp(16px, 4vw, 20px)',
                 textAlign: 'center',
                 background: 'rgba(59, 130, 246, 0.05)',
                 cursor: 'pointer',
@@ -150,7 +150,7 @@ export function FileUploadModal() {
             </div>
 
             {selectedFile && (
-              <div style={{ padding: '10px 14px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <div style={{ padding: '10px 14px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <FileText size={18} style={{ color: 'var(--accent-cyan)' }} />
                   <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>{selectedFile.name}</span>

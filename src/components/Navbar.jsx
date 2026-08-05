@@ -80,7 +80,7 @@ export function Navbar() {
       borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
       transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
     }}>
-      <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+      <div style={{ width: '100%', maxWidth: '1280px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
         
         {/* Brand Logo */}
         <div 

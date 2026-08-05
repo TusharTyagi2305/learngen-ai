@@ -50,7 +50,7 @@ export function CitationInspector() {
               <FileText size={16} /> {activeCitation.documentTitle}
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '12px' }}>
+            <div className="grid-responsive-2" style={{ gap: '10px', marginTop: '12px' }}>
               <div style={{ background: 'var(--bg-tertiary)', padding: '8px 12px', borderRadius: 'var(--radius-sm)' }}>
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>Page Number</div>
                 <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>Page {activeCitation.page}</div>

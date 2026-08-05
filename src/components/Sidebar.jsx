@@ -212,7 +212,7 @@ export function Sidebar() {
       </div>
 
       {/* User Profile Card Footer */}
-      <div style={{ padding: '14px 16px', borderTop: '1px solid var(--glass-border)', background: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ padding: '14px 16px', borderTop: '1px solid var(--glass-border)', background: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: isAdminPage ? 'linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)' : 'var(--gradient-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '0.9rem' }}>
             {user?.avatar || 'TS'}
@@ -222,12 +222,24 @@ export function Sidebar() {
             <div style={{ fontSize: '0.72rem', color: isAdminPage ? '#f43f5e' : 'var(--accent-emerald)', textTransform: 'capitalize' }}>{(user?.role || 'student')} Plan</div>
           </div>
         </div>
+        
+        {/* Desktop Logout Button (Icon) */}
         <button 
           onClick={logoutUser} 
+          className="desktop-only-flex"
           style={{ background: 'none', border: 'none', color: 'var(--text-dim)', cursor: 'pointer', padding: '4px' }}
           title="Log Out"
         >
           <LogOut size={16} />
+        </button>
+
+        {/* Mobile Full-Width Logout Button */}
+        <button 
+          onClick={logoutUser} 
+          className="btn-secondary mobile-only-flex"
+          style={{ width: '100%', justifyContent: 'center', gap: '8px', padding: '10px', marginTop: '4px', borderColor: 'rgba(244, 63, 94, 0.3)', color: 'var(--accent-rose)' }}
+        >
+          <LogOut size={16} /> Log Out
         </button>
       </div>
     </aside>

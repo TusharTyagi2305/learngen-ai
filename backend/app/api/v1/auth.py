@@ -119,12 +119,12 @@ def register_user(request: UserRegister, background_tasks: BackgroundTasks, db: 
             db.commit()
 
     # Generate & send OTP via SMTP asynchronously
-    otp_code = generate_and_send_otp(email=email_clean, db=db, background_tasks=background_tasks)
+    generate_and_send_otp(email=email_clean, db=db, background_tasks=background_tasks)
 
     return ApiResponse(
         success=True,
         message=f"Verification code sent to {email_clean}. Please check your email inbox.",
-        data={"email": email_clean, "demo_otp": otp_code}
+        data={"email": email_clean}
     )
 
 @router.post("/resend-otp", response_model=ApiResponse)
@@ -137,12 +137,12 @@ def resend_otp(payload: OTPResendRequest, background_tasks: BackgroundTasks, db:
     if user.is_active:
         raise BadRequestException("This account is already active. Please sign in.")
 
-    otp_code = generate_and_send_otp(email=email_clean, db=db, background_tasks=background_tasks)
+    generate_and_send_otp(email=email_clean, db=db, background_tasks=background_tasks)
 
     return ApiResponse(
         success=True,
         message=f"A new verification OTP code has been sent to {email_clean}.",
-        data={"email": email_clean, "demo_otp": otp_code}
+        data={"email": email_clean}
     )
 
 @router.post("/verify-otp", response_model=ApiResponse)

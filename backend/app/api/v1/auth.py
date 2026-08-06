@@ -233,12 +233,14 @@ def verify_otp(payload: OTPVerifyRequest, db: Session = Depends(get_db)):
 def login_user(user_in: UserLogin, db: Session = Depends(get_db)):
     email_clean = user_in.email.lower().strip()
     user = db.query(User).filter(User.email == email_clean).first()
-    
-    if not user or not verify_password(user_in.password, user.password_hash):
-        raise UnauthorizedException("Invalid email address or password.")
+    if not user:
+        raise UnauthorizedException("Account not found. Please create an account first.")
+
+    if not verify_password(user_in.password, user.password_hash):
+        raise UnauthorizedException("Invalid email or password.")
 
     if not user.is_active:
-        raise BadRequestException("Account email is not verified. Please verify your email with the OTP sent to your inbox.")
+        raise BadRequestException("Please verify your email before logging in.")
 
     access_token = create_access_token(subject=user.id, role=user.role)
     refresh_token_str = create_refresh_token(subject=user.id)
@@ -302,12 +304,14 @@ def admin_login(user_in: UserLogin, request: Request, db: Session = Depends(get_
     """
     email_clean = user_in.email.lower().strip()
     user = db.query(User).filter(User.email == email_clean).first()
-    
-    if not user or not verify_password(user_in.password, user.password_hash):
-        raise UnauthorizedException("Invalid admin email address or password.")
+    if not user:
+        raise UnauthorizedException("Account not found. Please create an account first.")
+
+    if not verify_password(user_in.password, user.password_hash):
+        raise UnauthorizedException("Invalid email or password.")
 
     if not user.is_active:
-        raise BadRequestException("Admin account is disabled or unverified.")
+        raise BadRequestException("Please verify your email before logging in.")
 
     # SECURITY ENFORCEMENT: Verify user has Admin or Super Admin role
     if not user.is_super_admin and user.role not in ["admin", "super_admin"]:

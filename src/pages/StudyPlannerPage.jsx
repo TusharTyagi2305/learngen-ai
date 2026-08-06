@@ -81,7 +81,7 @@ export function StudyPlannerPage() {
       <GlobalSpotlight gridRef={containerRef} glowColor="6, 182, 212" />
       
       {/* Top Banner */}
-      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <span className="badge badge-cyan" style={{ marginBottom: '6px' }}>AI Roadmap Generator</span>
           <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Adaptive Study Roadmap</h1>
@@ -97,7 +97,7 @@ export function StudyPlannerPage() {
       </ParticleCard>
 
       {/* Add New Task Input */}
-      <ParticleCard particleCount={4} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '16px 20px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+      <ParticleCard particleCount={4} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '16px 20px', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px' }}>
         <input 
           type="text" 
           placeholder="Add a new custom study target (e.g. Master TCP/IP 3-Way Handshake)..." 

@@ -28,7 +28,7 @@ export function DocumentsPage() {
       <GlobalSpotlight gridRef={containerRef} glowColor="6, 182, 212" />
       
       {/* Top Header */}
-      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px' }}>
+      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: '24px' }}>
         <div>
           <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Document Vault & Vector Index</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
@@ -41,7 +41,7 @@ export function DocumentsPage() {
       </ParticleCard>
 
       {/* Filter & Search Bar */}
-      <ParticleCard particleCount={6} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+      <ParticleCard particleCount={6} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '14px 20px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <div style={{ position: 'relative', width: '100%', maxWidth: '320px', flex: '1 1 auto' }}>
           <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)' }} />
           <input 

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../services/appState';
 import { api } from '../services/api';
 import { AnswerCard } from '../components/AnswerCard';
 import { Calendar, CheckCircle2, Circle, Clock, Plus, Sparkles, Target, RefreshCw } from 'lucide-react';
+import { ParticleCard, GlobalSpotlight } from '../components/MagicBento';
 
 export function StudyPlannerPage() {
   const { documents, activeDocId, showToast } = useApp();
+  const containerRef = useRef(null);
 
   const [milestones, setMilestones] = useState([
     { id: 'm-1', title: "Review Network Topologies (Bus, Star, Ring, Mesh)", date: "Today", completed: true, doc: "Computer Network Unit 1-5.pdf" },
@@ -75,10 +77,11 @@ export function StudyPlannerPage() {
   const progressPercent = milestones.length > 0 ? Math.round((completedCount / milestones.length) * 100) : 0;
 
   return (
-    <div style={{ padding: 'clamp(16px, 4vw, 24px)', display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '900px', margin: '0 auto' }}>
+    <div ref={containerRef} className="bento-section" style={{ padding: 'clamp(16px, 4vw, 24px)', display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '900px', margin: '0 auto', position: 'relative' }}>
+      <GlobalSpotlight gridRef={containerRef} glowColor="6, 182, 212" />
       
       {/* Top Banner */}
-      <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <span className="badge badge-cyan" style={{ marginBottom: '6px' }}>AI Roadmap Generator</span>
           <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Adaptive Study Roadmap</h1>
@@ -91,10 +94,10 @@ export function StudyPlannerPage() {
           <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent-cyan)' }}>{progressPercent}%</div>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>{completedCount} of {milestones.length} Tasks Done</div>
         </div>
-      </div>
+      </ParticleCard>
 
       {/* Add New Task Input */}
-      <div className="glass-panel" style={{ padding: '16px 20px', background: 'var(--bg-secondary)', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+      <ParticleCard particleCount={4} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '16px 20px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
         <input 
           type="text" 
           placeholder="Add a new custom study target (e.g. Master TCP/IP 3-Way Handshake)..." 
@@ -107,7 +110,7 @@ export function StudyPlannerPage() {
         <button onClick={handleAddTask} className="gradient-btn" style={{ whiteSpace: 'nowrap', padding: '10px 18px', flexShrink: 0 }}>
           <Plus size={16} /> Add Target
         </button>
-      </div>
+      </ParticleCard>
 
       {/* Progress Bar */}
       <div style={{ height: '8px', background: 'var(--bg-tertiary)', borderRadius: '4px', overflow: 'hidden' }}>
@@ -115,7 +118,7 @@ export function StudyPlannerPage() {
       </div>
 
       {/* Milestone List */}
-      <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
+      <ParticleCard particleCount={12} enableTilt={false} enableMagnetism={false} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px' }}>
         <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '16px' }}>Upcoming Scheduled Targets</h3>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -156,7 +159,7 @@ export function StudyPlannerPage() {
             </div>
           ))}
         </div>
-      </div>
+      </ParticleCard>
 
     </div>
   );
@@ -164,6 +167,7 @@ export function StudyPlannerPage() {
 
 export function ResearchAssistantPage() {
   const { activeDocId, showToast } = useApp();
+  const containerRef = useRef(null);
   const [researchQuery, setResearchQuery] = useState('');
   const [isSynthesizing, setIsSynthesizing] = useState(false);
   const [synthesisResult, setSynthesisResult] = useState(null);
@@ -192,15 +196,17 @@ export function ResearchAssistantPage() {
   };
 
   return (
-    <div style={{ padding: 'clamp(16px, 4vw, 24px)', display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '1000px', margin: '0 auto' }}>
-      <div>
+    <div ref={containerRef} className="bento-section" style={{ padding: 'clamp(16px, 4vw, 24px)', display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '1000px', margin: '0 auto', position: 'relative' }}>
+      <GlobalSpotlight gridRef={containerRef} glowColor="6, 182, 212" />
+
+      <ParticleCard particleCount={6} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px' }}>
         <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Deep Research Paper Assistant</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
           Cross-document synthesis, research paper summaries, and citation bibliographies.
         </p>
-      </div>
+      </ParticleCard>
 
-      <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
+      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '12px' }}>Multi-Document Cross Query</h3>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
           <input 
@@ -217,16 +223,16 @@ export function ResearchAssistantPage() {
             {isSynthesizing ? 'Synthesizing...' : 'Synthesize Vault'}
           </button>
         </div>
-      </div>
+      </ParticleCard>
 
       {synthesisResult && (
-        <div className="glass-panel animate-fade-in" style={{ padding: '28px', background: 'var(--bg-secondary)' }}>
+        <ParticleCard particleCount={12} enableTilt={false} enableMagnetism={false} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow animate-fade-in" style={{ padding: '28px' }}>
           <span className="badge badge-teal" style={{ marginBottom: '8px' }}>AI Research Synthesis</span>
           <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '12px' }}>{synthesisResult.title}</h2>
           <div style={{ color: 'var(--text-main)', lineHeight: 1.7, marginBottom: '20px', whiteSpace: 'pre-wrap' }}>
             {synthesisResult.summary}
           </div>
-        </div>
+        </ParticleCard>
       )}
     </div>
   );

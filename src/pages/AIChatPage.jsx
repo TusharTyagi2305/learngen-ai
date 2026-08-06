@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../services/appState';
 import { queryRagEngine } from '../services/mockRAG';
 import { api } from '../services/api';
@@ -7,9 +7,11 @@ import {
   Send, Sparkles, ShieldCheck, FileText, Layers, ExternalLink, 
   HelpCircle, RefreshCw, BookOpen, ThumbsUp, Copy, CheckCircle2, Search, Trash2
 } from 'lucide-react';
+import { ParticleCard, GlobalSpotlight } from '../components/MagicBento';
 
 export function AIChatPage() {
   const { user, documents, ragConfig, activeDocId, setActiveCitation, showToast, recordActivity } = useApp();
+  const containerRef = useRef(null);
   
   const initialWelcomeMsg = [
     {
@@ -135,10 +137,11 @@ export function AIChatPage() {
   };
 
   return (
-    <div style={{ padding: 'clamp(12px, 3vw, 20px) clamp(12px, 4vw, 24px)', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 80px)' }}>
+    <div ref={containerRef} className="bento-section" style={{ padding: 'clamp(12px, 3vw, 20px) clamp(12px, 4vw, 24px)', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 80px)', position: 'relative' }}>
+      <GlobalSpotlight gridRef={containerRef} glowColor="6, 182, 212" />
       
       {/* Top Studio Control Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px', padding: '16px 20px' }}>
         <div>
           <h1 style={{ fontSize: '1.6rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
             AI RAG Learning Studio <span className="badge badge-teal">Semantic Vector Search</span>
@@ -161,7 +164,7 @@ export function AIChatPage() {
             <ShieldCheck size={14} /> Strict RAG 2.0 (Top-K=5, Cosine)
           </div>
         </div>
-      </div>
+      </ParticleCard>
 
       {/* Preset Prompt Template Pills */}
       <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '12px' }}>
@@ -183,7 +186,7 @@ export function AIChatPage() {
       </div>
 
       {/* Chat Messages Log Area */}
-      <div className="glass-panel" style={{ flex: 1, overflowY: 'auto', padding: 'clamp(16px, 4vw, 24px) clamp(16px, 4vw, 28px)', background: 'var(--bg-secondary)', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <ParticleCard particleCount={0} enableTilt={false} enableMagnetism={false} clickEffect={false} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ flex: 1, overflowY: 'auto', padding: 'clamp(16px, 4vw, 24px) clamp(16px, 4vw, 28px)', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {messages.map(msg => (
           <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', alignItems: msg.sender === 'user' ? 'flex-end' : 'flex-start', width: '100%' }}>
             
@@ -230,10 +233,10 @@ export function AIChatPage() {
             Performing ChromaDB vector similarity search & generating answer...
           </div>
         )}
-      </div>
+      </ParticleCard>
 
       {/* Message Input Box */}
-      <div className="glass-panel" style={{ padding: '8px 12px', background: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <ParticleCard particleCount={4} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: '10px', minHeight: 'auto' }}>
         <input 
           type="text" 
           placeholder="Ask anything about your uploaded notes and research papers..." 
@@ -246,7 +249,7 @@ export function AIChatPage() {
         <button onClick={() => handleSendMessage()} className="gradient-btn" style={{ padding: '10px 18px', flexShrink: 0 }}>
           <Send size={16} /> Send
         </button>
-      </div>
+      </ParticleCard>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../services/appState';
 import { API_BASE_URL } from '../services/api';
 import { 
@@ -25,6 +25,7 @@ export function AdminDashboardPage() {
 
   // Data states
   const [loading, setLoading] = useState(true);
+  const containerRef = useRef(null);
   const [overviewStats, setOverviewStats] = useState(null);
   const [docAnalytics, setDocAnalytics] = useState(null);
   const [vectorAnalytics, setVectorAnalytics] = useState(null);
@@ -411,7 +412,8 @@ export function AdminDashboardPage() {
   ];
 
   return (
-    <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', minHeight: '100vh' }}>
+    <div ref={containerRef} className="bento-section" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', minHeight: '100vh', position: 'relative' }}>
+      <GlobalSpotlight gridRef={containerRef} glowColor="16, 185, 129" />
       
       {/* Top Admin Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
@@ -447,34 +449,34 @@ export function AdminDashboardPage() {
           />
 
           {/* Infrastructure Status */}
-          <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
+          <div className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Activity size={18} style={{ color: 'var(--accent-cyan)' }} /> Platform Infrastructure Status & Health
             </h3>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
-              <div className="feature-stat-card" onClick={() => setActiveTab('api_monitor')} style={{ padding: '18px', cursor: 'pointer' }} title="Click to open API Monitor">
+              <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('api_monitor')} style={{ padding: '18px', cursor: 'pointer' }} title="Click to open API Monitor">
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)', fontWeight: 600 }}>FastAPI API Gateway</div>
                 <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent-emerald)', margin: '4px 0' }}>{systemHealth?.backend_status || 'Healthy'}</div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Port 8000 Async Uvicorn Server</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--accent-emerald)', marginTop: '6px', fontWeight: 600 }}>Inspect API Gateway <ChevronRight size={12} /></div>
               </div>
 
-              <div className="feature-stat-card" onClick={() => setActiveTab('vector_exp')} style={{ padding: '18px', cursor: 'pointer' }} title="Click to open Vector Explorer">
+              <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('vector_exp')} style={{ padding: '18px', cursor: 'pointer' }} title="Click to open Vector Explorer">
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)', fontWeight: 600 }}>ChromaDB Vector Store</div>
                 <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent-cyan)', margin: '4px 0' }}>{systemHealth?.chromadb_status || 'Active'}</div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>HNSW Index (384d Embeddings)</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--accent-cyan)', marginTop: '6px', fontWeight: 600 }}>Inspect Vector Store <ChevronRight size={12} /></div>
               </div>
 
-              <div className="feature-stat-card" onClick={() => setActiveTab('db_monitor')} style={{ padding: '18px', cursor: 'pointer' }} title="Click to open Live Database Monitor">
+              <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('db_monitor')} style={{ padding: '18px', cursor: 'pointer' }} title="Click to open Live Database Monitor">
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)', fontWeight: 600 }}>PostgreSQL / SQLite Database</div>
                 <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent-blue)', margin: '4px 0' }}>{systemHealth?.postgresql_status || 'Connected'}</div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Transactional User Data Vault</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--accent-blue)', marginTop: '6px', fontWeight: 600 }}>Inspect Database Tables <ChevronRight size={12} /></div>
               </div>
 
-              <div className="feature-stat-card" onClick={() => setActiveTab('files')} style={{ padding: '18px', cursor: 'pointer' }} title="Click to open File Manager">
+              <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('files')} style={{ padding: '18px', cursor: 'pointer' }} title="Click to open File Manager">
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)', fontWeight: 600 }}>Disk Storage Utilization</div>
                 <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent-amber)', margin: '4px 0' }}>{systemHealth?.disk_usage_pct || 25}% Used</div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Uploaded PDFs & Index Storage</div>
@@ -491,7 +493,7 @@ export function AdminDashboardPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
             
             {/* PDF Cards */}
-            <div className="feature-stat-card" onClick={() => setActiveTab('files')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open File Manager">
+            <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('files')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open File Manager">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div style={{ background: 'rgba(244, 63, 94, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-rose)', border: '1px solid rgba(244, 63, 94, 0.3)' }}>
                   <FileText size={22} />
@@ -522,7 +524,7 @@ export function AdminDashboardPage() {
             </div>
 
             {/* DOCX Cards */}
-            <div className="feature-stat-card" onClick={() => setActiveTab('files')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open File Manager">
+            <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('files')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open File Manager">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div style={{ background: 'rgba(59, 130, 246, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-blue)', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
                   <File size={22} />
@@ -553,7 +555,7 @@ export function AdminDashboardPage() {
             </div>
 
             {/* TXT Cards */}
-            <div className="feature-stat-card" onClick={() => setActiveTab('files')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open File Manager">
+            <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('files')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open File Manager">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div style={{ background: 'rgba(16, 185, 129, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-emerald)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
                   <Folder size={22} />
@@ -584,7 +586,7 @@ export function AdminDashboardPage() {
             </div>
 
             {/* Storage Card */}
-            <div className="feature-stat-card" onClick={() => setActiveTab('files')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open File Manager">
+            <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('files')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open File Manager">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div style={{ background: 'rgba(6, 182, 212, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-cyan)', border: '1px solid rgba(6, 182, 212, 0.3)' }}>
                   <HardDrive size={22} />
@@ -613,7 +615,7 @@ export function AdminDashboardPage() {
           </div>
 
           {/* Recent Uploads Table */}
-          <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
+          <div className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '16px' }}>Recent Documents Vault Table</h3>
             <div className="table-responsive-container" style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <table style={{ width: '100%', minWidth: '700px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
@@ -652,7 +654,7 @@ export function AdminDashboardPage() {
       {activeTab === 'vector' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
-            <div className="feature-stat-card" onClick={() => setActiveTab('vector_exp')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open Vector Explorer">
+            <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('vector_exp')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open Vector Explorer">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div style={{ background: 'rgba(59, 130, 246, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-blue)', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
                   <Database size={22} />
@@ -678,7 +680,7 @@ export function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="feature-stat-card" onClick={() => setActiveTab('vector_exp')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open Vector Explorer">
+            <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('vector_exp')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open Vector Explorer">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div style={{ background: 'rgba(6, 182, 212, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-cyan)', border: '1px solid rgba(6, 182, 212, 0.3)' }}>
                   <Layers size={22} />
@@ -704,7 +706,7 @@ export function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="feature-stat-card" onClick={() => setActiveTab('settings')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open Hyperparameter Tuning">
+            <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('settings')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open Hyperparameter Tuning">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div style={{ background: 'rgba(16, 185, 129, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-emerald)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
                   <Cpu size={22} />
@@ -731,7 +733,7 @@ export function AdminDashboardPage() {
             </div>
           </div>
 
-          <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
+          <div className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '16px' }}>Vector DB Index Management Actions</h3>
             <div style={{ display: 'flex', gap: '16px' }}>
               <button onClick={() => handleVectorAction('rebuild_index')} className="gradient-btn">Rebuild HNSW Index</button>
@@ -745,7 +747,7 @@ export function AdminDashboardPage() {
       {activeTab === 'rag' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
-            <div className="feature-stat-card" onClick={() => setActiveTab('chat')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to view Chat Analytics">
+            <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('chat')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to view Chat Analytics">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div style={{ background: 'rgba(59, 130, 246, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-blue)', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
                   <Bot size={22} />
@@ -771,7 +773,7 @@ export function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="feature-stat-card" onClick={() => setActiveTab('api_monitor')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to view API Monitor">
+            <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('api_monitor')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to view API Monitor">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div style={{ background: 'rgba(16, 185, 129, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-emerald)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
                   <Activity size={22} />
@@ -797,7 +799,7 @@ export function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="feature-stat-card" onClick={() => setActiveTab('api_monitor')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to view API Monitor">
+            <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('api_monitor')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to view API Monitor">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div style={{ background: 'rgba(6, 182, 212, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-cyan)', border: '1px solid rgba(6, 182, 212, 0.3)' }}>
                   <Zap size={22} />
@@ -823,7 +825,7 @@ export function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="feature-stat-card" onClick={() => setActiveTab('settings')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open Hyperparameter Tuning">
+            <div className="feature-stat-card magic-bento-card magic-bento-card--border-glow" onClick={() => setActiveTab('settings')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open Hyperparameter Tuning">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div style={{ background: 'rgba(245, 158, 11, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-amber)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
                   <TrendingUp size={22} />
@@ -855,7 +857,7 @@ export function AdminDashboardPage() {
       {/* TAB 8: DATABASE MONITOR */}
       {activeTab === 'db_monitor' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
+          <div className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '16px' }}>PostgreSQL Live Database Tables</h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
               {dbMonitor?.tables?.map(t => (
@@ -869,7 +871,7 @@ export function AdminDashboardPage() {
           </div>
 
           {selectedTable && tableData && (
-            <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
+            <div className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
                 <h4 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Table Inspector: {selectedTable}</h4>
                 <a href={`${API_BASE_URL}/admin/database-table/${selectedTable}/export`} className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={14} /> Export CSV</a>
@@ -898,7 +900,7 @@ export function AdminDashboardPage() {
       {/* TAB 10: USER MANAGEMENT */}
       {activeTab === 'users' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
+          <div className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>User Management Workbench</h3>
               <div style={{ display: 'flex', gap: '12px' }}>
@@ -966,7 +968,7 @@ export function AdminDashboardPage() {
       {/* TAB 12: SYSTEM LOGS */}
       {activeTab === 'logs' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
+          <div className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>System Audit Logs</h3>
               <a href={`${API_BASE_URL}/admin/logs/export`} className="btn-secondary" style={{ textDecoration: 'none', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={14} /> Export Logs CSV</a>
@@ -1000,7 +1002,7 @@ export function AdminDashboardPage() {
 
       {/* TAB 14: HYPERPARAMETERS */}
       {activeTab === 'settings' && (
-        <div className="glass-panel" style={{ padding: '28px', background: 'var(--bg-secondary)' }}>
+        <div className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '28px', background: 'var(--bg-secondary)' }}>
           <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Sliders size={20} style={{ color: 'var(--accent-blue)' }} /> RAG Hyperparameter Tuning
           </h3>
@@ -1021,7 +1023,7 @@ export function AdminDashboardPage() {
       {/* TAB 15: BACKUP & RECOVERY */}
       {activeTab === 'backup' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
+          <div className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '16px' }}>System Backup & Recovery Manager</h3>
             <button onClick={handleCreateBackup} className="gradient-btn">Create Full System ZIP Backup</button>
 

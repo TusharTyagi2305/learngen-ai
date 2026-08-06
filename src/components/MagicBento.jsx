@@ -11,7 +11,7 @@ const MOBILE_BREAKPOINT = 768;
 
 const cardData = [
   {
-    color: '#0B0F19',
+    color: '#001529',
     title: 'AI Chat',
     description: 'Ask unlimited questions powered by advanced AI.',
     label: 'Interactive',
@@ -19,7 +19,7 @@ const cardData = [
     route: '/dashboard/chat'
   },
   {
-    color: '#0B0F19',
+    color: '#001529',
     title: 'PDF Chat',
     description: 'Upload PDFs and chat with your documents instantly.',
     label: 'Document QA',
@@ -27,7 +27,7 @@ const cardData = [
     route: '/dashboard/documents'
   },
   {
-    color: '#0B0F19',
+    color: '#001529',
     title: 'Quiz Generator',
     description: 'Generate AI quizzes in seconds to test your knowledge.',
     label: 'Assessment',
@@ -35,7 +35,7 @@ const cardData = [
     route: '/dashboard/quiz'
   },
   {
-    color: '#0B0F19',
+    color: '#001529',
     title: 'Flashcards',
     description: 'Turn notes into interactive 3D study cards.',
     label: 'Retention',
@@ -43,7 +43,7 @@ const cardData = [
     route: '/dashboard/flashcards'
   },
   {
-    color: '#0B0F19',
+    color: '#001529',
     title: 'Study Planner',
     description: 'Adaptive roadmaps customized to your learning pace.',
     label: 'Organization',
@@ -51,7 +51,7 @@ const cardData = [
     route: '/dashboard/study-planner'
   },
   {
-    color: '#0B0F19',
+    color: '#001529',
     title: 'Smart Notes',
     description: 'Auto-generate concise summaries and key concepts.',
     label: 'Productivity',
@@ -59,7 +59,7 @@ const cardData = [
     route: '/dashboard/notes'
   },
   {
-    color: '#0B0F19',
+    color: '#001529',
     title: 'Analytics Dashboard',
     description: 'Track your progress and study velocity in real-time.',
     label: 'Insights',
@@ -67,7 +67,7 @@ const cardData = [
     route: '/dashboard'
   },
   {
-    color: '#0B0F19',
+    color: '#001529',
     title: 'Secure Cloud Storage',
     description: 'Enterprise-grade protection for your academic vault.',
     label: 'Security',

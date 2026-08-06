@@ -1,9 +1,9 @@
 /* LearnGen AI Design System & Styling */
 :root {
-  --bg-primary: #0e0a14;
-  --bg-secondary: #161120;
-  --bg-tertiary: #1f182f;
-  --glass-bg: rgba(22, 17, 32, 0.75);
+  --bg-primary: #0b0f17;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1f293d;
+  --glass-bg: rgba(17, 24, 39, 0.75);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-hover: rgba(255, 255, 255, 0.12);
   

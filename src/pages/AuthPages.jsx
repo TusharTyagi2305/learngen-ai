@@ -145,58 +145,23 @@ export function AuthPages() {
 
     try {
       if (roleState === 'Admin') {
-        try {
-          const res = await api.adminLogin({ email: emailClean, password });
-          if (res?.data?.access_token) {
-            setAccessToken(res.data.access_token);
-          }
-          if (res?.data?.user) {
-            setUser(res.data.user);
-          } else {
-            setUser({
-              id: "user-admin-1",
-              email: emailClean,
-              full_name: "System Administrator",
-              role: "admin",
-              is_super_admin: true
-            });
-          }
-        } catch (err) {
-          console.warn("Backend admin login call warning, activating super admin session:", err);
-          setUser({
-            id: "user-admin-1",
-            email: emailClean,
-            full_name: "System Administrator",
-            role: "admin",
-            is_super_admin: true
-          });
+        const res = await api.adminLogin({ email: emailClean, password });
+        if (res?.data?.access_token) {
+          setAccessToken(res.data.access_token);
+        }
+        if (res?.data?.user) {
+          setUser(res.data.user);
         }
         showToast('Welcome back, System Administrator!', 'success');
         setCurrentPage('admin-dashboard');
       } else {
-        try {
-          const res = await api.login({ email: emailClean, password });
-          if (res?.data?.access_token) {
-            setAccessToken(res.data.access_token);
-          }
-          if (res?.data?.user) {
-            setUser(res.data.user);
-          }
-        } catch (err) {
-          console.warn("Backend user login call warning, using local account session:", err);
+        const res = await api.login({ email: emailClean, password });
+        if (res?.data?.access_token) {
+          setAccessToken(res.data.access_token);
         }
-
-        // Sync account to local state
-        const result = loginWithCredentials(emailClean, password);
-        if (!result.success) {
-          registerAccount({
-            email: emailClean,
-            password: password,
-            name: emailClean.split('@')[0],
-            role: roleState.toLowerCase()
-          });
+        if (res?.data?.user) {
+          setUser(res.data.user);
         }
-
         showToast('Welcome back! Authenticated successfully.', 'success');
         setCurrentPage('dashboard');
       }

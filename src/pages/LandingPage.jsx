@@ -215,7 +215,15 @@ export function LandingPage() {
           />
         </div>
         
-        <p style={{ fontSize: '1.22rem', color: 'var(--text-muted)', maxWidth: '780px', margin: '0 auto 38px', lineHeight: 1.6, textShadow: '0 2px 6px rgba(0,0,0,0.6)' }}>
+        <p style={{ 
+          fontSize: '1.25rem', 
+          color: '#f8fafc', 
+          maxWidth: '780px', 
+          margin: '0 auto 38px', 
+          lineHeight: 1.65, 
+          fontWeight: 500,
+          textShadow: '0 0 15px rgba(6, 182, 212, 0.4), 0 2px 8px rgba(0,0,0,0.8)' 
+        }}>
           LearnGen AI transforms PDFs, DOCX, and PPTX lectures into grounded AI study tutors, interactive 3D flashcards, dynamic MCQ quizzes, and adaptive learning roadmaps.
         </p>
 

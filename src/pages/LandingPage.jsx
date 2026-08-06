@@ -300,7 +300,16 @@ export function LandingPage() {
       <section id="features" style={{ padding: 'clamp(60px, 10vw, 110px) 24px clamp(50px, 8vw, 90px)', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
           <span className="badge badge-teal" style={{ marginBottom: '12px' }}>3D Page Flip Module Deck</span>
-          <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Complete RAG Platform Capabilities</h2>
+          <div style={{ marginBottom: '24px' }}>
+            <DepthText 
+              text="Complete RAG Platform" 
+              fontSize="clamp(2rem, 5vw, 2.6rem)" 
+              faceColor="#ffffff" 
+              depthColor="#14b8a6" 
+              layers={16} 
+              tilt={10} 
+            />
+          </div>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Click side pages to flip through features like a 3D book.</p>
         </div>
 
@@ -418,7 +427,16 @@ export function LandingPage() {
       <section id="architecture" style={{ padding: 'clamp(60px, 10vw, 110px) 24px clamp(50px, 8vw, 90px)', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
           <span className="badge badge-teal" style={{ marginBottom: '12px' }}>Software Engineering Blueprint Deck</span>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '12px' }}>System Architecture & Tech Stack</h2>
+          <div style={{ marginBottom: '24px' }}>
+            <DepthText 
+              text="System Architecture" 
+              fontSize="clamp(2rem, 5vw, 2.5rem)" 
+              faceColor="#ffffff" 
+              depthColor="#0ea5e9" 
+              layers={16} 
+              tilt={10} 
+            />
+          </div>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Designed according to Senior Software Architect specifications for enterprise scaling.</p>
         </div>
 
@@ -545,7 +563,16 @@ export function LandingPage() {
       <section id="pricing" style={{ padding: 'clamp(60px, 10vw, 110px) 24px clamp(50px, 8vw, 90px)', maxWidth: '1280px', margin: '0 auto', background: 'transparent' }}>
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
           <span className="badge badge-amber" style={{ marginBottom: '12px' }}>3D Academic Plans Deck</span>
-          <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '12px' }}>Simple Academic Pricing</h2>
+          <div style={{ marginBottom: '24px' }}>
+            <DepthText 
+              text="Simple Academic Pricing" 
+              fontSize="clamp(2rem, 5vw, 2.6rem)" 
+              faceColor="#ffffff" 
+              depthColor="#f59e0b" 
+              layers={16} 
+              tilt={10} 
+            />
+          </div>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Flip through plans to choose the right fit for your study velocity.</p>
         </div>
 
@@ -681,7 +708,16 @@ export function LandingPage() {
       <section id="contact" style={{ padding: 'clamp(60px, 10vw, 110px) 24px clamp(60px, 12vw, 120px)', background: 'transparent' }}>
         <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
           <div className="glass-panel" style={{ padding: '36px', background: 'rgba(15, 23, 42, 0.45)', backdropFilter: 'blur(16px)', borderColor: 'rgba(255, 255, 255, 0.15)' }}>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: 800, marginBottom: '8px' }}>Get in Touch</h2>
+            <div style={{ marginBottom: '16px', textAlign: 'center' }}>
+              <DepthText 
+                text="Get in Touch" 
+                fontSize="clamp(1.8rem, 4vw, 2.2rem)" 
+                faceColor="#ffffff" 
+                depthColor="#8b5cf6" 
+                layers={12} 
+                tilt={8} 
+              />
+            </div>
             <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>Have questions about LearnGen AI's RAG pipeline or enterprise deployment?</p>
 
             {!contactSubmitted ? (

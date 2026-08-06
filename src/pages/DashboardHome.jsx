@@ -26,10 +26,9 @@ export function DashboardHome() {
       <GlobalSpotlight gridRef={containerRef} glowColor="6, 182, 212" />
       
       {/* Welcome Banner */}
-      <ParticleCard particleCount={0} enableTilt={false} enableMagnetism={false} clickEffect={false} glowColor="6, 182, 212" className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{
+      <ParticleCard particleCount={12} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{
         padding: '28px',
         background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(13, 148, 136, 0.12) 100%)',
-        border: '1px solid rgba(37, 99, 235, 0.25)',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -51,7 +50,7 @@ export function DashboardHome() {
       <MagicBento 
         cards={dashboardCards} 
         gridClassName="dashboard-grid" 
-        enableStars={false} 
+        enableStars={true} 
         spotlightRadius={400} 
         glowColor="6, 182, 212" 
         textAutoHide={false}
@@ -64,7 +63,7 @@ export function DashboardHome() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           {/* Recent Ingested Files Card */}
-          <ParticleCard particleCount={0} enableTilt={false} enableMagnetism={false} clickEffect={false} glowColor="6, 182, 212" className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '20px', background: 'var(--bg-secondary)', minHeight: 'auto' }}>
+          <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '20px', minHeight: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Recent Vector Ingested Files</h3>
               <button onClick={() => setCurrentPage('documents')} style={{ background: 'none', border: 'none', color: 'var(--accent-cyan)', fontSize: '0.82rem', cursor: 'pointer' }}>
@@ -103,8 +102,8 @@ export function DashboardHome() {
             </div>
           </ParticleCard>
 
-          {/* Weekly Hours Graph Card */}
-          <ParticleCard particleCount={0} enableTilt={false} enableMagnetism={false} clickEffect={false} glowColor="6, 182, 212" className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '20px', background: 'var(--bg-secondary)', minHeight: 'auto' }}>
+          {/* Weekly Study Hours Card */}
+          <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '20px', minHeight: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Weekly Study & RAG Query Hours</h3>
               <span className="badge badge-cyan">{stats.totalStudyHours} hrs total</span>
@@ -116,7 +115,8 @@ export function DashboardHome() {
         {/* Right Sidebar Column: Progress & Daily Goal */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
-          <ParticleCard particleCount={0} enableTilt={false} enableMagnetism={false} clickEffect={false} glowColor="6, 182, 212" className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '20px', background: 'var(--bg-secondary)', minHeight: 'auto' }}>
+          {/* Learning Progress Trend Card */}
+          <ParticleCard particleCount={12} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
             <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '12px' }}>Learning Progress Trend</h3>
             <LearningProgressChart />
             <div style={{ marginTop: '16px', padding: '12px', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
@@ -125,7 +125,7 @@ export function DashboardHome() {
           </ParticleCard>
 
           {/* System Performance Status */}
-          <ParticleCard particleCount={0} enableTilt={false} enableMagnetism={false} clickEffect={false} glowColor="6, 182, 212" className="glass-panel magic-bento-card magic-bento-card--border-glow" style={{ padding: '20px', background: 'var(--bg-secondary)', minHeight: 'auto' }}>
+          <ParticleCard particleCount={6} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '20px', minHeight: 'auto' }}>
             <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '12px' }}>RAG Engine Health</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.82rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>

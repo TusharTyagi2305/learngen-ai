@@ -442,7 +442,7 @@ export function AdminDashboardPage() {
           <MagicBento 
             cards={adminOverviewCards} 
             gridClassName="dashboard-grid" 
-            enableStars={false} 
+            enableStars={true} 
             spotlightRadius={400} 
             glowColor="16, 185, 129" 
             textAutoHide={false} 

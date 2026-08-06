@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../services/appState';
 import { INITIAL_FLASHCARDS } from '../services/mockRAG';
 import { api } from '../services/api';
 import { 
   RotateCw, Layers, CheckCircle, ThumbsUp, ThumbsDown, Flame, Sparkles, RefreshCw, ChevronLeft, ChevronRight 
 } from 'lucide-react';
+import { ParticleCard, GlobalSpotlight } from '../components/MagicBento';
 
 export function FlashcardsPage() {
   const { activeDocId, showToast } = useApp();
@@ -14,6 +15,7 @@ export function FlashcardsPage() {
   const [streak, setStreak] = useState(5);
   const [loading, setLoading] = useState(false);
   const [slideAnim, setSlideAnim] = useState('slide-in-right');
+  const containerRef = useRef(null);
 
   const generateDynamicDeck = (baseList = INITIAL_FLASHCARDS) => {
     return [...baseList]
@@ -121,10 +123,11 @@ export function FlashcardsPage() {
   };
 
   return (
-    <div style={{ padding: 'clamp(16px, 4vw, 32px) clamp(16px, 4vw, 36px)', maxWidth: '1000px', margin: '0 auto' }}>
+    <div ref={containerRef} className="bento-section" style={{ padding: 'clamp(16px, 4vw, 32px) clamp(16px, 4vw, 36px)', maxWidth: '1000px', margin: '0 auto', position: 'relative' }}>
+      <GlobalSpotlight gridRef={containerRef} glowColor="6, 182, 212" />
       
       {/* Header Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '32px' }}>
+      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '32px', padding: '24px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
             <span className="badge badge-cyan"><Layers size={14} /> Spaced Repetition 3D Deck</span>
@@ -143,13 +146,14 @@ export function FlashcardsPage() {
           <RefreshCw size={16} className={loading ? 'animate-spin' : ''} /> 
           {loading ? 'Synthesizing 10 Cards...' : '⚡ Generate 10 3D Cards'}
         </button>
-      </div>
+      </ParticleCard>
 
       {/* 3D Animated Flip Card Stage with Side Slide Animation */}
       <div key={currentCardIdx} className={slideAnim} style={{ perspective: '1000px', margin: '0 auto 28px', maxWidth: '640px' }}>
-        <div 
+        <ParticleCard 
+          particleCount={12} enableTilt={false} enableMagnetism={false} clickEffect={true} glowColor="6, 182, 212"
           onClick={handleFlip}
-          className="glass-panel"
+          className="magic-bento-card magic-bento-card--border-glow"
           style={{
             minHeight: '340px',
             padding: 'clamp(20px, 5vw, 40px)',
@@ -201,7 +205,7 @@ export function FlashcardsPage() {
           <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transform: isFlipped ? 'rotateY(180deg)' : 'none', transition: 'transform 0s' }}>
             <RotateCw size={14} /> Click card to flip answer
           </div>
-        </div>
+        </ParticleCard>
       </div>
 
       {/* Side Slide Navigation Controls */}

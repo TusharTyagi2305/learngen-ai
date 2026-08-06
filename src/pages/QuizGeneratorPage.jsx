@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../services/appState';
 import { INITIAL_QUIZZES } from '../services/mockRAG';
 import { api } from '../services/api';
 import { 
   HelpCircle, CheckCircle2, XCircle, Award, RotateCcw, Sparkles, RefreshCw, ChevronLeft, ChevronRight 
 } from 'lucide-react';
+import { ParticleCard, GlobalSpotlight } from '../components/MagicBento';
 
 export function QuizGeneratorPage() {
   const { activeDocId, showToast, recordActivity } = useApp();
@@ -15,6 +16,7 @@ export function QuizGeneratorPage() {
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(false);
   const [slideAnim, setSlideAnim] = useState('slide-in-right');
+  const containerRef = useRef(null);
 
   const generateDynamicQuizPool = (baseList = INITIAL_QUIZZES) => {
     const shuffledBank = [...baseList].sort(() => 0.5 - Math.random());
@@ -156,10 +158,11 @@ export function QuizGeneratorPage() {
   };
 
   return (
-    <div style={{ padding: 'clamp(16px, 4vw, 32px) clamp(16px, 4vw, 36px)', maxWidth: '960px', margin: '0 auto' }}>
+    <div ref={containerRef} className="bento-section" style={{ padding: 'clamp(16px, 4vw, 32px) clamp(16px, 4vw, 36px)', maxWidth: '960px', margin: '0 auto', position: 'relative' }}>
+      <GlobalSpotlight gridRef={containerRef} glowColor="6, 182, 212" />
       
       {/* Header Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '32px' }}>
+      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '32px', padding: '24px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
             <span className="badge badge-teal"><HelpCircle size={14} /> AI Quiz Synthesizer</span>
@@ -178,10 +181,11 @@ export function QuizGeneratorPage() {
           <RefreshCw size={16} className={loading ? 'animate-spin' : ''} /> 
           {loading ? 'Synthesizing 10 MCQs...' : '⚡ Generate 10 AI Quizzes'}
         </button>
-      </div>
+      </ParticleCard>
 
       {/* Main Question Card with Side Slide Animation */}
-      <div key={currentQuizIdx} className={`glass-panel ${slideAnim}`} style={{ padding: 'clamp(20px, 5vw, 36px)', borderRadius: 'var(--radius-xl)', marginBottom: '28px', background: 'var(--bg-secondary)' }}>
+      <div className={slideAnim}>
+        <ParticleCard particleCount={12} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" key={currentQuizIdx} className="magic-bento-card magic-bento-card--border-glow" style={{ padding: 'clamp(20px, 5vw, 36px)', marginBottom: '28px' }}>
         
         {/* Card Header & Controls */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '20px', fontSize: '0.85rem', color: 'var(--text-dim)' }}>
@@ -287,9 +291,8 @@ export function QuizGeneratorPage() {
             <RotateCcw size={14} /> Restart
           </button>
         </div>
-
+        </ParticleCard>
       </div>
-
     </div>
   );
 }

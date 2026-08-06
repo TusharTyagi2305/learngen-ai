@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useApp } from '../services/appState';
 import { 
   FileText, Upload, Trash2, Eye, Database, Layers, 
   Sparkles, Search, Filter, CheckCircle2 
 } from 'lucide-react';
+import { ParticleCard, GlobalSpotlight } from '../components/MagicBento';
 
 export function DocumentsPage() {
   const { documents, setDocuments, setIsUploadModalOpen, setActiveCitation } = useApp();
   const [filterType, setFilterType] = useState('ALL');
   const [docSearch, setDocSearch] = useState('');
+  const containerRef = useRef(null);
 
   const filteredDocs = documents.filter(doc => {
     const matchesSearch = (doc.title || '').toLowerCase().includes(docSearch.toLowerCase());
@@ -22,10 +24,11 @@ export function DocumentsPage() {
   };
 
   return (
-    <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div ref={containerRef} className="bento-section" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', position: 'relative' }}>
+      <GlobalSpotlight gridRef={containerRef} glowColor="6, 182, 212" />
       
       {/* Top Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px' }}>
         <div>
           <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Document Vault & Vector Index</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
@@ -35,10 +38,10 @@ export function DocumentsPage() {
         <button onClick={() => setIsUploadModalOpen(true)} className="gradient-btn">
           <Upload size={16} /> Upload New Document
         </button>
-      </div>
+      </ParticleCard>
 
       {/* Filter & Search Bar */}
-      <div className="glass-panel" style={{ padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-secondary)', flexWrap: 'wrap', gap: '12px' }}>
+      <ParticleCard particleCount={6} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <div style={{ position: 'relative', width: '100%', maxWidth: '320px', flex: '1 1 auto' }}>
           <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)' }} />
           <input 
@@ -71,10 +74,10 @@ export function DocumentsPage() {
             </button>
           ))}
         </div>
-      </div>
+      </ParticleCard>
 
       {/* Documents Table */}
-      <div className="glass-panel table-responsive-container" style={{ padding: '0', overflow: 'hidden', background: 'var(--bg-secondary)' }}>
+      <ParticleCard particleCount={12} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow table-responsive-container" style={{ padding: '0', overflow: 'hidden' }}>
         <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
           <table style={{ width: '100%', minWidth: '800px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
             <thead>
@@ -138,7 +141,7 @@ export function DocumentsPage() {
             </tbody>
           </table>
         </div>
-      </div>
+      </ParticleCard>
     </div>
   );
 }

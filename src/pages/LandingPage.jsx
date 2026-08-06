@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../services/appState';
+import MaskedHeading from '../components/MaskedHeading';
 import { 
   Sparkles, ArrowRight, Brain, ShieldCheck, Database, Layers, 
   BookOpen, HelpCircle, CheckCircle2, Zap, Star, Lock, Send, Mail,
@@ -192,10 +193,20 @@ export function LandingPage() {
           <Sparkles size={14} /> Handcrafted 3D RAG Studio for Students & Researchers
         </div>
         
-        <h1 style={{ fontSize: 'clamp(2.2rem, 6vw, 3.8rem)', fontWeight: 800, lineHeight: 1.15, marginBottom: '24px' }}>
-          Master Complex Subjects Directly From <br />
-          <span className="gradient-text">Your Own Notes & Research Papers</span>
-        </h1>
+        <div style={{ marginBottom: '24px', minHeight: '180px' }}>
+          <MaskedHeading 
+            text="Master Complex Subjects Directly From Your Own Notes & Research Papers"
+            mediaType="image"
+            src="/thor-frames/frame_000030.webp"
+            fillScale={1.3}
+            parallax={26}
+            reveal="wipe"
+            trigger="view"
+            align="center"
+            textScale={0.075}
+            style={{ fontWeight: 800, lineHeight: 1.15, maxWidth: '1000px', margin: '0 auto' }}
+          />
+        </div>
         
         <p style={{ fontSize: '1.22rem', color: 'var(--text-muted)', maxWidth: '780px', margin: '0 auto 38px', lineHeight: 1.6, textShadow: '0 2px 6px rgba(0,0,0,0.6)' }}>
           LearnGen AI transforms PDFs, DOCX, and PPTX lectures into grounded AI study tutors, interactive 3D flashcards, dynamic MCQ quizzes, and adaptive learning roadmaps.

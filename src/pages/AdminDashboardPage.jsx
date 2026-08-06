@@ -372,7 +372,7 @@ export function AdminDashboardPage() {
       title: `${overviewStats?.total_users || 0} Total`,
       description: `Verified: ${overviewStats?.verified_users || 0} | Auth: JWT+OTP`,
       icon: Users,
-      color: '#161120',
+      color: '#0B0F19',
       label: 'User Directory',
       onClick: () => setActiveTab('users')
     },
@@ -380,7 +380,7 @@ export function AdminDashboardPage() {
       title: `${overviewStats?.users_online || 0} Active`,
       description: 'Active Session Window: Last 15 minutes',
       icon: Activity,
-      color: '#161120',
+      color: '#0B0F19',
       label: 'Live Telemetry',
       onClick: () => setActiveTab('users')
     },
@@ -388,7 +388,7 @@ export function AdminDashboardPage() {
       title: `${overviewStats?.today_logins || 0} Logins`,
       description: `WAU: ${overviewStats?.weekly_active_users || 0} | Security: 99.8% Authorized`,
       icon: LogIn,
-      color: '#161120',
+      color: '#0B0F19',
       label: 'Daily Traffic',
       onClick: () => setActiveTab('logs')
     },
@@ -396,7 +396,7 @@ export function AdminDashboardPage() {
       title: `${overviewStats?.monthly_active_users || 0} MAU`,
       description: 'High Active Cohort Engagement',
       icon: TrendingUp,
-      color: '#161120',
+      color: '#0B0F19',
       label: 'Monthly Retention',
       onClick: () => setActiveTab('users')
     },
@@ -404,7 +404,7 @@ export function AdminDashboardPage() {
       title: 'Roles Distribution',
       description: `Students: ${overviewStats?.students || 0} | Admins: ${overviewStats?.admins || 0}`,
       icon: UserCheck,
-      color: '#161120',
+      color: '#0B0F19',
       label: 'RBAC Matrix',
       onClick: () => setActiveTab('users')
     }

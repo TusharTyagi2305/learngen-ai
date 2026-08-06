@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../services/appState';
 import DepthText from '../components/DepthText';
+import MagicBento from '../components/MagicBento';
 import { 
   Sparkles, ArrowRight, Brain, ShieldCheck, Database, Layers, 
   BookOpen, HelpCircle, CheckCircle2, Zap, Star, Lock, Send, Mail,
@@ -19,53 +20,6 @@ export function LandingPage() {
       setCurrentPage('dashboard');
     }
   };
-
-  // ==================== 1. FEATURES CAROUSEL STATE ====================
-  const [featureIdx, setFeatureIdx] = useState(0);
-  const [featureDir, setFeatureDir] = useState('next');
-
-  const featureSlides = [
-    {
-      id: 1,
-      title: "1. Multi-Format Text Extraction",
-      badge: "Ingestion Engine",
-      icon: Database,
-      color: "var(--accent-cyan)",
-      bgIcon: "rgba(6, 182, 212, 0.25)",
-      description: "PyPDF2, python-docx, and python-pptx extract raw text, preserving tabular data and chapter page boundaries automatically.",
-      detail: "Supports PDF, DOCX, PPTX, TXT, research papers, and handwritten notes up to 50MB per file with automatic metadata tagging."
-    },
-    {
-      id: 2,
-      title: "2. Token Chunking & Overlap",
-      badge: "Semantic Splitter",
-      icon: Layers,
-      color: "var(--accent-teal)",
-      bgIcon: "rgba(20, 184, 166, 0.25)",
-      description: "RecursiveCharacterTextSplitter with 512 token chunk size and 50 token overlap maintains context continuity across boundaries.",
-      detail: "Ensures sentence integrity and semantic completeness before sending text blocks to dense embedding vector models."
-    },
-    {
-      id: 3,
-      title: "3. Vector DB Indexing",
-      badge: "ChromaDB Store",
-      icon: HelpCircle,
-      color: "var(--accent-blue)",
-      bgIcon: "rgba(59, 130, 246, 0.25)",
-      description: "Persistent ChromaDB collection with HNSW index for ultra-low latency cosine similarity top-K retrieval.",
-      detail: "Indexes 1536-dimensional vector embeddings with sub-40ms search response time for rapid AI query grounding."
-    },
-    {
-      id: 4,
-      title: "4. Anti-Hallucination Guard",
-      badge: "Strict Context Injection",
-      icon: ShieldCheck,
-      color: "var(--accent-emerald)",
-      bgIcon: "rgba(16, 185, 129, 0.25)",
-      description: "Prompt template strictly constrains LLM generation to provided document context snippets with page-level citations.",
-      detail: "Maintains >99.8% citation accuracy, eliminating ungrounded LLM hallucinations with temperature T=0.2 enforcement."
-    }
-  ];
 
   // ==================== 2. ARCHITECTURE CAROUSEL STATE ====================
   const [archIdx, setArchIdx] = useState(0);
@@ -318,116 +272,21 @@ export function LandingPage() {
               tilt={10} 
             />
           </div>
-          <p style={{ color: '#f8fafc', fontSize: '1.05rem', fontWeight: 500, textShadow: '0 0 12px rgba(20, 184, 166, 0.4), 0 2px 6px rgba(0,0,0,0.8)' }}>Click side pages to flip through features like a 3D book.</p>
+          <p style={{ color: '#f8fafc', fontSize: '1.05rem', fontWeight: 500, textShadow: '0 0 12px rgba(20, 184, 166, 0.4), 0 2px 6px rgba(0,0,0,0.8)' }}>Explore our powerful AI study tools below.</p>
         </div>
 
-        {/* 3D BOOK PAGE FLIP STAGE */}
-        {(() => {
-          const pIdx = (featureIdx - 1 + featureSlides.length) % featureSlides.length;
-          const cIdx = featureIdx;
-          const nIdx = (featureIdx + 1) % featureSlides.length;
-
-          const pSlide = featureSlides[pIdx];
-          const cSlide = featureSlides[cIdx];
-          const nSlide = featureSlides[nIdx];
-
-          const PIcon = pSlide.icon;
-          const CIcon = cSlide.icon;
-          const NIcon = nSlide.icon;
-
-          return (
-            <div style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '100%', perspective: '1200px', position: 'relative', padding: '10px 0' }}>
-                
-                {/* PREV ATTACHED PAGE */}
-                <div 
-                  onClick={() => { setFeatureDir('prev'); setFeatureIdx(pIdx); }}
-                  className="glass-card desktop-only-block" 
-                  style={{
-                    flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
-                    borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
-                    transform: 'perspective(1000px) rotateY(22deg) scale(0.92)', transformOrigin: 'right center',
-                    marginRight: '-45px', zIndex: 5, cursor: 'pointer', boxShadow: '-15px 15px 35px rgba(0, 0, 0, 0.6)',
-                    transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)', userSelect: 'none'
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-                    <div style={{ background: pSlide.bgIcon, padding: '10px', borderRadius: '10px', color: pSlide.color }}>
-                      <PIcon size={22} />
-                    </div>
-                    <span className="badge badge-teal" style={{ fontSize: '0.7rem' }}>◄ PREV PAGE</span>
-                  </div>
-                  <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '8px' }}>{pSlide.title}</h4>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>{pSlide.description}</p>
-                </div>
-
-                {/* CURRENT SPOTLIGHT PAGE */}
-                <div 
-                  key={`feat-${cSlide.id}-${featureDir}`}
-                  className={`glass-card ${featureDir === 'next' ? 'animate-slide-next' : 'animate-slide-prev'}`}
-                  style={{
-                    flex: '1 1 100%', width: '100%', maxWidth: '660px', minWidth: 0, padding: '28px 20px', background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(24px)',
-                    borderColor: cSlide.color, boxShadow: `0 25px 60px -10px ${cSlide.bgIcon}`,
-                    transform: 'none', zIndex: 20, boxSizing: 'border-box'
-                  }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '8px' }}>
-                    <div style={{ background: cSlide.bgIcon, padding: '14px', borderRadius: '14px', color: cSlide.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CIcon size={32} />
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <span className="badge badge-teal" style={{ padding: '5px 12px', fontSize: '0.78rem' }}>{cSlide.badge}</span>
-                      <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 600 }}>Page {cIdx + 1} of {featureSlides.length}</span>
-                    </div>
-                  </div>
-                  <h3 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '14px', color: '#ffffff' }}>{cSlide.title}</h3>
-                  <p style={{ color: 'var(--text-main)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '20px' }}>{cSlide.description}</p>
-                  <div style={{ padding: '14px 18px', background: 'rgba(30, 41, 59, 0.75)', borderRadius: 'var(--radius-sm)', borderLeft: `4px solid ${cSlide.color}`, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                    ⚡ <strong>Architect Spec:</strong> {cSlide.detail}
-                  </div>
-                </div>
-
-                {/* NEXT ATTACHED PAGE */}
-                <div 
-                  onClick={() => { setFeatureDir('next'); setFeatureIdx(nIdx); }}
-                  className="glass-card desktop-only-block" 
-                  style={{
-                    flex: '0 0 320px', padding: '28px 24px', background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(12px)',
-                    borderColor: 'rgba(255, 255, 255, 0.2)', opacity: 0.78,
-                    transform: 'perspective(1000px) rotateY(-22deg) scale(0.92)', transformOrigin: 'left center',
-                    marginLeft: '-45px', zIndex: 5, cursor: 'pointer', boxShadow: '15px 15px 35px rgba(0, 0, 0, 0.6)',
-                    transition: 'all 0.65s cubic-bezier(0.25, 1, 0.5, 1)', userSelect: 'none'
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-                    <span className="badge badge-cyan" style={{ fontSize: '0.7rem' }}>NEXT PAGE ►</span>
-                    <div style={{ background: nSlide.bgIcon, padding: '10px', borderRadius: '10px', color: nSlide.color }}>
-                      <NIcon size={22} />
-                    </div>
-                  </div>
-                  <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '8px' }}>{nSlide.title}</h4>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>{nSlide.description}</p>
-                </div>
-
-              </div>
-
-              {/* CONTROLS */}
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginTop: '36px' }}>
-                <button onClick={() => { setFeatureDir('prev'); setFeatureIdx(pIdx); }} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
-                  <ChevronLeft size={16} /> Flip Left Page
-                </button>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  {featureSlides.map((_, idx) => (
-                    <button key={idx} onClick={() => { setFeatureDir(idx > featureIdx ? 'next' : 'prev'); setFeatureIdx(idx); }} style={{ width: featureIdx === idx ? '32px' : '10px', height: '10px', borderRadius: '999px', border: 'none', background: featureIdx === idx ? 'var(--accent-cyan)' : 'rgba(255, 255, 255, 0.25)', cursor: 'pointer', transition: 'all 0.3s ease' }} />
-                  ))}
-                </div>
-                <button onClick={() => { setFeatureDir('next'); setFeatureIdx(nIdx); }} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
-                  Flip Right Page <ChevronRight size={16} />
-                </button>
-              </div>
-            </div>
-          );
-        })()}
+        {/* MAGIC BENTO FEATURES GRID */}
+        <MagicBento 
+          textAutoHide={true}
+          enableStars={true}
+          enableSpotlight={true}
+          enableBorderGlow={true}
+          enableTilt={true}
+          enableMagnetism={true}
+          clickEffect={true}
+          spotlightRadius={300}
+          particleCount={12}
+        />
       </section>
 
 

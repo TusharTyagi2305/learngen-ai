@@ -5,11 +5,19 @@ import {
   Sparkles, Upload, ArrowRight, Zap, Shield, CheckCircle2, Database 
 } from 'lucide-react';
 import { WeeklyStudyChart, LearningProgressChart } from '../components/Charts';
+import MagicBento from '../components/MagicBento';
 
 export function DashboardHome() {
   const { user, setCurrentPage, documents, setIsUploadModalOpen, currentRole, getUserSummaryStats } = useApp();
   const safeDocs = Array.isArray(documents) ? documents : [];
   const stats = getUserSummaryStats();
+
+  const dashboardCards = [
+    { title: 'AI RAG Studio', description: 'Grounded chat with citations', icon: MessageSquare, route: 'ai-chat', color: '#0B0F19', label: 'Interactive' },
+    { title: 'Document Vault', description: `${safeDocs.length} Vector Index Collections`, icon: Database, route: 'documents', color: '#0B0F19', label: 'Storage' },
+    { title: 'AI Quiz Engine', description: 'Test concept mastery', icon: HelpCircle, route: 'quiz-generator', color: '#0B0F19', label: 'Assessment' },
+    { title: '3D Flashcards', description: 'Spaced repetition decks', icon: Layers, route: 'flashcards', color: '#0B0F19', label: 'Retention' }
+  ];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '24px' }}>
@@ -36,67 +44,14 @@ export function DashboardHome() {
       </div>
 
       {/* Quick Access Feature Grid Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
-        <div 
-          onClick={() => setCurrentPage('ai-chat')}
-          className="glass-card" 
-          style={{ padding: '20px', cursor: 'pointer', borderColor: 'rgba(6, 182, 212, 0.3)' }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <div style={{ background: 'rgba(6, 182, 212, 0.15)', padding: '10px', borderRadius: '10px', color: 'var(--accent-cyan)' }}>
-              <MessageSquare size={20} />
-            </div>
-            <ArrowRight size={16} style={{ color: 'var(--text-dim)' }} />
-          </div>
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '4px' }}>AI RAG Studio</h3>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Grounded chat with citations</p>
-        </div>
-
-        <div 
-          onClick={() => setCurrentPage('documents')}
-          className="glass-card" 
-          style={{ padding: '20px', cursor: 'pointer' }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <div style={{ background: 'rgba(37, 99, 235, 0.15)', padding: '10px', borderRadius: '10px', color: 'var(--accent-blue)' }}>
-              <Database size={20} />
-            </div>
-            <ArrowRight size={16} style={{ color: 'var(--text-dim)' }} />
-          </div>
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '4px' }}>Document Vault</h3>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{safeDocs.length} Vector Index Collections</p>
-        </div>
-
-        <div 
-          onClick={() => setCurrentPage('quiz-generator')}
-          className="glass-card" 
-          style={{ padding: '20px', cursor: 'pointer' }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <div style={{ background: 'rgba(13, 148, 136, 0.15)', padding: '10px', borderRadius: '10px', color: 'var(--accent-teal)' }}>
-              <HelpCircle size={20} />
-            </div>
-            <ArrowRight size={16} style={{ color: 'var(--text-dim)' }} />
-          </div>
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '4px' }}>AI Quiz Engine</h3>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Test concept mastery</p>
-        </div>
-
-        <div 
-          onClick={() => setCurrentPage('flashcards')}
-          className="glass-card" 
-          style={{ padding: '20px', cursor: 'pointer' }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <div style={{ background: 'rgba(16, 185, 129, 0.15)', padding: '10px', borderRadius: '10px', color: 'var(--accent-emerald)' }}>
-              <Layers size={20} />
-            </div>
-            <ArrowRight size={16} style={{ color: 'var(--text-dim)' }} />
-          </div>
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '4px' }}>3D Flashcards</h3>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Spaced repetition decks</p>
-        </div>
-      </div>
+      <MagicBento 
+        cards={dashboardCards} 
+        gridClassName="dashboard-grid" 
+        enableStars={false} 
+        spotlightRadius={400} 
+        glowColor="6, 182, 212" 
+        textAutoHide={false}
+      />
 
       {/* Main Analytics & Activity Grid */}
       <div className="grid-responsive-chat">

@@ -8,6 +8,7 @@ import {
   AlertTriangle, TrendingUp, BarChart3, Lock, File, Folder, 
   Terminal, Settings, Archive, UserCheck, UserX, Play, LogIn, ChevronRight, Filter, Zap
 } from 'lucide-react';
+import MagicBento from '../components/MagicBento';
 
 export function AdminDashboardPage() {
   const { user, token, ragConfig, setRagConfig, showToast, adminActiveTab, setAdminActiveTab } = useApp();
@@ -366,6 +367,49 @@ export function AdminDashboardPage() {
     { id: 'backup', label: 'Backup & Recovery', icon: Archive }
   ];
 
+  const adminOverviewCards = [
+    {
+      title: `${overviewStats?.total_users || 0} Total`,
+      description: `Verified: ${overviewStats?.verified_users || 0} | Auth: JWT+OTP`,
+      icon: Users,
+      color: '#0B0F19',
+      label: 'User Directory',
+      onClick: () => setActiveTab('users')
+    },
+    {
+      title: `${overviewStats?.users_online || 0} Active`,
+      description: 'Active Session Window: Last 15 minutes',
+      icon: Activity,
+      color: '#0B0F19',
+      label: 'Live Telemetry',
+      onClick: () => setActiveTab('users')
+    },
+    {
+      title: `${overviewStats?.today_logins || 0} Logins`,
+      description: `WAU: ${overviewStats?.weekly_active_users || 0} | Security: 99.8% Authorized`,
+      icon: LogIn,
+      color: '#0B0F19',
+      label: 'Daily Traffic',
+      onClick: () => setActiveTab('logs')
+    },
+    {
+      title: `${overviewStats?.monthly_active_users || 0} MAU`,
+      description: 'High Active Cohort Engagement',
+      icon: TrendingUp,
+      color: '#0B0F19',
+      label: 'Monthly Retention',
+      onClick: () => setActiveTab('users')
+    },
+    {
+      title: 'Roles Distribution',
+      description: `Students: ${overviewStats?.students || 0} | Admins: ${overviewStats?.admins || 0}`,
+      icon: UserCheck,
+      color: '#0B0F19',
+      label: 'RBAC Matrix',
+      onClick: () => setActiveTab('users')
+    }
+  ];
+
   return (
     <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', minHeight: '100vh' }}>
       
@@ -393,139 +437,14 @@ export function AdminDashboardPage() {
       {activeTab === 'overview' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Top Feature Stat Cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
-            
-            {/* Total Users */}
-            <div className="feature-stat-card" onClick={() => setActiveTab('users')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to open User Management Workbench">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                <div style={{ background: 'rgba(59, 130, 246, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-blue)', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
-                  <Users size={22} />
-                </div>
-                <span className="badge badge-blue" style={{ fontSize: '0.68rem', padding: '4px 8px' }}>User Directory</span>
-              </div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Total Registered Accounts</div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#ffffff', margin: '4px 0 10px', letterSpacing: '-0.02em' }}>
-                {overviewStats?.total_users || 0}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', paddingTop: '10px', borderTop: '1px solid var(--glass-border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  <span>Verified Accounts:</span>
-                  <strong style={{ color: 'var(--accent-emerald)' }}>{overviewStats?.verified_users || 0}</strong>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  <span>Auth Verification:</span>
-                  <span style={{ color: 'var(--accent-cyan)' }}>JWT + SMTP OTP 2FA</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--accent-cyan)', marginTop: '4px', fontWeight: 600 }}>
-                  Click to View All User Data <ChevronRight size={14} />
-                </div>
-              </div>
-            </div>
-
-            {/* Users Online */}
-            <div className="feature-stat-card" onClick={() => setActiveTab('users')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to view Active Users Telemetry">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                <div style={{ background: 'rgba(16, 185, 129, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-emerald)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
-                  <Activity size={22} />
-                </div>
-                <span className="badge badge-emerald" style={{ fontSize: '0.68rem', padding: '4px 8px' }}>Live Telemetry</span>
-              </div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Users Currently Active</div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--accent-emerald)', margin: '4px 0 10px', letterSpacing: '-0.02em' }}>
-                {overviewStats?.users_online || 0}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', paddingTop: '10px', borderTop: '1px solid var(--glass-border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  <span>Active Session Window:</span>
-                  <span style={{ color: 'var(--text-main)' }}>Last 15 minutes</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  <span>Gateway Concurrency:</span>
-                  <span style={{ color: 'var(--accent-emerald)' }}>Async Worker Pool</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--accent-emerald)', marginTop: '4px', fontWeight: 600 }}>
-                  Click to View Active Session Users <ChevronRight size={14} />
-                </div>
-              </div>
-            </div>
-
-            {/* Today's Logins */}
-            <div className="feature-stat-card" onClick={() => setActiveTab('logs')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to view System Audit Logs">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                <div style={{ background: 'rgba(6, 182, 212, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-cyan)', border: '1px solid rgba(6, 182, 212, 0.3)' }}>
-                  <LogIn size={22} />
-                </div>
-                <span className="badge badge-cyan" style={{ fontSize: '0.68rem', padding: '4px 8px' }}>Daily Traffic</span>
-              </div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Today's Total Logins</div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--accent-cyan)', margin: '4px 0 10px', letterSpacing: '-0.02em' }}>
-                {overviewStats?.today_logins || 0}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', paddingTop: '10px', borderTop: '1px solid var(--glass-border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  <span>Weekly Active Users (WAU):</span>
-                  <strong style={{ color: 'var(--accent-cyan)' }}>{overviewStats?.weekly_active_users || 0}</strong>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  <span>Security Rate:</span>
-                  <span style={{ color: 'var(--accent-emerald)' }}>99.8% Authorized</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--accent-cyan)', marginTop: '4px', fontWeight: 600 }}>
-                  Click to View Audit Logs <ChevronRight size={14} />
-                </div>
-              </div>
-            </div>
-
-            {/* Monthly Active Users */}
-            <div className="feature-stat-card" onClick={() => setActiveTab('users')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to view Monthly Engagement Breakdown">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                <div style={{ background: 'rgba(245, 158, 11, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-amber)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
-                  <TrendingUp size={22} />
-                </div>
-                <span className="badge badge-amber" style={{ fontSize: '0.68rem', padding: '4px 8px' }}>Monthly Retention</span>
-              </div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Monthly Active Users (MAU)</div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--accent-amber)', margin: '4px 0 10px', letterSpacing: '-0.02em' }}>
-                {overviewStats?.monthly_active_users || 0}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', paddingTop: '10px', borderTop: '1px solid var(--glass-border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  <span>User Engagement:</span>
-                  <span style={{ color: 'var(--accent-amber)' }}>RAG Chat + Quizzes</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  <span>Active Retention:</span>
-                  <span style={{ color: 'var(--accent-emerald)' }}>High Active Cohort</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--accent-amber)', marginTop: '4px', fontWeight: 600 }}>
-                  Click to View User Analytics <ChevronRight size={14} />
-                </div>
-              </div>
-            </div>
-
-            {/* User Roles Breakdown */}
-            <div className="feature-stat-card" onClick={() => setActiveTab('users')} style={{ padding: '22px', cursor: 'pointer' }} title="Click to view User Roles Matrix">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                <div style={{ background: 'rgba(244, 63, 94, 0.18)', padding: '10px', borderRadius: '12px', color: 'var(--accent-rose)', border: '1px solid rgba(244, 63, 94, 0.3)' }}>
-                  <UserCheck size={22} />
-                </div>
-                <span className="badge badge-rose" style={{ fontSize: '0.68rem', padding: '4px 8px' }}>RBAC Matrix</span>
-              </div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Account Roles Distribution</div>
-              <div style={{ fontSize: '0.9rem', marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
-                  <span>👨‍🎓 Students:</span> <strong>{overviewStats?.students || 0}</strong>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
-                  <span>🛡️ Admins:</span> <strong>{overviewStats?.admins || 0}</strong>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--accent-rose)', marginTop: '4px', fontWeight: 600 }}>
-                  Click to Manage User Roles <ChevronRight size={14} />
-                </div>
-              </div>
-            </div>
-
-          </div>
+          <MagicBento 
+            cards={adminOverviewCards} 
+            gridClassName="dashboard-grid" 
+            enableStars={false} 
+            spotlightRadius={400} 
+            glowColor="16, 185, 129" 
+            textAutoHide={false} 
+          />
 
           {/* Infrastructure Status */}
           <div className="glass-panel" style={{ padding: '24px', background: 'var(--bg-secondary)' }}>

@@ -141,7 +141,7 @@ export function AIChatPage() {
       <GlobalSpotlight gridRef={containerRef} glowColor="6, 182, 212" />
       
       {/* Top Studio Control Bar */}
-      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px', padding: '16px 20px' }}>
+      <ParticleCard particleCount={8} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px', padding: '16px 20px' }}>
         <div>
           <h1 style={{ fontSize: '1.6rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
             AI RAG Learning Studio <span className="badge badge-teal">Semantic Vector Search</span>
@@ -236,7 +236,7 @@ export function AIChatPage() {
       </ParticleCard>
 
       {/* Message Input Box */}
-      <ParticleCard particleCount={4} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: '10px', minHeight: 'auto' }}>
+      <ParticleCard particleCount={4} enableTilt={true} enableMagnetism={true} clickEffect={true} glowColor="6, 182, 212" className="magic-bento-card magic-bento-card--border-glow" style={{ padding: '8px 12px', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px', minHeight: 'auto' }}>
         <input 
           type="text" 
           placeholder="Ask anything about your uploaded notes and research papers..." 

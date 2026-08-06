@@ -57,7 +57,7 @@ export function LearningProgressChart({ weeklyData }) {
         <defs>
           <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.0" />
+            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.0" />
           </linearGradient>
         </defs>
         <path d={pathD} fill="url(#areaGrad)" />

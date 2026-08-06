@@ -31,8 +31,9 @@ export function DashboardHome() {
         background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(13, 148, 136, 0.12) 100%)',
         border: '1px solid rgba(37, 99, 235, 0.25)',
         display: 'flex',
+        flexDirection: 'row',
         alignItems: 'center',
-        justify: 'space-between'
+        justifyContent: 'space-between'
       }}>
         <div>
           <span className="badge badge-teal" style={{ marginBottom: '8px', textTransform: 'capitalize' }}>RAG Workspace • Active Persona: {user?.role || currentRole || 'student'}</span>

@@ -318,7 +318,7 @@ export function LandingPage() {
               tilt={10} 
             />
           </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Click side pages to flip through features like a 3D book.</p>
+          <p style={{ color: '#f8fafc', fontSize: '1.05rem', fontWeight: 500, textShadow: '0 0 12px rgba(20, 184, 166, 0.4), 0 2px 6px rgba(0,0,0,0.8)' }}>Click side pages to flip through features like a 3D book.</p>
         </div>
 
         {/* 3D BOOK PAGE FLIP STAGE */}
@@ -445,7 +445,7 @@ export function LandingPage() {
               tilt={10} 
             />
           </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Designed according to Senior Software Architect specifications for enterprise scaling.</p>
+          <p style={{ color: '#f8fafc', fontSize: '1.05rem', fontWeight: 500, textShadow: '0 0 12px rgba(14, 165, 233, 0.4), 0 2px 6px rgba(0,0,0,0.8)' }}>Designed according to Senior Software Architect specifications for enterprise scaling.</p>
         </div>
 
         {/* 3D ARCHITECTURE PAGE FLIP STAGE */}
@@ -581,7 +581,7 @@ export function LandingPage() {
               tilt={10} 
             />
           </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Flip through plans to choose the right fit for your study velocity.</p>
+          <p style={{ color: '#f8fafc', fontSize: '1.05rem', fontWeight: 500, textShadow: '0 0 12px rgba(245, 158, 11, 0.4), 0 2px 6px rgba(0,0,0,0.8)' }}>Flip through plans to choose the right fit for your study velocity.</p>
         </div>
 
         {/* 3D PRICING PAGE FLIP STAGE */}
@@ -726,7 +726,7 @@ export function LandingPage() {
                 tilt={8} 
               />
             </div>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>Have questions about LearnGen AI's RAG pipeline or enterprise deployment?</p>
+            <p style={{ color: '#f8fafc', marginBottom: '24px', fontWeight: 500, textAlign: 'center', textShadow: '0 0 12px rgba(139, 92, 246, 0.4), 0 2px 6px rgba(0,0,0,0.8)' }}>Have questions about LearnGen AI's RAG pipeline or enterprise deployment?</p>
 
             {!contactSubmitted ? (
               <form onSubmit={(e) => { e.preventDefault(); setContactSubmitted(true); }} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>

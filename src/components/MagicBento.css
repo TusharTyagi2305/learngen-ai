@@ -196,8 +196,8 @@
 
 .magic-bento-card--border-glow:hover {
   box-shadow:
-    0 4px 20px rgba(124, 58, 237, 0.15),
-    0 0 30px var(--purple-glow);
+    0 4px 20px rgba(6, 182, 212, 0.15),
+    0 0 30px var(--cyan-glow);
 }
 
 .particle-container {
@@ -212,15 +212,15 @@
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: rgba(124, 58, 237, 0.4);
+  background: rgba(6, 182, 212, 0.4);
   border-radius: 50%;
   z-index: -1;
 }
 
 .particle-container:hover {
   box-shadow:
-    0 4px 20px rgba(124, 58, 237, 0.15),
-    0 0 30px var(--purple-glow);
+    0 4px 20px rgba(6, 182, 212, 0.15),
+    0 0 30px var(--cyan-glow);
 }
 
 /* Global spotlight styles */

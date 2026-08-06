@@ -468,7 +468,7 @@ export function AppProvider({ children }) {
     const weakTopics = [
       { name: docTopics[0] ? `${docTopics[0]} Formulation` : "Network Protocol Architecture", accuracy: Math.min(88, 45 + docCount * 10), color: "var(--accent-rose)" },
       { name: docTopics[1] ? `${docTopics[1]} Analysis` : "Vector Embedding Indexing", accuracy: Math.min(92, 58 + docCount * 8), color: "var(--accent-amber)" },
-      { name: docTopics[2] ? `${docTopics[2]} Principles` : "Context Grounding Precision", accuracy: Math.min(95, 70 + docCount * 5), color: "var(--accent-purple)" },
+      { name: docTopics[2] ? `${docTopics[2]} Principles` : "Context Grounding Precision", accuracy: Math.min(95, 70 + docCount * 5), color: "var(--accent-cyan)" },
       { name: "RAG Retrieval Temperature Scaling", accuracy: 88, color: "var(--accent-emerald)" },
     ];
 

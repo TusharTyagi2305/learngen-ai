@@ -25,7 +25,7 @@ export function ProfilePage() {
         <div>
           <h2 style={{ fontSize: '1.4rem', fontWeight: 700 }}>{user?.name || 'User'}</h2>
           <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '8px' }}>{user?.email || 'user@example.com'}</div>
-          <span className="badge badge-purple" style={{ textTransform: 'capitalize' }}>Role: {user?.role || 'student'} Persona</span>
+          <span className="badge badge-cyan" style={{ textTransform: 'capitalize' }}>Role: {user?.role || 'student'} Persona</span>
         </div>
       </div>
 

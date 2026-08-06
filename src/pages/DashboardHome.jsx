@@ -13,10 +13,10 @@ export function DashboardHome() {
   const stats = getUserSummaryStats();
 
   const dashboardCards = [
-    { title: 'AI RAG Studio', description: 'Grounded chat with citations', icon: MessageSquare, route: 'ai-chat', color: '#0B0F19', label: 'Interactive' },
-    { title: 'Document Vault', description: `${safeDocs.length} Vector Index Collections`, icon: Database, route: 'documents', color: '#0B0F19', label: 'Storage' },
-    { title: 'AI Quiz Engine', description: 'Test concept mastery', icon: HelpCircle, route: 'quiz-generator', color: '#0B0F19', label: 'Assessment' },
-    { title: '3D Flashcards', description: 'Spaced repetition decks', icon: Layers, route: 'flashcards', color: '#0B0F19', label: 'Retention' }
+    { title: 'AI RAG Studio', description: 'Grounded chat with citations', icon: MessageSquare, route: 'ai-chat', color: '#001529', label: 'Interactive' },
+    { title: 'Document Vault', description: `${safeDocs.length} Vector Index Collections`, icon: Database, route: 'documents', color: '#001529', label: 'Storage' },
+    { title: 'AI Quiz Engine', description: 'Test concept mastery', icon: HelpCircle, route: 'quiz-generator', color: '#001529', label: 'Assessment' },
+    { title: '3D Flashcards', description: 'Spaced repetition decks', icon: Layers, route: 'flashcards', color: '#001529', label: 'Retention' }
   ];
 
   const containerRef = useRef(null);

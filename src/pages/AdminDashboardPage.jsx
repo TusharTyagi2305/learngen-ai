@@ -8,7 +8,7 @@ import {
   AlertTriangle, TrendingUp, BarChart3, Lock, File, Folder, 
   Terminal, Settings, Archive, UserCheck, UserX, Play, LogIn, ChevronRight, Filter, Zap
 } from 'lucide-react';
-import MagicBento from '../components/MagicBento';
+import MagicBento, { GlobalSpotlight, ParticleCard } from '../components/MagicBento';
 
 export function AdminDashboardPage() {
   const { user, token, ragConfig, setRagConfig, showToast, adminActiveTab, setAdminActiveTab } = useApp();

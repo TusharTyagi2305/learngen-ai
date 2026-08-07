@@ -1052,6 +1052,30 @@ export function AdminDashboardPage() {
         </div>
       )}
 
+      {/* Document Preview Modal */}
+      {previewDoc && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+          <div className="glass-panel" style={{ width: '100%', maxWidth: '800px', maxHeight: '85vh', background: 'var(--bg-secondary)', padding: '32px', display: 'flex', flexDirection: 'column', gap: '24px', overflowY: 'auto', position: 'relative' }}>
+            <button onClick={() => setPreviewDoc(null)} style={{ position: 'absolute', top: '24px', right: '24px', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+              <XCircle size={20} />
+            </button>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, paddingRight: '40px' }}>{previewDoc.title}</h2>
+            
+            <div style={{ background: 'rgba(0,0,0,0.2)', padding: '16px', borderRadius: '12px' }}>
+              <h4 style={{ color: 'var(--accent-cyan)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '8px' }}>Document Summary</h4>
+              <p style={{ color: 'var(--text-main)', fontSize: '0.95rem', lineHeight: 1.5 }}>{previewDoc.summary}</p>
+            </div>
+
+            <div>
+              <h4 style={{ color: 'var(--text-dim)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '12px' }}>Text Extraction Preview</h4>
+              <div style={{ background: 'rgba(0,0,0,0.3)', padding: '20px', borderRadius: '12px', color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: 1.6, whiteSpace: 'pre-wrap', maxHeight: '400px', overflowY: 'auto', border: '1px solid var(--glass-border)' }}>
+                {previewDoc.preview_text}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

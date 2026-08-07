@@ -36,7 +36,14 @@ export function AppProvider({ children }) {
 
   const setUser = (newUserOrFn) => {
     setUserState(prev => {
-      const updated = typeof newUserOrFn === 'function' ? newUserOrFn(prev) : newUserOrFn;
+      let updated = typeof newUserOrFn === 'function' ? newUserOrFn(prev) : newUserOrFn;
+      
+      if (updated && !updated.name && updated.full_name) {
+        const fullName = updated.full_name;
+        const initials = fullName.split(' ').map(n => n[0]).filter(Boolean).join('').toUpperCase().slice(0, 2) || 'U';
+        updated = { ...updated, name: fullName, avatar: updated.avatar || initials };
+      }
+
       try {
         if (updated) {
           localStorage.setItem('learngen_user', JSON.stringify(updated));

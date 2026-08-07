@@ -18,7 +18,13 @@ export function AdminDashboardPage() {
   const setActiveTab = (tabId) => setAdminActiveTab(tabId);
 
   // Admin auth prompt state
-  const [adminAuthenticated, setAdminAuthenticated] = useState(user?.role === 'admin' || !!token);
+  const [adminAuthenticated, setAdminAuthenticated] = useState(
+    user?.role === 'admin' || 
+    user?.role === 'super_admin' || 
+    !!localStorage.getItem('access_token') || 
+    !!localStorage.getItem('learngen_token') || 
+    !!token
+  );
   const [adminEmail, setAdminEmail] = useState('tushar@learngen.ai');
   const [adminPassword, setAdminPassword] = useState('Password123!');
   const [isLoggingIn, setIsLoggingIn] = useState(false);

@@ -350,31 +350,39 @@ export function AppProvider({ children }) {
   };
 
   // Sync with Live FastAPI Backend on load
+  const [isLoadingBackend, setIsLoadingBackend] = useState(false);
+
   useEffect(() => {
     async function loadBackendData() {
       if (!user?.email) return;
+      setIsLoadingBackend(true);
       try {
-        const docRes = await api.getDocuments();
-        if (docRes?.data && Array.isArray(docRes.data) && docRes.data.length > 0) {
-          setDocuments(docRes.data);
+        const [docRes, quizRes, fcRes, configRes] = await Promise.allSettled([
+          api.getDocuments(),
+          api.getQuizzes(),
+          api.getFlashcards(),
+          api.getAdminConfig()
+        ]);
+
+        if (docRes.status === 'fulfilled' && docRes.value?.data && Array.isArray(docRes.value.data) && docRes.value.data.length > 0) {
+          setDocuments(docRes.value.data);
         }
 
-        const quizRes = await api.getQuizzes();
-        if (quizRes?.data && Array.isArray(quizRes.data)) {
-          setQuizzes(quizRes.data);
+        if (quizRes.status === 'fulfilled' && quizRes.value?.data && Array.isArray(quizRes.value.data)) {
+          setQuizzes(quizRes.value.data);
         }
 
-        const fcRes = await api.getFlashcards();
-        if (fcRes?.data && Array.isArray(fcRes.data)) {
-          setFlashcards(fcRes.data);
+        if (fcRes.status === 'fulfilled' && fcRes.value?.data && Array.isArray(fcRes.value.data)) {
+          setFlashcards(fcRes.value.data);
         }
 
-        const configRes = await api.getAdminConfig();
-        if (configRes?.data) {
-          setRagConfig(configRes.data);
+        if (configRes.status === 'fulfilled' && configRes.value?.data) {
+          setRagConfig(configRes.value.data);
         }
       } catch (err) {
-        console.log("[AppProvider] Loaded cached user vault data.");
+        console.log("[AppProvider] Handled backend sync errors.");
+      } finally {
+        setIsLoadingBackend(false);
       }
     }
     loadBackendData();
@@ -517,7 +525,8 @@ export function AppProvider({ children }) {
       isCitationDrawerOpen, setIsCitationDrawerOpen,
       toastMessage, showToast,
       activityLog, recordActivity,
-      getUserWeeklyData, getUserSummaryStats
+      getUserWeeklyData, getUserSummaryStats,
+      isLoadingBackend
     }}>
       {children}
     </AppContext.Provider>

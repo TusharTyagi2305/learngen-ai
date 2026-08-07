@@ -2,13 +2,13 @@ import React, { useRef } from 'react';
 import { useApp } from '../services/appState';
 import { 
   FileText, MessageSquare, HelpCircle, Layers, Calendar, 
-  Sparkles, Upload, ArrowRight, Zap, Shield, CheckCircle2, Database 
+  Sparkles, Upload, ArrowRight, Zap, Shield, CheckCircle2, Database, RefreshCw 
 } from 'lucide-react';
 import { WeeklyStudyChart, LearningProgressChart } from '../components/Charts';
 import MagicBento, { ParticleCard, GlobalSpotlight } from '../components/MagicBento';
 
 export function DashboardHome() {
-  const { user, setCurrentPage, documents, setIsUploadModalOpen, currentRole, getUserSummaryStats } = useApp();
+  const { user, setCurrentPage, documents, setIsUploadModalOpen, currentRole, getUserSummaryStats, isLoadingBackend } = useApp();
   const safeDocs = Array.isArray(documents) ? documents : [];
   const stats = getUserSummaryStats();
 
@@ -72,7 +72,15 @@ export function DashboardHome() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {safeDocs.length === 0 ? (
+              {isLoadingBackend ? (
+                <div style={{ padding: '24px 16px', textAlign: 'center', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)' }}>
+                  <RefreshCw size={28} className="animate-spin" style={{ color: 'var(--accent-cyan)', marginBottom: '8px', animation: 'spin 1s linear infinite' }} />
+                  <div style={{ fontWeight: 600, fontSize: '0.9rem', marginBottom: '4px' }}>Loading Vector Vault...</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                    Synchronizing securely with backend database.
+                  </div>
+                </div>
+              ) : safeDocs.length === 0 ? (
                 <div style={{ padding: '24px 16px', textAlign: 'center', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)' }}>
                   <Upload size={28} style={{ color: 'var(--accent-cyan)', marginBottom: '8px' }} />
                   <div style={{ fontWeight: 600, fontSize: '0.9rem', marginBottom: '4px' }}>No documents in your vault yet</div>

@@ -569,6 +569,8 @@ def get_system_health_metrics(
         db_status = "Connected (Healthy)"
     except Exception:
         db_status = "Error"
+    finally:
+        db.rollback()
 
     # ChromaDB Check
     try:
@@ -634,6 +636,7 @@ def get_database_monitor_stats(
             "foreign_keys_count": len(fks),
             "estimated_size": f"{max(1, cnt * 2)} KB"
         })
+    db.rollback()
 
     return ApiResponse(
         success=True,
@@ -673,6 +676,7 @@ def view_database_table_rows(
     
     res = db.execute(text(paginated_query))
     rows = [dict(r._mapping) for r in res.fetchall()]
+    db.rollback()
 
     return ApiResponse(
         success=True,
@@ -700,6 +704,7 @@ def export_database_table_csv(
     res = db.execute(text(f"SELECT * FROM {table_name}"))
     rows = res.fetchall()
     cols = list(res.keys())
+    db.rollback()
 
     output = io.StringIO()
     writer = csv.writer(output)

@@ -6,7 +6,14 @@ db_url = settings.NEON_DATABASE_URL
 if db_url.startswith("sqlite"):
     raise ValueError("SQLite is disabled in production. NEON_DATABASE_URL must point to PostgreSQL.")
 
-engine = create_engine(db_url, pool_pre_ping=True)
+engine = create_engine(
+    db_url, 
+    pool_pre_ping=True, 
+    pool_recycle=300, 
+    pool_timeout=30, 
+    pool_size=5, 
+    max_overflow=10
+)
 
 # Verify live PostgreSQL connection on module load
 with engine.connect() as conn:

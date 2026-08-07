@@ -44,9 +44,9 @@ def require_role(allowed_roles: List[str]):
     RBAC dependency requiring current user to have one of allowed_roles (or super_admin).
     """
     def role_checker(current_user: User = Depends(get_current_user)) -> User:
-        if current_user.is_super_admin or current_user.role == "super_admin":
+        if current_user.is_super_admin or (current_user.role and current_user.role.lower() == "super_admin"):
             return current_user
-        if current_user.role not in allowed_roles:
+        if not current_user.role or current_user.role.lower() not in allowed_roles:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Forbidden: Action requires one of these roles: {allowed_roles}"
@@ -76,7 +76,7 @@ def get_current_admin_user(current_user: User = Depends(get_current_user)) -> Us
     """
     Requires authenticated user to be Admin or Super Admin.
     """
-    if current_user.is_super_admin or current_user.role in ["admin", "super_admin"]:
+    if current_user.is_super_admin or (current_user.role and current_user.role.lower() in ["admin", "super_admin"]):
         return current_user
     
     raise HTTPException(
@@ -88,7 +88,7 @@ def require_super_admin(current_user: User = Depends(get_current_user)) -> User:
     """
     Requires authenticated user to be Super Admin strictly.
     """
-    if current_user.is_super_admin or current_user.role == "super_admin":
+    if current_user.is_super_admin or (current_user.role and current_user.role.lower() == "super_admin"):
         return current_user
         
     raise HTTPException(

@@ -1020,6 +1020,15 @@ export function AdminDashboardPage() {
         </div>
       )}
 
+      {/* Fallback for under-construction tabs */}
+      {['chat', 'quizzes', 'health', 'vector_exp', 'files', 'api_monitor'].includes(activeTab) && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'center', justifyContent: 'center', minHeight: '50vh', background: 'var(--bg-secondary)', borderRadius: '16px', border: '1px solid var(--glass-border)' }}>
+          <Settings size={48} style={{ color: 'var(--accent-cyan)', opacity: 0.5, marginBottom: '16px' }} />
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Module Under Construction</h2>
+          <p style={{ color: 'var(--text-muted)' }}>The {activeTab} analytics module is currently being developed and will be available in a future update.</p>
+        </div>
+      )}
+
       {/* TAB 15: BACKUP & RECOVERY */}
       {activeTab === 'backup' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

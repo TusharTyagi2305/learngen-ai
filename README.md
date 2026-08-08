@@ -189,3 +189,5 @@ python evaluation/rag_vs_non_rag_eval.py
   Ensure `DATABASE_URL` in `backend/.env` is accessible and database `learngen_ai` exists.
 - **PowerShell `npm.ps1` Execution Policy Error**:
   Run `cmd.exe /c "npm run build"` or update PowerShell execution policy via `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`.
+
+<!-- update 1 -->
